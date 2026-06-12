@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt_BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doceria-ADM</title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/main.js" defer></script>
+</head>
+<body>
+    <header>
+        <img src="./img/logo.png" alt="logo_da_loja" class="logo">
+    </header>
+    <main id="main">
+
+        <div class="container-principal" id="container-principal">
+
+            <div class="card-informacao" id="card-informacao">
+
+                <h3 id="produtos">Produtos cadastrados</h3>
+
+                <span id="qtde-cadastrada">15</span>
+
+            </div>
+
+
+            <div class="card-informacao" id="card-informacao">
+
+                <h3 id="tipo-doce">Tipos de Doces</h3>
+
+                <span id="qtde-cadastrada">8</span>
+
+            </div>
+
+
+            <div class="card-informacao" id="card-informacao">
+
+                <h3 id="categoria">Categorias</h3>
+
+                <span id="qtde-cadastrada">10</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="pesquisa">
+
+            <input type="search" id="doce-pesquisado" class="doce-pesquisado" placeholder="Pesquisar Produto">
+       
+        </div>
+    
+
+        <div class="tabela-produtos">
+
+            <div class="topo-tabela">
+
+                <h3>Produtos Cadastrados</h3>
+
+                <button id="adicionar-produto" class="adicionar-produto">+ Adicionar produto</button>
+            
+            </div>
+
+            <!---Aqui eu estou fazendo a tabela principal-->
+            <div id="tabela-itens" class="tabela-itens">
+                <table class="descricao-tabela">
+                    <thead>
+                        <th scope="col">Imagem</th>
+                        <th scope="col">Produto</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Preço</th>
+                        <th scope="col">Ações</th>
+
+                    </thead>
+                    <tbody class="itens">
+                        <td id="img" class="imagem-doce"><img src="./img/bolo.webp" alt="doces"></td>
+                        <td id="nome-produto">Bolo de chocolate</td>
+                        <td id="categoria">Bolo</td>
+                        <td id="preco">R$10,50</td>
+                        <td id="acao" class="btn">
+                            <button id="editar"><img src="./img/lapis.png" alt="lapis-para-editar"></button>
+                            <button id="deletar"><img src="./img/lixo.png" alt="lixeira-para-deletar"></button>
+                        </td>
+                    </tbody>
+                
+                </table>
+            </div>
+
+        </div>
+
+        <!---Aqui eu estou fazendo a tabela de categorias-->
+        <div class="container-categoria">
+            <h3>Gerenciar Categoria</h3>
+            <button id="adicionar-categoria" class="adicionar-categoria">+ Adicionar categoria</button>
+            <table class="tabela-categoria">
+                <tbody class="categoria-itens">
+                    <td id="categoria" class="categoria">Bolo</td>
+                    <td id="acao-categoria" class="acao-categoria">
+                        <div class="btn-categoria">
+                            <button id="editar-categoria"><img src="./img/lapis.png" alt="lapis-para-editar"></button>
+                            <button id="deletar-categoria"><img src="./img/lixo.png" alt="lixeira-para-deletar"></button>
+                        </div>
+                    </td>
+                </tbody>
+            </table>
+
+
+        </div>
+
+
+
+        <!---Aqui eu estou fazendo a tabela de doces-->
+        <div class="container-sabor">
+            <h3>Gerenciar Sabores</h3>
+            <button id="adicionar-sabor" class="adicionar-sabor">+ Adicionar Sabor</button>
+            <table class="tabela-sabor">
+                <tbody class="sabor-itens">
+                    <td id="sabor" class="sabor">chocolate</td>
+                    <td id="acao-sabor" class="acao-sabor">
+                        <div class="btn-sabor">
+                            <button id="editar-sabor"><img src="./img/lapis.png" alt="lapis-para-editar"></button>
+                            <button id="deletar-sabor"><img src="./img/lixo.png" alt="lixeira-para-deletar"></button>
+                        </div>
+                    </td>
+                </tbody>
+            </table>
+
+
+        </div>
+
+
+    </main>
+    
+</body>
+</html>
