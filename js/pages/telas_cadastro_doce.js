@@ -2,6 +2,12 @@
 
 import { renderizarPagina } from "../main.js"
 
+// Aqui vou linkar a foto quando receber ela e utilizar no cloudinay
+function preview (input){
+    document.getElementById('preview-image')
+    .src = URL.createObjectURL(input.files[0])
+}
+
 
 export function cadastrarDoce (){
     let main = document.getElementById('main')
@@ -66,13 +72,29 @@ export function cadastrarDoce (){
     inputPreco.id = 'preco'
     inputPreco.placeholder = 'Escreva o preço do produto'
 
-    let inputImg = document.createElement('input')
-    inputImg.type = 'file'
+    // Criando o conteudo da imagem para cadastrar 
+    const divContainer = document.createElement('div')
+    divContainer.classList.add('preview-container')
+   
+    const input = document.createElement('input')
+    input.id = 'preview-input'
+    input.className = 'preview-input'
+    input.type = 'file'
+    input.accept = 'image/*'
+    input.onchange = () => preview(input)
+   
+    const label = document.createElement('label')
+    label.className = 'preview-label'
+    label.htmlFor = 'preview-input'
+   
+       
+    const img = document.createElement('img')
+    img.id = 'preview-image'
+    img.className = 'preview-image'
+    img.src = './img/upload-icon.svg'
+   
+    divContainer.append(input, label, img)
 
-
-    let img = document.createElement('img')
-    img.src = './img/lupa.png'
-    img.className = 'imagem-produto'
 
     let botao_adicionar = document.createElement('button')
     botao_adicionar.textContent = 'CADASTRAR'
@@ -90,7 +112,7 @@ export function cadastrarDoce (){
     caixaBTN.className = 'caixa-btn'
     caixaBTN.append(botao_adicionar, botao_voltar)
 
-    container_cadastro.append(tituloPagina,inputNome, containerCategoria, containerSabor, inputPreco, inputImg, caixaBTN)
+    container_cadastro.append(tituloPagina,inputNome, containerCategoria, containerSabor, inputPreco, divContainer, caixaBTN)
     main.replaceChildren(container_cadastro)
 
     return main

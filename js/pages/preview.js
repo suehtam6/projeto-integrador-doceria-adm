@@ -2,11 +2,7 @@
 
 import { renderizarPagina } from "../main.js"
 
-function preview (input){
-    document.getElementById('preview-image')
-    .src = URL.createObjectURL(input.files[0])
-}
-
+// Função aonde vou mostrar a tela principal
 export function criarPreview(){
     const main = document.getElementById('main')
     main.replaceChildren()
@@ -77,7 +73,7 @@ export function criarPreview(){
     button_adicionar_produto.className = 'adicionar-produto'
     button_adicionar_produto.id = 'adicionar-produto'
     button_adicionar_produto.textContent = '+ Adicionar Produto' 
-    button_adicionar_produto.onclick = () => renderizarPagina('doce')
+    button_adicionar_produto.onclick = () => renderizarPagina('doce') // Aqui vou deixar linkado para a pagina de doce quando for acionado
     div_topo_tabela.append(h3_titulo_tabela, button_adicionar_produto)
     
     const div_tabela_itens = document.createElement('div')
@@ -148,12 +144,21 @@ export function criarPreview(){
     // Aqui vai ficar os botões de atualizar e deletar
     const tdBTN = document.createElement('td')
     tdBTN.className = 'btn'
-    const button_atualizar = document.createElement('button'); button_atualizar.id = 'editar-doce'
-    const imagem_botao_atualizar = document.createElement('img'); imagem_botao_atualizar.src = './img/lapis.png'; imagem_botao_atualizar.alt = 'editar'
+    const button_atualizar = document.createElement('button')
+    button_atualizar.id = 'editar-doce'
+    const imagem_botao_atualizar = document.createElement('img')
+    imagem_botao_atualizar.src = './img/lapis.png'
+    imagem_botao_atualizar.alt = 'editar'
+
     button_atualizar.append(imagem_botao_atualizar)
 
-    const button_deletar = document.createElement('button'); button_deletar.id = 'deletar-doce'
-    const imagem_botao_deletar = document.createElement('img'); imagem_botao_deletar.src = './img/lixo.png'; imagem_botao_deletar.alt = 'deletar'
+    const button_deletar = document.createElement('button')
+    button_deletar.id = 'deletar-doce'
+
+    const imagem_botao_deletar = document.createElement('img')
+    imagem_botao_deletar.src = './img/lixo.png'
+    imagem_botao_deletar.alt = 'deletar'
+
     button_deletar.append(imagem_botao_deletar)
     tdBTN.append(button_atualizar, button_deletar)
 
