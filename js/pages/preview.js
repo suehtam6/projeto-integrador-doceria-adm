@@ -3,11 +3,14 @@
 import { renderizarPagina } from "../main.js"
 import { deleteDoce, getCategorias, getSabores, getDoces, deleteCategoria, deleteSabor } from "../methods.js"
 import { doces, categorias, sabores } from '../doce_teste.js';
+import { atualizarDoce} from './tela_atualizar_doce.js'
+import { atualizarCategoria } from "./tela_atualizar_categoria.js";
+import { atualizarSabor } from "./tela_atualizar_sabor.js";
 
 
 
-function renderizarLinhasTabela(listaDeDoces, tbody) {
-    
+const renderizarLinhasTabela = function(listaDeDoces, tbody) {
+
     tbody.replaceChildren();
 
     listaDeDoces.forEach(itemDoce => {
@@ -20,7 +23,7 @@ function renderizarLinhasTabela(listaDeDoces, tbody) {
         const tdImagem = document.createElement('td')
         tdImagem.className = 'imagem-doce'
         const ImagemTd = document.createElement('img')
-        ImagemTd.className = 'imagem-tabela' 
+        ImagemTd.className = 'imagem-tabela'
         ImagemTd.src = itemDoce.imagem
         ImagemTd.alt = itemDoce.nome
         tdImagem.append(ImagemTd)
@@ -49,6 +52,8 @@ function renderizarLinhasTabela(listaDeDoces, tbody) {
         div_acao_tabela_atualizar.className = 'btn-acao'
         const button_atualizar = document.createElement('button')
         button_atualizar.id = `editar-doce-${itemDoce.id}`
+        button_atualizar.onclick = () => atualizarDoce(itemDoce)
+
         const imagem_botao_atualizar = document.createElement('img')
         imagem_botao_atualizar.src = './img/lapis.png'
         imagem_botao_atualizar.alt = 'editar'
@@ -61,7 +66,7 @@ function renderizarLinhasTabela(listaDeDoces, tbody) {
         const button_deletar = document.createElement('button')
         button_deletar.id = `deletar-doce-${itemDoce.id}`
         button_deletar.onclick = async () => {
-            if(confirm(`Tem certeza que deseja deletar o doce "${itemDoce.nome}"?`)) {
+            if (confirm(`Tem certeza que deseja deletar o doce "${itemDoce.nome}"?`)) {
                 await deleteDoce(itemDoce.id)
             }
         }
@@ -97,7 +102,7 @@ export function criarPreview(doce, categoria, sabor) {
     const span_doce_cadastrado = document.createElement('span')
     span_doce_cadastrado.className = 'qtde-cadastrada'
     span_doce_cadastrado.id = 'qtde-cadastrada'
-    span_doce_cadastrado.textContent = `🍭15` // Vou mudar este espaço quando a API ficar pronta
+    span_doce_cadastrado.textContent = `🍭${doces.length}` // Vou mudar este espaço quando a API ficar pronta
     card_informacao_doce.append(h3_doce_cadastrado, span_doce_cadastrado)
 
     // Aqui vou deixar armazenado a quantidade de categorias cadastradas
@@ -108,7 +113,7 @@ export function criarPreview(doce, categoria, sabor) {
     const span_categoria_cadastrado = document.createElement('span')
     span_categoria_cadastrado.className = 'qtde-categoria'
     span_categoria_cadastrado.id = 'qtde-categoria'
-    span_categoria_cadastrado.textContent = '🧁8' // Vou mudar este espaço quando a API ficar pronta
+    span_categoria_cadastrado.textContent = `🧁${categorias.length}` // Vou mudar este espaço quando a API ficar pronta
     card_informacao_categoria.append(h3_categoria_cadastrado, span_categoria_cadastrado)
 
 
@@ -120,7 +125,7 @@ export function criarPreview(doce, categoria, sabor) {
     const span_sabor_cadastrado = document.createElement('span')
     span_sabor_cadastrado.className = 'qtde-sabor'
     span_sabor_cadastrado.id = 'qtde-sabor'
-    span_sabor_cadastrado.textContent = '🍫10' // Vou mudar este espaço quando a API ficar pronta
+    span_sabor_cadastrado.textContent = `🍫${sabores.length}` // Vou mudar este espaço quando a API ficar pronta
     card_informacao_sabor.append(h3_sabor_cadastrado, span_sabor_cadastrado)
 
     container_cards.append(card_informacao_doce, card_informacao_categoria, card_informacao_sabor)
@@ -128,11 +133,11 @@ export function criarPreview(doce, categoria, sabor) {
 
     const divPesquisa = document.createElement('div')
     divPesquisa.className = 'pesquisa'
-    
+
     const inputPesquisa = document.createElement('input')
     inputPesquisa.className = 'doce-pesquisado'
     inputPesquisa.id = 'doce-pesquisado'
-    inputPesquisa.type = 'search' 
+    inputPesquisa.type = 'search'
     inputPesquisa.placeholder = 'Pesquisar produto'
     divPesquisa.append(inputPesquisa)
 
@@ -161,8 +166,11 @@ export function criarPreview(doce, categoria, sabor) {
 
     const div_topo_tabela = document.createElement('div')
     div_topo_tabela.className = 'topo-tabela'
+
     const h3_titulo_tabela = document.createElement('h3')
     h3_titulo_tabela.textContent = 'Produtos cadastrados'
+
+
     const button_adicionar_produto = document.createElement('button')
     button_adicionar_produto.className = 'adicionar-produto'
     button_adicionar_produto.id = 'adicionar-produto'
@@ -222,7 +230,7 @@ export function criarPreview(doce, categoria, sabor) {
         const ImagemTd = document.createElement('img')
         ImagemTd.className = 'imagem-tabela'
         ImagemTd.src = itemDoce.imagem // Mudar depois quando a API estiver pronta para mostrar a imagem do doce cadastrado
-            ImagemTd.alt = `imagem do doce ${itemDoce.imagem}`
+        ImagemTd.alt = `imagem do doce ${itemDoce.imagem}`
         tdImagem.append(ImagemTd)
 
         // Aqui é aonde ficara os dados sobre o nome do doce
@@ -249,7 +257,8 @@ export function criarPreview(doce, categoria, sabor) {
 
         const button_atualizar = document.createElement('button')
         button_atualizar.id = 'editar-doce'
-        
+        button_atualizar.onclick = () => atualizarDoce(itemDoce)
+
 
         const imagem_botao_atualizar = document.createElement('img')
         imagem_botao_atualizar.src = './img/lapis.png'
@@ -318,35 +327,45 @@ export function criarPreview(doce, categoria, sabor) {
     const ul_gerenciar_categoria = document.createElement('ul')
     ul_gerenciar_categoria.className = 'lista-gerenciar'
 
-    const li_gerenciar_categoria = document.createElement('li')
-    const span_gerenciar_categoria = document.createElement('span')
-    span_gerenciar_categoria.textContent = 'Bolo'
 
-    const div_guardar_botoes = document.createElement('div')
-    div_guardar_botoes.className = 'acoes-mini'
+    categorias.forEach(function (itemCategoria) {
 
-    const button_atualizar_categoria = document.createElement('button')
-    const imagem_botao_atualizar_categoria = document.createElement('img')
-    imagem_botao_atualizar_categoria.src = './img/lapis.png'
-    imagem_botao_atualizar_categoria.alt = 'editar'
-    button_atualizar_categoria.append(imagem_botao_atualizar_categoria)
+        const li_gerenciar_categoria = document.createElement('li')
+        li_gerenciar_categoria.className = 'item-lista'
 
-    const button_deletar_categora = document.createElement('button')
-    button_deletar_categora.onclick = async () => {
-        if (confirm("Tem certeza que deseja deletar esta categoria?")) {
-            await deleteCategoria(categoria.id)
-            main.replaceChildren()
+        const span_gerenciar_categoria = document.createElement('span')
+        span_gerenciar_categoria.textContent = itemCategoria.nome // MUDAR DPS PARA A API QUE ESTA SENDO DESENVOLVIDA
+
+        const div_guardar_botoes = document.createElement('div')
+        div_guardar_botoes.className = 'acoes-mini'
+
+        const button_atualizar_categoria = document.createElement('button')
+        const imagem_botao_atualizar_categoria = document.createElement('img')
+        imagem_botao_atualizar_categoria.src = './img/lapis.png'
+        imagem_botao_atualizar_categoria.alt = 'editar'
+        button_atualizar_categoria.append(imagem_botao_atualizar_categoria)
+        button_atualizar_categoria.onclick = () => atualizarCategoria(itemCategoria)
+
+        const button_deletar_categora = document.createElement('button')
+        button_deletar_categora.onclick = async () => {
+            if (confirm("Tem certeza que deseja deletar esta categoria?")) {
+                await deleteCategoria(itemCategoria.id) // MUDAR DPS PARA A API QUE ESTA SENDO DESENVOLVIDA
+                main.replaceChildren()
+            }
         }
-    }
-    const imagem_botao_deletar_categoria = document.createElement('img')
-    imagem_botao_deletar_categoria.src = './img/lixo.png'
-    imagem_botao_deletar_categoria.alt = 'deletar'
-    button_deletar_categora.append(imagem_botao_deletar_categoria)
+        const imagem_botao_deletar_categoria = document.createElement('img')
+        imagem_botao_deletar_categoria.src = './img/lixo.png'
+        imagem_botao_deletar_categoria.alt = 'deletar'
+        button_deletar_categora.append(imagem_botao_deletar_categoria)
+
+        div_guardar_botoes.append(button_atualizar_categoria, button_deletar_categora)
 
 
-    div_guardar_botoes.append(button_atualizar_categoria, button_deletar_categora)
-    li_gerenciar_categoria.append(span_gerenciar_categoria, div_guardar_botoes)
-    ul_gerenciar_categoria.append(li_gerenciar_categoria)
+        li_gerenciar_categoria.append(span_gerenciar_categoria, div_guardar_botoes)
+
+        ul_gerenciar_categoria.append(li_gerenciar_categoria)
+    })
+
     div_card_gerenciar_categoria.append(h3_gerenciar_categoria, button_adicionar_categoria, ul_gerenciar_categoria)
 
     // fazendo o gerenciamento de doces
@@ -367,34 +386,40 @@ export function criarPreview(doce, categoria, sabor) {
     const ul_gerenciar_sabor = document.createElement('ul')
     ul_gerenciar_sabor.className = 'lista-gerenciar'
 
-    const li_gerenciar_sabor = document.createElement('li')
-    const span_gerenciar_sabor = document.createElement('span')
-    span_gerenciar_sabor.textContent = 'Chocolate' //Mudar quando a api estiver pronta
+    sabores.forEach(function(itemSabor){
+        const li_gerenciar_sabor = document.createElement('li')
+        li_gerenciar_sabor.className = 'item-lista'
 
-    const div_guardar_botoes_sabor = document.createElement('div')
-    div_guardar_botoes_sabor.className = 'acoes-mini'
-
-    const button_atualizar_sabor = document.createElement('button')
-    const imagem_botao_atualizar_sabor = document.createElement('img')
-    imagem_botao_atualizar_sabor.src = './img/lapis.png'
-    imagem_botao_atualizar_sabor.alt = 'editar'
-    button_atualizar_sabor.append(imagem_botao_atualizar_sabor)
-
-    const button_deletar_sabor = document.createElement('button')
-    button_deletar_sabor.onclick = async () => {
-        if (confirm("Tem certeza que deseja deletar este sabor?")) {
-            await deleteSabor(sabor.id)
-            main.replaceChildren()
+        const span_gerenciar_sabor = document.createElement('span')
+        span_gerenciar_sabor.textContent = itemSabor.nome //Mudar quando a api estiver pronta
+    
+        const div_guardar_botoes_sabor = document.createElement('div')
+        div_guardar_botoes_sabor.className = 'acoes-mini'
+    
+        const button_atualizar_sabor = document.createElement('button')
+        const imagem_botao_atualizar_sabor = document.createElement('img')
+        imagem_botao_atualizar_sabor.src = './img/lapis.png'
+        imagem_botao_atualizar_sabor.alt = 'editar'
+        button_atualizar_sabor.append(imagem_botao_atualizar_sabor)
+        button_atualizar_sabor.onclick = () => atualizarSabor(itemSabor)
+        
+    
+        const button_deletar_sabor = document.createElement('button')
+        button_deletar_sabor.onclick = async () => {
+            if (confirm("Tem certeza que deseja deletar este sabor?")) {
+                await deleteSabor(itemSabor.id)
+                main.replaceChildren()
+            }
         }
-    }
-    const imagem_botao_deletar_sabor = document.createElement('img')
-    imagem_botao_deletar_sabor.src = './img/lixo.png'
-    imagem_botao_deletar_sabor.alt = 'deletar'
-    button_deletar_sabor.append(imagem_botao_deletar_sabor)
-
-    div_guardar_botoes_sabor.append(button_atualizar_sabor, button_deletar_sabor)
-    li_gerenciar_sabor.append(span_gerenciar_sabor, div_guardar_botoes_sabor)
-    ul_gerenciar_sabor.append(li_gerenciar_sabor)
+        const imagem_botao_deletar_sabor = document.createElement('img')
+        imagem_botao_deletar_sabor.src = './img/lixo.png'
+        imagem_botao_deletar_sabor.alt = 'deletar'
+        button_deletar_sabor.append(imagem_botao_deletar_sabor)
+    
+        div_guardar_botoes_sabor.append(button_atualizar_sabor, button_deletar_sabor)
+        li_gerenciar_sabor.append(span_gerenciar_sabor, div_guardar_botoes_sabor)
+        ul_gerenciar_sabor.append(li_gerenciar_sabor)
+    })
     div_card_gerenciar_sabor.append(h3_gerenciar_sabor, button_adicionar_sabor, ul_gerenciar_sabor)
 
 

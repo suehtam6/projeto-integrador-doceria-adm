@@ -108,8 +108,7 @@ export const doces = [
     "preco": 6.50,
     "em_estoque": true,
     "imagem": "https://images.unsplash.com/photo-1612240498936-65f5101365d2?w=500&auto=format&fit=crop&q=60"
-  },
-  {"count" : 10}
+  }
 ];
 
 
@@ -121,8 +120,7 @@ export const categorias = [
   { "id": 5, "nome": "Sobremesas na Taça" },
   { "id": 6, "nome": "Bolos de Pote" },
   { "id": 7, "nome": "Diet e Zero" },
-  { "id": 8, "nome": "Festivos" },
-  { 'count' : 8}
+  { "id": 8, "nome": "Festivos" }
 ];
 
 export const sabores = [
@@ -137,6 +135,5 @@ export const sabores = [
   { "id": 9, "nome": "Avelã" },
   { "id": 10, "nome": "Leite Ninho" },
   { "id": 11, "nome": "Cenoura" },
-  { "id": 12, "nome": "Uva" },
-  {"count":12}
+  { "id": 12, "nome": "Uva" }
 ];

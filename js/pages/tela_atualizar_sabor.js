@@ -1,31 +1,32 @@
 'use strict'
 
 import { renderizarPagina } from "../main.js"
-import { postCategoria } from "../methods.js"
+import { postSabor, putSabor } from "../methods.js"
 
 
-export function cadastrarCategoria (){
+
+export function atualizarSabor(sabor) {
     let main = document.getElementById('main')
 
     let tituloPagina = document.createElement('h1')
-    tituloPagina.textContent = 'Cadastro da categoria'
+    tituloPagina.textContent = 'Cadastro do sabor'
     tituloPagina.className = 'tituloPagina'
 
     let container_cadastro = document.createElement('div')
-    container_cadastro.className = 'container-cadastro' 
+    container_cadastro.className = 'container-cadastro'
 
     let inputNome = document.createElement('input')
     inputNome.className = 'nome-produto'
     inputNome.id = 'nome-produto'
     inputNome.type = 'text'
-    inputNome.placeholder = 'Escreva o nome da categoria'
+    inputNome.placeholder = 'Escreva o nome do sabor'
+    inputNome.value = sabor.nome
 
     let botao_adicionar = document.createElement('button')
     botao_adicionar.textContent = 'CADASTRAR'
     botao_adicionar.id = 'salvar-categoria'
     botao_adicionar.className = 'padronizar-btn'
-    botao_adicionar.onclick = () => cadastroCategoria()
-
+    botao_adicionar.onclick = () => salvarAtualizacaoSabor()
 
     let botao_voltar = document.createElement('button')
     botao_voltar.textContent = 'CANCELAR'
@@ -35,43 +36,49 @@ export function cadastrarCategoria (){
 
     let caixaBTN = document.createElement('div')
     caixaBTN.className = 'caixa-btn'
+
     caixaBTN.append(botao_adicionar, botao_voltar)
 
-    container_cadastro.append(tituloPagina, inputNome ,caixaBTN)
+
+    container_cadastro.append(tituloPagina, inputNome, caixaBTN)
     main.replaceChildren(container_cadastro)
 
     return main
 }
 
-const cadastroCategoria = async function() {
+
+const salvarAtualizacaoSabor = async function () {
+
     try {
-        let categoria = document.getElementById('nome-produto')
-    
-        let salvarCategoria = {
-            categoria: categoria.value
+        let sabores = document.getElementById('nome-produto')
+
+        let salvarSabor = {
+            sabor: sabores.value
         }
-    
-        let validarDados = await validar(salvarCategoria)
-        
-        if(validarDados){
-            await postCategoria(salvarCategoria)
-            alert('Categoria salva com sucesso!!')
-        }else{
-            alert('Erro ao salvar a categoria. Verifique os dados e tente novamente.')
+
+        let validarDados = validar(salvarSabor)
+
+        if (validarDados) {
+            await putSabor(salvarSabor)
+            alert('sabor salvo com sucesso!')
+        } else {
+            alert('Erro ao salvar o sabor. Verifique os dados e tente novamente.')
         }
+
 
     } catch (error) {
-        console.log(error)
-        alert('Erro não foi possivel cadastrar a categoria!!')
+        console.error(error)
+        alert('Erro interno ao tentar cadastrar o sabor.')
     }
+
+
+
 }
 
-const validar = async function (categoria) {
-    if(categoria.categoria == undefined || categoria.categoria == null || !isNaN(categoria)){
-        alert('ERRO AO VALIAR A CATEGORIA')
+const validar = async function (sabor) {
+    if (sabor.sabor == undefined || sabor.sabor == null || !isNaN(sabor)) {
+        alert('Erro ao validar o sabor')
         return false
     }
     return true
-
 }
-

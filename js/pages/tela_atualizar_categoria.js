@@ -1,10 +1,10 @@
 'use strict'
 
 import { renderizarPagina } from "../main.js"
-import { postCategoria } from "../methods.js"
+import { postCategoria, putCategoria } from "../methods.js"
 
 
-export function cadastrarCategoria (){
+export function atualizarCategoria (categoria){
     let main = document.getElementById('main')
 
     let tituloPagina = document.createElement('h1')
@@ -19,12 +19,13 @@ export function cadastrarCategoria (){
     inputNome.id = 'nome-produto'
     inputNome.type = 'text'
     inputNome.placeholder = 'Escreva o nome da categoria'
+    inputNome.value = categoria.nome
 
     let botao_adicionar = document.createElement('button')
     botao_adicionar.textContent = 'CADASTRAR'
     botao_adicionar.id = 'salvar-categoria'
     botao_adicionar.className = 'padronizar-btn'
-    botao_adicionar.onclick = () => cadastroCategoria()
+    botao_adicionar.onclick = () => salvarAtualizacaoCategoria()
 
 
     let botao_voltar = document.createElement('button')
@@ -43,7 +44,7 @@ export function cadastrarCategoria (){
     return main
 }
 
-const cadastroCategoria = async function() {
+const salvarAtualizacaoCategoria = async function() {
     try {
         let categoria = document.getElementById('nome-produto')
     
@@ -54,7 +55,7 @@ const cadastroCategoria = async function() {
         let validarDados = await validar(salvarCategoria)
         
         if(validarDados){
-            await postCategoria(salvarCategoria)
+            await putCategoria(salvarCategoria)
             alert('Categoria salva com sucesso!!')
         }else{
             alert('Erro ao salvar a categoria. Verifique os dados e tente novamente.')
