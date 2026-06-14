@@ -3,6 +3,7 @@
 import { renderizarPagina } from "../main.js"
 // import { uploadParaCloudinary } from "../preview_img.js"
 import { getCategorias, getSabores, getDoces, postDoce } from "../methods.js"
+import { categorias, sabores } from "../doce_teste.js"
 
 
 function preview(input) {
@@ -13,25 +14,25 @@ function preview(input) {
 
 // Caso alguém for utilizar ou ler esté codígo, aqui é aonde eu vou pegar as listar de categorias e
 //  doces para utilizar no projeto e criar os checkbox
-const carregarItens = async function () {
-    try {
-        let listaSabor = await getSabores()
-        let listaCategoria = await getCategorias()
+// const carregarItens = async function () {
+//     try {
+//         let listaSabor = await getSabores()
+//         let listaCategoria = await getCategorias()
 
-        if (Array.isArray(listaCategoria) && Array.isArray(listaSabor)) {
+//         if (Array.isArray(listaCategoria) && Array.isArray(listaSabor)) {
 
-            cadastrarDoce(listaCategoria, listaSabor)
-        } else {
-            alert("ERRO: Não foram encontrados dados para retornar!!")
-        }
-    } catch (error) {
-        alert("ERRO: AO CARREGAR AS CATEGORIAS E SABORES!!")
-    }
-}
+//             cadastrarDoce(listaCategoria, listaSabor)
+//         } else {
+//             alert("ERRO: Não foram encontrados dados para retornar!!")
+//         }
+//     } catch (error) {
+//         alert("ERRO: AO CARREGAR AS CATEGORIAS E SABORES!!")
+//     }
+// }
 
 
 // Aqui eu vou cadastrar os doces
-export async function cadastrarDoce(listaCategorias, listaSabores) {
+export async function cadastrarDoce() {
     let main = document.getElementById('main')
     main.replaceChildren()
 
@@ -60,7 +61,7 @@ export async function cadastrarDoce(listaCategorias, listaSabores) {
     divCategoriasLista.className = 'caixaCategoria'
 
     // Aqui eu vou estar varrendo a lista das categorias
-    listaCategorias.forEach(categoria => {
+    categorias.forEach(categoria => {
         let caixaItem = document.createElement('div')
         caixaItem.className = 'item-radio'
 
@@ -96,7 +97,7 @@ export async function cadastrarDoce(listaCategorias, listaSabores) {
     // Varrendo a lista de sabores para criar os checkbox e uma coisa que eu não acabei falando etapa acima, mas caso você não saiba,
     //  Eu posso criar ambas as funções escrevendo checkbox sem mais nenhuma palavra para diferenciar, pois elas estão sendo criadas como let e
     //   elas se iniciam e finalizam neste bloco
-    listaSabores.forEach(sabor => {
+    sabores.forEach(sabor => {
         let caixaItem = document.createElement('div')
         caixaItem.className = 'item-checkbox'
 
@@ -236,4 +237,4 @@ const validar = function (novoDoce) {
     return true
 }
 
-carregarItens()
+// carregarItens()

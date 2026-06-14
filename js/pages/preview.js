@@ -1,16 +1,93 @@
 'use strict'
 
 import { renderizarPagina } from "../main.js"
-import { deleteDoce } from "../methods.js"
+import { deleteDoce, getCategorias, getSabores, getDoces, deleteCategoria, deleteSabor } from "../methods.js"
+import { doces, categorias, sabores } from '../doce_teste.js';
+
+
+
+function renderizarLinhasTabela(listaDeDoces, tbody) {
+    
+    tbody.replaceChildren();
+
+    listaDeDoces.forEach(itemDoce => {
+        const trItens = document.createElement('tr')
+        trItens.className = 'itens'
+
+
+
+
+        const tdImagem = document.createElement('td')
+        tdImagem.className = 'imagem-doce'
+        const ImagemTd = document.createElement('img')
+        ImagemTd.className = 'imagem-tabela' 
+        ImagemTd.src = itemDoce.imagem
+        ImagemTd.alt = itemDoce.nome
+        tdImagem.append(ImagemTd)
+
+        // Coluna do Nome do Doce
+        const tdProduto = document.createElement('td')
+        tdProduto.className = 'nome-doce'
+        tdProduto.textContent = itemDoce.nome
+
+        // Coluna da Categoria
+        const tdCategoria = document.createElement('td')
+        tdCategoria.className = 'categoria-td'
+        tdCategoria.textContent = itemDoce.categoria
+
+        // Coluna do Preço (Formatado para Real R$)
+        const tdPreco = document.createElement('td')
+        tdPreco.className = 'preco'
+        tdPreco.textContent = itemDoce.preco
+
+        // Coluna de Ações (Editar / Deletar)
+        const tdBTN = document.createElement('td')
+        tdBTN.className = 'acoes-tabela'
+
+        // Botão Editar
+        const div_acao_tabela_atualizar = document.createElement('div')
+        div_acao_tabela_atualizar.className = 'btn-acao'
+        const button_atualizar = document.createElement('button')
+        button_atualizar.id = `editar-doce-${itemDoce.id}`
+        const imagem_botao_atualizar = document.createElement('img')
+        imagem_botao_atualizar.src = './img/lapis.png'
+        imagem_botao_atualizar.alt = 'editar'
+        button_atualizar.append(imagem_botao_atualizar)
+        div_acao_tabela_atualizar.append(button_atualizar)
+
+        // Botão Deletar
+        const div_acao_tabela_deletar = document.createElement('div')
+        div_acao_tabela_deletar.className = 'btn-acao'
+        const button_deletar = document.createElement('button')
+        button_deletar.id = `deletar-doce-${itemDoce.id}`
+        button_deletar.onclick = async () => {
+            if(confirm(`Tem certeza que deseja deletar o doce "${itemDoce.nome}"?`)) {
+                await deleteDoce(itemDoce.id)
+            }
+        }
+        const imagem_botao_deletar = document.createElement('img')
+        imagem_botao_deletar.src = './img/lixo.png'
+        imagem_botao_deletar.alt = 'deletar'
+        button_deletar.append(imagem_botao_deletar)
+        div_acao_tabela_deletar.append(button_deletar)
+
+        tdBTN.append(div_acao_tabela_atualizar, div_acao_tabela_deletar)
+
+        // Monta a linha completa e adiciona no corpo da tabela
+        trItens.append(tdImagem, tdProduto, tdCategoria, tdPreco, tdBTN)
+        tbody.append(trItens)
+    })
+}
 
 // Função aonde vou mostrar a tela principal
-export function criarPreview(doce, categoria, sabor){
+export function criarPreview(doce, categoria, sabor) {
     const main = document.getElementById('main')
     main.replaceChildren()
-    
+
 
     const container_cards = document.createElement('div')
     container_cards.className = 'container-principal'
+
 
     // Aqui vou deixar armazenado a quantidade de doces cadastrados
     const card_informacao_doce = document.createElement('div')
@@ -20,7 +97,7 @@ export function criarPreview(doce, categoria, sabor){
     const span_doce_cadastrado = document.createElement('span')
     span_doce_cadastrado.className = 'qtde-cadastrada'
     span_doce_cadastrado.id = 'qtde-cadastrada'
-    span_doce_cadastrado.textContent = '🍭15' // Vou mudar este espaço quando a API ficar pronta
+    span_doce_cadastrado.textContent = `🍭15` // Vou mudar este espaço quando a API ficar pronta
     card_informacao_doce.append(h3_doce_cadastrado, span_doce_cadastrado)
 
     // Aqui vou deixar armazenado a quantidade de categorias cadastradas
@@ -51,12 +128,28 @@ export function criarPreview(doce, categoria, sabor){
 
     const divPesquisa = document.createElement('div')
     divPesquisa.className = 'pesquisa'
+    
     const inputPesquisa = document.createElement('input')
     inputPesquisa.className = 'doce-pesquisado'
     inputPesquisa.id = 'doce-pesquisado'
-    inputPesquisa.type = 'search'
+    inputPesquisa.type = 'search' 
     inputPesquisa.placeholder = 'Pesquisar produto'
     divPesquisa.append(inputPesquisa)
+
+    // O evento 'input' captura tanto a digitação quanto o clique no "X" de limpar
+    inputPesquisa.oninput = () => {
+        // Pega o valor, remove espaços extras e joga para minúsculo
+        const valorPesquisa = inputPesquisa.value.toLowerCase().trim();
+
+        // Se o adm limpou o input, 'valorPesquisa' será "" (string vazia)
+        // No JavaScript, .includes("") sempre vai acabar retornando true.
+        const docesFiltrados = doces.filter(doce => // aqui eu estou filtrando pelo doce e deixando em letra minuscula
+            doce.nome.toLowerCase().includes(valorPesquisa)
+        );
+
+        // Atualiza a tabela: mostra só o pesquisado ou TODOS se estiver vazio
+        renderizarLinhasTabela(docesFiltrados, tbody);
+    };
 
 
     const div_layout = document.createElement('div')
@@ -73,13 +166,13 @@ export function criarPreview(doce, categoria, sabor){
     const button_adicionar_produto = document.createElement('button')
     button_adicionar_produto.className = 'adicionar-produto'
     button_adicionar_produto.id = 'adicionar-produto'
-    button_adicionar_produto.textContent = '+ Adicionar Produto' 
+    button_adicionar_produto.textContent = '+ Adicionar Produto'
     button_adicionar_produto.onclick = () => renderizarPagina('doce') // Aqui vou deixar linkado para a pagina de doce quando for acionado
     div_topo_tabela.append(h3_titulo_tabela, button_adicionar_produto)
-    
+
     const div_tabela_itens = document.createElement('div')
     div_tabela_itens.className = 'tabela-itens'
-    
+
     const table = document.createElement('table')
     table.className = 'descricao-tabela'
 
@@ -87,7 +180,7 @@ export function criarPreview(doce, categoria, sabor){
     const thead = document.createElement('thead')
     const tr = document.createElement('tr')
 
-    
+
     const thImagem = document.createElement('th')
     thImagem.scope = 'col'
     thImagem.textContent = 'Imagem'
@@ -116,83 +209,90 @@ export function criarPreview(doce, categoria, sabor){
     thead.append(tr)
 
     // Aqui é aonde vai estar os itens das tabelas
-
     const tbody = document.createElement('tbody')
-    const trItens = document.createElement('tr')
-    trItens.className = 'itens'
 
-    // Aqui é aonde ficara os dados sobre a imagem dos doces
-    const tdImagem = document.createElement('td')
-    tdImagem.className = 'imagem-doce'
+    doces.forEach(function (itemDoce) {
+        const trItens = document.createElement('tr')
+        trItens.className = 'itens'
 
-    const ImagemTd = document.createElement('img')
-    ImagemTd.className = 'imagem-tabela' 
-    ImagemTd.src = './img/bolo.webp' // Mudar depois quando a API estiver pronta para mostrar a imagem do doce cadastrado
-    ImagemTd.alt = 'Imagem do doce'
-    tdImagem.append(ImagemTd)
+        // Aqui é aonde ficara os dados sobre a imagem dos doces
+        const tdImagem = document.createElement('td')
+        tdImagem.className = 'imagem-doce'
 
-    // Aqui é aonde ficara os dados sobre o nome do doce
-    const tdProduto = document.createElement('td')
-    tdProduto.className = 'nome-doce'
-    tdProduto.textContent = 'Bolo de chocolate' // Mudar depois quando a API estiver pronta para mostrar o nome do doce cadastrado
+        const ImagemTd = document.createElement('img')
+        ImagemTd.className = 'imagem-tabela'
+        ImagemTd.src = itemDoce.imagem // Mudar depois quando a API estiver pronta para mostrar a imagem do doce cadastrado
+            ImagemTd.alt = `imagem do doce ${itemDoce.imagem}`
+        tdImagem.append(ImagemTd)
 
-    // Aqui é aonde ficara os dados sobre a categoria
-    const tdCategoria = document.createElement('td')
-    tdCategoria.className = 'categoria-td'
-    tdCategoria.textContent = 'Bolo' // Mudar depois quando a API estiver pronta para mostrar a categoria do doce cadastrado
+        // Aqui é aonde ficara os dados sobre o nome do doce
+        const tdProduto = document.createElement('td')
+        tdProduto.className = 'nome-doce'
+        tdProduto.textContent = itemDoce.nome // Mudar depois quando a API estiver pronta para mostrar o nome do doce cadastrado
 
-    // Aqui é aonde ficara os dados sobre o preço
-    const tdPreco = document.createElement('td')
-    tdPreco.className = 'preco'
-    tdPreco.textContent = 'R$ 10,00' // Mudar depois quando a API estiver pronta para mostrar o preço do doce cadastrado
+        // Aqui é aonde ficara os dados sobre a categoria
+        const tdCategoria = document.createElement('td')
+        tdCategoria.className = 'categoria-td'
+        tdCategoria.textContent = itemDoce.categoria // Mudar depois quando a API estiver pronta para mostrar a categoria do doce cadastrado
 
-    // Aqui vai ficar os botões de atualizar e deletar
-    const tdBTN = document.createElement('td')
-    tdBTN.className = 'acoes-tabela'
+        // Aqui é aonde ficara os dados sobre o preço
+        const tdPreco = document.createElement('td')
+        tdPreco.className = 'preco'
+        tdPreco.textContent = `R$ ${itemDoce.preco}` // Mudar depois quando a API estiver pronta para mostrar o preço do doce cadastrado
 
-    const div_acao_tabela_atualizar = document.createElement('div')
-    div_acao_tabela_atualizar.className = 'btn-acao'
+        // Aqui vai ficar os botões de atualizar e deletar
+        const tdBTN = document.createElement('td')
+        tdBTN.className = 'acoes-tabela'
 
-    const button_atualizar = document.createElement('button')
-    button_atualizar.id = 'editar-doce'
+        const div_acao_tabela_atualizar = document.createElement('div')
+        div_acao_tabela_atualizar.className = 'btn-acao'
 
-    const imagem_botao_atualizar = document.createElement('img')
-    imagem_botao_atualizar.src = './img/lapis.png'
-    imagem_botao_atualizar.alt = 'editar'
+        const button_atualizar = document.createElement('button')
+        button_atualizar.id = 'editar-doce'
+        
 
-    div_acao_tabela_atualizar.append(button_atualizar)
+        const imagem_botao_atualizar = document.createElement('img')
+        imagem_botao_atualizar.src = './img/lapis.png'
+        imagem_botao_atualizar.alt = 'editar'
 
-    button_atualizar.append(imagem_botao_atualizar)
+        div_acao_tabela_atualizar.append(button_atualizar)
+
+        button_atualizar.append(imagem_botao_atualizar)
 
 
-    const div_acao_tabela_deletar = document.createElement('div')
-    div_acao_tabela_deletar.className = 'btn-acao'
+        const div_acao_tabela_deletar = document.createElement('div')
+        div_acao_tabela_deletar.className = 'btn-acao'
 
 
-    const button_deletar = document.createElement('button')
-    button_deletar.id = 'deletar-doce'
-    button_deletar.onclick = async () => {
-        if(confirm("Tem certeza que deseja deletar este doce?")) {
-                await deleteDoce(doce.id)
-                main.replaceChildren() 
+        const button_deletar = document.createElement('button')
+        button_deletar.id = 'deletar-doce'
+        button_deletar.onclick = async () => {
+            if (confirm("Tem certeza que deseja deletar este doce?")) {
+                await deleteDoce(itemDoce.id)
+                main.replaceChildren()
             }
-    }
+        }
 
-    const imagem_botao_deletar = document.createElement('img')
-    imagem_botao_deletar.src = './img/lixo.png'
-    imagem_botao_deletar.alt = 'deletar'
+        const imagem_botao_deletar = document.createElement('img')
+        imagem_botao_deletar.src = './img/lixo.png'
+        imagem_botao_deletar.alt = 'deletar'
 
-    button_deletar.append(imagem_botao_deletar)
+        button_deletar.append(imagem_botao_deletar)
 
 
-    div_acao_tabela_deletar.append(button_deletar)
-    tdBTN.append(div_acao_tabela_atualizar, div_acao_tabela_deletar)
+        div_acao_tabela_deletar.append(button_deletar)
+        tdBTN.append(div_acao_tabela_atualizar, div_acao_tabela_deletar)
 
-    trItens.append(tdImagem, tdProduto, tdCategoria, tdPreco, tdBTN)
-    tbody.append(trItens)
+        trItens.append(tdImagem, tdProduto, tdCategoria, tdPreco, tdBTN)
+        tbody.append(trItens)
+
+    })
+
+
+
     table.append(thead, tbody)
     div_tabela_itens.append(table)
-    
+
     div_guardar_tabela.append(div_topo_tabela, div_tabela_itens)
 
     // Aqui vou guardar o gerenciamento da categoria e do sabor
@@ -220,7 +320,7 @@ export function criarPreview(doce, categoria, sabor){
 
     const li_gerenciar_categoria = document.createElement('li')
     const span_gerenciar_categoria = document.createElement('span')
-    span_gerenciar_categoria.textContent = 'Bolo' 
+    span_gerenciar_categoria.textContent = 'Bolo'
 
     const div_guardar_botoes = document.createElement('div')
     div_guardar_botoes.className = 'acoes-mini'
@@ -232,6 +332,12 @@ export function criarPreview(doce, categoria, sabor){
     button_atualizar_categoria.append(imagem_botao_atualizar_categoria)
 
     const button_deletar_categora = document.createElement('button')
+    button_deletar_categora.onclick = async () => {
+        if (confirm("Tem certeza que deseja deletar esta categoria?")) {
+            await deleteCategoria(categoria.id)
+            main.replaceChildren()
+        }
+    }
     const imagem_botao_deletar_categoria = document.createElement('img')
     imagem_botao_deletar_categoria.src = './img/lixo.png'
     imagem_botao_deletar_categoria.alt = 'deletar'
@@ -275,6 +381,12 @@ export function criarPreview(doce, categoria, sabor){
     button_atualizar_sabor.append(imagem_botao_atualizar_sabor)
 
     const button_deletar_sabor = document.createElement('button')
+    button_deletar_sabor.onclick = async () => {
+        if (confirm("Tem certeza que deseja deletar este sabor?")) {
+            await deleteSabor(sabor.id)
+            main.replaceChildren()
+        }
+    }
     const imagem_botao_deletar_sabor = document.createElement('img')
     imagem_botao_deletar_sabor.src = './img/lixo.png'
     imagem_botao_deletar_sabor.alt = 'deletar'
@@ -289,7 +401,7 @@ export function criarPreview(doce, categoria, sabor){
     div_barra_lateral.append(div_card_gerenciar_categoria, div_card_gerenciar_sabor)
 
     div_layout.append(div_guardar_tabela, div_barra_lateral)
-    
+
 
     main.append(container_cards, divPesquisa, div_layout)
 
