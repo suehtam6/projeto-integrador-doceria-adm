@@ -137,21 +137,46 @@ body {
     vertical-align: middle;
 }
 
+.acoes-tabela {
+    display: flex;
+    gap: 10px;
 
-.placeholder-img {
-    width: 50px;
-    height: 50px;
+}
+
+
+
+.btn-acao{
+    position: relative;
+    top: -20px;
+    flex-direction: column-reverse;
+    padding: 4px;
+}
+
+
+
+.imagem-doce{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width: 100px;
+}
+
+.nome-doce,
+.categoria-td,
+.preco {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.imagem-tabela{
+    width: 80%;
+    height: 80%;
     background-color: #BC7A83;
     border-radius: 4px;
 }
 
 
-.btn-acao, .acoes-mini button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-}
 
 .btn-acao img, .acoes-mini img {
     width: 18px;
@@ -227,7 +252,10 @@ body {
     color: #C78E89;
     font-size: 15px;
     padding-left: 10px;
+
 }
+
+
 
 .caixa-btn{
     display: flex;

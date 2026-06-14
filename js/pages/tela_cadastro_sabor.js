@@ -1,6 +1,7 @@
 'use strict'
 
 import { renderizarPagina } from "../main.js"
+import { postSabor } from "../methods.js"
 
 
 
@@ -39,6 +40,13 @@ export function cadastrarSabor (){
 
     container_cadastro.append(tituloPagina, inputNome ,caixaBTN)
     main.replaceChildren(container_cadastro)
+
+    // const novoSabor = {
+    //     nome: inputNome.value
+    // }
+
+    // await postSabor(novoSabor)
+
 
     return main
 }

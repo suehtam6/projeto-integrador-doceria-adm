@@ -118,39 +118,55 @@ export function criarPreview(){
 
     const tbody = document.createElement('tbody')
     const trItens = document.createElement('tr')
+    trItens.className = 'itens'
 
     // Aqui é aonde ficara os dados sobre a imagem dos doces
     const tdImagem = document.createElement('td')
     tdImagem.className = 'imagem-doce'
-    const divImagemTd = document.createElement('div')
-    divImagemTd.className = 'placeholder-img'
-    tdImagem.append(divImagemTd)
+
+    const ImagemTd = document.createElement('img')
+    ImagemTd.className = 'imagem-tabela' 
+    ImagemTd.src = './img/bolo.webp' // Mudar depois quando a API estiver pronta para mostrar a imagem do doce cadastrado
+    ImagemTd.alt = 'Imagem do doce'
+    tdImagem.append(ImagemTd)
 
     // Aqui é aonde ficara os dados sobre o nome do doce
     const tdProduto = document.createElement('td')
-    tdProduto.className = 'nome-produto'
-    tdProduto.textContent = 'Bolo de chocolate'
+    tdProduto.className = 'nome-doce'
+    tdProduto.textContent = 'Bolo de chocolate' // Mudar depois quando a API estiver pronta para mostrar o nome do doce cadastrado
 
     // Aqui é aonde ficara os dados sobre a categoria
     const tdCategoria = document.createElement('td')
     tdCategoria.className = 'categoria-td'
-    tdCategoria.textContent = 'Bolo'
+    tdCategoria.textContent = 'Bolo' // Mudar depois quando a API estiver pronta para mostrar a categoria do doce cadastrado
 
     // Aqui é aonde ficara os dados sobre o preço
     const tdPreco = document.createElement('td')
     tdPreco.className = 'preco'
-    tdPreco.textContent = 'R$ 10,00'
+    tdPreco.textContent = 'R$ 10,00' // Mudar depois quando a API estiver pronta para mostrar o preço do doce cadastrado
 
     // Aqui vai ficar os botões de atualizar e deletar
     const tdBTN = document.createElement('td')
-    tdBTN.className = 'btn'
+    tdBTN.className = 'acoes-tabela'
+
+    const div_acao_tabela_atualizar = document.createElement('div')
+    div_acao_tabela_atualizar.className = 'btn-acao'
+
     const button_atualizar = document.createElement('button')
     button_atualizar.id = 'editar-doce'
+    
     const imagem_botao_atualizar = document.createElement('img')
     imagem_botao_atualizar.src = './img/lapis.png'
     imagem_botao_atualizar.alt = 'editar'
 
+    div_acao_tabela_atualizar.append(button_atualizar)
+
     button_atualizar.append(imagem_botao_atualizar)
+
+
+    const div_acao_tabela_deletar = document.createElement('div')
+    div_acao_tabela_deletar.className = 'btn-acao'
+
 
     const button_deletar = document.createElement('button')
     button_deletar.id = 'deletar-doce'
@@ -160,7 +176,10 @@ export function criarPreview(){
     imagem_botao_deletar.alt = 'deletar'
 
     button_deletar.append(imagem_botao_deletar)
-    tdBTN.append(button_atualizar, button_deletar)
+
+
+    div_acao_tabela_deletar.append(button_deletar)
+    tdBTN.append(div_acao_tabela_atualizar, div_acao_tabela_deletar)
 
     trItens.append(tdImagem, tdProduto, tdCategoria, tdPreco, tdBTN)
     tbody.append(trItens)
@@ -201,12 +220,14 @@ export function criarPreview(){
 
     const button_atualizar_categoria = document.createElement('button')
     const imagem_botao_atualizar_categoria = document.createElement('img')
-    imagem_botao_atualizar_categoria.src = './img/lapis.png'; imagem_botao_atualizar_categoria.alt = 'editar'
+    imagem_botao_atualizar_categoria.src = './img/lapis.png'
+    imagem_botao_atualizar_categoria.alt = 'editar'
     button_atualizar_categoria.append(imagem_botao_atualizar_categoria)
 
     const button_deletar_categora = document.createElement('button')
     const imagem_botao_deletar_categoria = document.createElement('img')
-    imagem_botao_deletar_categoria.src = './img/lixo.png'; imagem_botao_deletar_categoria.alt = 'deletar'
+    imagem_botao_deletar_categoria.src = './img/lixo.png'
+    imagem_botao_deletar_categoria.alt = 'deletar'
     button_deletar_categora.append(imagem_botao_deletar_categoria)
 
 
@@ -242,12 +263,14 @@ export function criarPreview(){
 
     const button_atualizar_sabor = document.createElement('button')
     const imagem_botao_atualizar_sabor = document.createElement('img')
-    imagem_botao_atualizar_sabor.src = './img/lapis.png'; imagem_botao_atualizar_sabor.alt = 'editar'
+    imagem_botao_atualizar_sabor.src = './img/lapis.png'
+    imagem_botao_atualizar_sabor.alt = 'editar'
     button_atualizar_sabor.append(imagem_botao_atualizar_sabor)
 
     const button_deletar_sabor = document.createElement('button')
     const imagem_botao_deletar_sabor = document.createElement('img')
-    imagem_botao_deletar_sabor.src = './img/lixo.png'; imagem_botao_deletar_sabor.alt = 'deletar'
+    imagem_botao_deletar_sabor.src = './img/lixo.png'
+    imagem_botao_deletar_sabor.alt = 'deletar'
     button_deletar_sabor.append(imagem_botao_deletar_sabor)
 
     div_guardar_botoes_sabor.append(button_atualizar_sabor, button_deletar_sabor)

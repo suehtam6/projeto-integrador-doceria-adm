@@ -38,5 +38,11 @@ export function cadastrarCategoria (){
     container_cadastro.append(tituloPagina, inputNome ,caixaBTN)
     main.replaceChildren(container_cadastro)
 
+    // const novaCategoria = {
+    //     nome: inputNome.value
+    // }
+
+    // await postCategoria(novaCategoria)
+
     return main
 }
