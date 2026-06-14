@@ -1,9 +1,10 @@
 'use strict'
 
 import { renderizarPagina } from "../main.js"
+import { deleteDoce } from "../methods.js"
 
 // Função aonde vou mostrar a tela principal
-export function criarPreview(){
+export function criarPreview(doce, categoria, sabor){
     const main = document.getElementById('main')
     main.replaceChildren()
     
@@ -154,7 +155,7 @@ export function criarPreview(){
 
     const button_atualizar = document.createElement('button')
     button_atualizar.id = 'editar-doce'
-    
+
     const imagem_botao_atualizar = document.createElement('img')
     imagem_botao_atualizar.src = './img/lapis.png'
     imagem_botao_atualizar.alt = 'editar'
@@ -170,6 +171,12 @@ export function criarPreview(){
 
     const button_deletar = document.createElement('button')
     button_deletar.id = 'deletar-doce'
+    button_deletar.onclick = async () => {
+        if(confirm("Tem certeza que deseja deletar este doce?")) {
+                await deleteDoce(doce.id)
+                main.replaceChildren() 
+            }
+    }
 
     const imagem_botao_deletar = document.createElement('img')
     imagem_botao_deletar.src = './img/lixo.png'

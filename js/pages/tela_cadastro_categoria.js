@@ -1,6 +1,7 @@
 'use strict'
 
 import { renderizarPagina } from "../main.js"
+import { postCategoria } from "../methods.js"
 
 
 export function cadastrarCategoria (){
@@ -38,11 +39,38 @@ export function cadastrarCategoria (){
     container_cadastro.append(tituloPagina, inputNome ,caixaBTN)
     main.replaceChildren(container_cadastro)
 
-    // const novaCategoria = {
-    //     nome: inputNome.value
-    // }
-
-    // await postCategoria(novaCategoria)
-
     return main
 }
+
+const cadastroCategoria = async function() {
+    try {
+        let categoria = document.getElementById('nome-produto')
+    
+        let salvarCategoria = {
+            categoria: categoria.value
+        }
+    
+        let validarDados = await validar(salvarCategoria)
+        
+        if(validarDados){
+            await postCategoria(salvarCategoria)
+            alert('Categoria salva com sucesso!!')
+        }else{
+            alert('Erro ao salvar a categoria. Verifique os dados e tente novamente.')
+        }
+
+    } catch (error) {
+        console.log(error)
+        alert('Erro não foi possivel cadastrar a categoria!!')
+    }
+}
+
+const validar = async function (categoria) {
+    if(categoria.categoria == undefined || categoria.categoria == null || !isNaN(categoria)){
+        alert('ERRO AO VALIAR A CATEGORIA')
+        return false
+    }
+    return true
+
+}
+
