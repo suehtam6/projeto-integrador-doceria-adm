@@ -1,7 +1,5 @@
 'use strict'
 
-// const URL = 
-
 
 
 const URLDOCE = 'http://localhost:3000/doces'

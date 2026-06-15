@@ -7,15 +7,35 @@
     <title>Doceria-ADM</title>
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/style.css">
-    <script src="./js/main.js" defer type="module"></script>
+    <!-- <script src="./js/main.js" defer type="module"></script> -->
 </head>
 
-<body>
-    <header>
-        <img src="./img/logo.png" alt="logo">
+<body class="body">
+    <header id="header">
     </header>
-
+    
     <main id="main">
+        
+        <div class="padronizar-tela-login">
+            <div class="containerLogar" id="logar">
+                <img src="./img/logo.png" alt="logo" class="logo">
+                <div class="guardarItens">
+                    <h2>Seja bem vindo(a)!</h2>
+                    <button class="btn-login" id="btn-logar">ENTRAR</button>
+                </div>
+            </div>
+    
+            <div class="containerCadastrar" id="cadastrar">
+                <div class="guardarCadastro">
+                    <input type="text" placeholder="Nome" class="inputCadastro">
+                    <input type="email" placeholder="E-mail" class="inputCadastro">
+                    <input type="password" placeholder="Senha" class="inputCadastro">
+                    <button id="criarCadastro" class="btn-login">CRIAR</button>
+                </div>
+    
+            </div>
+
+        </div>
 
     </main>
 
