@@ -118,9 +118,25 @@ export async function atualizarDoce(doce) {
     img.id = 'preview-image'
     img.className = 'preview-image'
     // Se o doce já tiver uma imagem salva, mostra ela. Senão, mostra a logo padrão.
-    img.src = doce.imagem || './img/logo.png' 
+    img.src = doce.imagem || './img/upload.png' 
 
     divContainer.append(inputImage, labelImage, img)
+
+    const div_btn_estoque = document.createElement('div')
+    div_btn_estoque.className = 'div-estoque'
+    
+
+    const button_com_estoque = document.createElement('button')
+    button_com_estoque.className = 'btn-com-estoque'
+    button_com_estoque.textContent = 'Com Estoque'
+
+
+    const button_sem_estoque = document.createElement('button')
+    button_sem_estoque.className = 'btn-sem-estoque'
+    button_sem_estoque.textContent = 'Sem Estoque'
+
+    div_btn_estoque.append(button_com_estoque, button_sem_estoque)
+
 
     let botao_atualizar = document.createElement('button')
     botao_atualizar.textContent = 'ATUALIZAR' // Texto alterado
@@ -139,7 +155,7 @@ export async function atualizarDoce(doce) {
     caixaBTN.className = 'caixa-btn'
     caixaBTN.append(botao_atualizar, botao_voltar)
 
-    container_cadastro.append(tituloPagina, inputNome, containerCategoria, containerSabor, inputPreco, divContainer, caixaBTN)
+    container_cadastro.append(tituloPagina, inputNome, containerCategoria, containerSabor, inputPreco, divContainer, div_btn_estoque, caixaBTN)
     main.replaceChildren(container_cadastro)
 
     return main

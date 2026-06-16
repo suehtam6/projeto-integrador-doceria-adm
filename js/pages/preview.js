@@ -11,7 +11,6 @@ import { atualizarSabor } from "./tela_atualizar_sabor.js";
 
 
 const renderizarLinhasTabela = function(listaDeDoces, tbody) {
-
     tbody.replaceChildren();
 
     listaDeDoces.forEach(itemDoce => {
@@ -85,9 +84,11 @@ const renderizarLinhasTabela = function(listaDeDoces, tbody) {
 // Função aonde vou mostrar a tela principal
 export function criarPreview() {
 
+
     const header = document.getElementById('header')
     const main = document.getElementById('main')
     main.replaceChildren()
+    header.replaceChildren()
 
     const imagemLogo = document.createElement('img')
     imagemLogo.src = './img/logo.png'
@@ -433,6 +434,7 @@ export function criarPreview() {
 
 
     main.append(container_cards, divPesquisa, div_layout)
+    
     
 
 

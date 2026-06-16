@@ -5,6 +5,10 @@ body {
     color: #4A1521; 
 }
 
+.padding-body{
+    padding: 40px;
+}
+
 
 .logo {
     margin-bottom: 30px;
@@ -315,6 +319,24 @@ body {
     display: none;
 }
 
+
+.div-estoque{
+    width: 300px;
+    height: 100px;
+    gap: 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.div-estoque button{
+    width: 100px;
+    height: 50px;
+    color: #FFF6F5;
+    font-weight: bold;
+    background-color: #A64452;
+}
+
+
 .padronizar-tela-login{
     display: flex;
 }
@@ -329,9 +351,86 @@ body {
 }
 
 
+
+.guardarLogo{
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.guardarLogo img{
+    
+    width: 300px;
+    height: 100px;
+}
+
+
+.guardarItens{
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    
+}
+
+.guardarItens h2{
+    font-size: 40px;
+    font-weight: bold;
+    color: #A64452;
+}
+
+.guardarItens button{
+    width: 120px;
+    height: 50px;
+    color: #FFF6F5;
+    border-radius: 10px;
+    font-weight: bold;
+    background-color: #8A2535;
+}
+
 .containerCadastrar{
-    flex: 2;
-    width: 1200px ;
-    height: 950px;
+    width: 1200px;
+    height: 950;
     background-color: #F7E4E3;
 }
+
+
+.guardarCadastro{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    
+
+}
+
+.guardarCadastro h2{
+    color: #A64452;
+
+}
+
+
+.guardarCadastro input{
+    padding: 5px;
+    width: 600px;
+    height: 50px;
+    background-color: #BA737C;
+    color: #FFF6F5;
+    font-weight: bold;
+}
+
+.guardarCadastro button{
+    width: 120px;
+    height: 50px;
+    color: #FFF6F5;
+    border-radius: 10px;
+    font-weight: bold;
+    background-color: #8A2535;
+}
+

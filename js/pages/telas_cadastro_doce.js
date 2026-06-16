@@ -141,9 +141,24 @@ export async function cadastrarDoce() {
     const img = document.createElement('img')
     img.id = 'preview-image'
     img.className = 'preview-image'
-    img.src = './img/logo.png'
+    img.src = './img/upload.png'
 
     divContainer.append(inputImage, labelImage, img)
+
+    const div_btn_estoque = document.createElement('div')
+    div_btn_estoque.className = 'div-estoque'
+    
+
+    const button_com_estoque = document.createElement('button')
+    button_com_estoque.className = 'btn-com-estoque'
+    button_com_estoque.textContent = 'Com Estoque'
+
+
+    const button_sem_estoque = document.createElement('button')
+    button_sem_estoque.className = 'btn-sem-estoque'
+    button_sem_estoque.textContent = 'Sem Estoque'
+
+    div_btn_estoque.append(button_com_estoque, button_sem_estoque)
 
 
     let botao_adicionar = document.createElement('button')
@@ -162,7 +177,7 @@ export async function cadastrarDoce() {
     caixaBTN.className = 'caixa-btn'
     caixaBTN.append(botao_adicionar, botao_voltar)
 
-    container_cadastro.append(tituloPagina, inputNome, containerCategoria, containerSabor, inputPreco, divContainer, caixaBTN)
+    container_cadastro.append(tituloPagina, inputNome, containerCategoria, containerSabor, inputPreco, divContainer, div_btn_estoque, caixaBTN)
     main.replaceChildren(container_cadastro)
 
     return main
