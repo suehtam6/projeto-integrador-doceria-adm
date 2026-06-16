@@ -218,7 +218,7 @@ export async function deleteEstoque(id) {
     return response.json()
 }
 
-export async function putDoce(id, estoque) {
+export async function putEstoque(id, estoque) {
 
     //Configurações para utilizar o PUT
     const options = {

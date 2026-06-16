@@ -137,3 +137,8 @@ export const sabores = [
   { "id": 11, "nome": "Cenoura" },
   { "id": 12, "nome": "Uva" }
 ];
+
+export const estoques = [
+  {"id" : 1, "nome" : "com estoque"},
+  {"id" : 2, "nome" : "sem estoque"},
+]

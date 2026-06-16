@@ -2,8 +2,9 @@
 
 import { renderizarPagina } from "../main.js"
 // import { uploadParaCloudinary } from "../preview_img.js"
-import { getCategorias, getSabores, getDoces, postDoce } from "../methods.js"
-import { categorias, sabores } from "../doce_teste.js"
+import { getCategorias, getSabores, getDoces, postDoce, getEstoques } from "../methods.js"
+import { categorias, estoques, sabores } from "../doce_teste.js"
+import { uploadParaCloudinary } from "../cloudinay.js"
 
 
 function preview(input) {
@@ -18,10 +19,11 @@ function preview(input) {
 //     try {
 //         const listaSabor = await getSabores()
 //         const listaCategoria = await getCategorias()
+//         const listaEstoque = await getEstoques()
 
-//         if (Array.isArray(listaCategoria) && Array.isArray(listaSabor)) {
+//         if (Array.isArray(listaCategoria) && Array.isArray(listaSabor) && Array.isArray(listaEstoque)) {
 
-//             cadastrarDoce(listaCategoria, listaSabor)
+//             cadastrarDoce(listaCategoria, listaSabor, listaEstoque)
 //         } else {
 //             alert("ERRO: Não foram encontrados dados para retornar!!")
 //         }
@@ -63,19 +65,18 @@ export async function cadastrarDoce() {
     // Aqui eu vou estar varrendo a lista das categorias
     categorias.forEach(categoria => {
         const caixaItem = document.createElement('div')
-        caixaItem.className = 'item-radio'
 
         const radio = document.createElement('input')
         radio.className = 'radio-categoria'
         radio.type = 'radio'
         radio.name = 'categoria-produto'
         radio.value = categoria.id
-        radio.id = `cat-${categoria.id}`    // motivo de eu utilizar o `cat` aqui é por que o html daria erro se recebesse apenas o
+        radio.id = `categoria-${categoria.id}`    // motivo de eu utilizar o `cat` aqui é por que o html daria erro se recebesse apenas o
         //  id, pois teria o id 1 da categoria e o id 1 do sabor, e poderia acabar dando erro
         // Fora que fica mais facil para juntar com a label, quando eu estiver utilizando o htmlFor
 
         const label = document.createElement('label')
-        label.htmlFor = `cat-${categoria.id}`
+        label.htmlFor = `categoria-${categoria.id}`
         label.textContent = categoria.nome
 
         caixaItem.append(radio, label)
@@ -86,29 +87,28 @@ export async function cadastrarDoce() {
 
 
     const containerSabor = document.createElement('div')
-    containerSabor.className = 'container-sabor'
+
 
     const tituloSabor = document.createElement('h2')
     tituloSabor.textContent = 'Sabores'
 
     const divSaboresLista = document.createElement('div')
-    divSaboresLista.className = 'caixaSabor'
+
 
     // Varrendo a lista de sabores para criar os checkbox e uma coisa que eu não acabei falando etapa acima, mas caso você não saiba,
     //  Eu posso criar ambas as funções escrevendo checkbox sem mais nenhuma palavra para diferenciar, pois elas estão sendo criadas como const e
     //   elas se iniciam e finalizam neste bloco
     sabores.forEach(sabor => {
         const caixaItem = document.createElement('div')
-        caixaItem.className = 'item-checkbox'
 
         const checkbox = document.createElement('input')
         checkbox.className = 'checkbox-sabor'
         checkbox.type = 'checkbox'
         checkbox.value = sabor.id
-        checkbox.id = `sab-${sabor.id}` // Mesmo motivo da categoria, a diferença que nesta etapa eu utilizei o 'sab'
+        checkbox.id = `sabor-${sabor.id}` // Mesmo motivo da categoria, a diferença que nesta etapa eu utilizei o 'sab'
 
         const label = document.createElement('label')
-        label.htmlFor = `sab-${sabor.id}`
+        label.htmlFor = `sabor-${sabor.id}`
         label.textContent = sabor.nome
 
         caixaItem.append(checkbox, label)
@@ -145,20 +145,36 @@ export async function cadastrarDoce() {
 
     divContainer.append(inputImage, labelImage, img)
 
-    const div_btn_estoque = document.createElement('div')
-    div_btn_estoque.className = 'div-estoque'
-    
 
-    const button_com_estoque = document.createElement('button')
-    button_com_estoque.className = 'btn-com-estoque'
-    button_com_estoque.textContent = 'Com Estoque'
+    const divEstoqueLista = document.createElement('div')
+    divEstoqueLista.className = 'estoque'
+
+    const caixaEstoque = document.createElement('div')
+    caixaEstoque.className = 'estoque-radio'
+
+    estoques.forEach(function (estoque) {
+
+        const linhaRadio = document.createElement('div')
+
+        const radio_estoque = document.createElement('input')
+        radio_estoque.className = 'radio-estoque'
+        radio_estoque.type = 'radio'
+        radio_estoque.name = 'estoque'
+        radio_estoque.value = estoque.id
+        radio_estoque.id = `estoque-${estoque.id}`
+
+        const labelEstoque = document.createElement('label')
+        labelEstoque.htmlFor = `estoque-${estoque.id}`
+        labelEstoque.textContent = estoque.nome
 
 
-    const button_sem_estoque = document.createElement('button')
-    button_sem_estoque.className = 'btn-sem-estoque'
-    button_sem_estoque.textContent = 'Sem Estoque'
+        linhaRadio.append(radio_estoque, labelEstoque)
 
-    div_btn_estoque.append(button_com_estoque, button_sem_estoque)
+
+        caixaEstoque.append(linhaRadio)
+    })
+
+    divEstoqueLista.append(caixaEstoque)
 
 
     const botao_adicionar = document.createElement('button')
@@ -177,7 +193,7 @@ export async function cadastrarDoce() {
     caixaBTN.className = 'caixa-btn'
     caixaBTN.append(botao_adicionar, botao_voltar)
 
-    container_cadastro.append(tituloPagina, inputNome, containerCategoria, containerSabor, inputPreco, divContainer, div_btn_estoque, caixaBTN)
+    container_cadastro.append(tituloPagina, inputNome, containerCategoria, containerSabor, inputPreco, divContainer, divEstoqueLista, caixaBTN)
     main.replaceChildren(container_cadastro)
 
     return main
@@ -190,6 +206,7 @@ const cadastroDoce = async function () {
         const inputPreco = document.getElementById('preco')
         const inputImagem = document.getElementById('preview-input')
 
+        const urlFoto = await uploadParaCloudinary(inputImagem.files[0])
 
         // Captura todos os checkboxes de categoria marcados (:checked) e extrai os valores
         // Captura apenas o único botão radio que estiver marcado (:checked)
@@ -201,20 +218,25 @@ const cadastroDoce = async function () {
         const categoriaSelecionada = categoriaMarcada ? categoriaMarcada.value : null
 
 
+        // Aqui será o mesmo caso da categoria
+        const estoqueMarcado = document.querySelector('.radio-estoque:checked')
+        const estoqueSelecionado = estoqueMarcado ? estoqueMarcado.value : null
+
         // Captura todos os checkboxes de sabor marcados (:checked) e extrai os valores
         // Para funcionar os checkbox de multiplas escolhas, pois cada doce pode ter mais do que um sabor, e sem isto não ira
         // Pois ele captura todos os campos que o usuario apertou
         const saboresMarcados = document.querySelectorAll('.checkbox-sabor:checked')
         const listaSaboresSelecionados = Array.from(saboresMarcados).map(cb => cb.value)
 
-        
+
 
         const novoDoce = {
             nome: inputNome.value,
             categoria: categoriaSelecionada,
             sabores: listaSaboresSelecionados,
             preco: inputPreco.value,
-            imagem: inputImagem.files[0]
+            imagem: urlFoto,
+            estoque: estoqueSelecionado
         }
 
         const dadosValidos = validar(novoDoce)
@@ -246,7 +268,7 @@ const validar = function (novoDoce) {
         alert('Selecione pelo menos um sabor!')
         return false
     }
-    else (novoDoce.preco == undefined || !novoDoce.preco || isNaN(novoDoce.preco) || Number(novoDoce.preco) <= 0);{
+    else (novoDoce.preco == undefined || !novoDoce.preco || isNaN(novoDoce.preco) || Number(novoDoce.preco) <= 0); {
         alert('Insira um preço válido e maior que zero!')
         return false
     }

@@ -174,13 +174,18 @@ const salvarAtualizacaoDoce = async function (id) {
         let saboresMarcados = document.querySelectorAll('.checkbox-sabor:checked')
         let listaSaboresSelecionados = Array.from(saboresMarcados).map(cb => cb.value)
 
+                // Aqui será o mesmo caso da categoria
+        const estoqueMarcado = document.querySelector('.radio-estoque:checked')
+        const estoqueSelecionado = estoqueMarcado ? estoqueMarcado.value : null
+
         let doceAtualizado = {
             nome: inputNome.value,
             categoria: categoriaSelecionada,
             sabores: listaSaboresSelecionados,
             preco: inputPreco.value,
-            imagem: inputImagem.files[0] || null // Caso ele não troque de imagem, mantém vazio ou trata no backend
-        }
+            imagem: inputImagem.files[0] || null, // Caso ele não troque de imagem, mantém vazio ou trata no backend
+            estoque: estoqueSelecionado
+        }   
 
         let dadosValidos = validar(doceAtualizado)
 
@@ -201,19 +206,19 @@ const salvarAtualizacaoDoce = async function (id) {
 
 // Função de validação corrigida (sem o bug do ponto e vírgula no final)
 const validar = function (novoDoce) {
-    if (!novoDoce.nome || novoDoce.nome.trim() === '') {
+    if (novoDoce.nome == undefined || !novoDoce.nome || novoDoce.nome.trim() === '' || novoDoce.nome == null) {
         alert('O nome do produto é obrigatório')
         return false
     }
-    else if (!novoDoce.categoria) {
+    else if (novoDoce.categoria == undefined || !novoDoce.categoria) {
         alert('Selecione pelo menos uma categoria!')
         return false
     }
-    else if (!novoDoce.sabores || novoDoce.sabores.length === 0) {
+    else if (novoDoce.sabor == undefined || !novoDoce.sabores || novoDoce.sabores.length === 0) {
         alert('Selecione pelo menos um sabor!')
         return false
     }
-    else if (!novoDoce.preco || isNaN(novoDoce.preco) || Number(novoDoce.preco) <= 0) {
+    else (novoDoce.preco == undefined || !novoDoce.preco || isNaN(novoDoce.preco) || Number(novoDoce.preco) <= 0); {
         alert('Insira um preço válido e maior que zero!')
         return false
     }

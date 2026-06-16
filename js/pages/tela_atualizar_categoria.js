@@ -16,7 +16,7 @@ export function atualizarCategoria (categoria){
 
     let inputNome = document.createElement('input')
     inputNome.className = 'nome-produto'
-    inputNome.id = 'nome-produto'
+    inputNome.id = 'categoria'
     inputNome.type = 'text'
     inputNome.placeholder = 'Escreva o nome da categoria'
     inputNome.value = categoria.nome
@@ -25,7 +25,7 @@ export function atualizarCategoria (categoria){
     botao_adicionar.textContent = 'CADASTRAR'
     botao_adicionar.id = 'salvar-categoria'
     botao_adicionar.className = 'padronizar-btn'
-    botao_adicionar.onclick = () => salvarAtualizacaoCategoria()
+    botao_adicionar.onclick = () => salvarAtualizacaoCategoria(categoria.id)
 
 
     let botao_voltar = document.createElement('button')
@@ -44,18 +44,18 @@ export function atualizarCategoria (categoria){
     return main
 }
 
-const salvarAtualizacaoCategoria = async function() {
+const salvarAtualizacaoCategoria = async function(id) {
     try {
-        let categoria = document.getElementById('nome-produto')
-    
+        let categoria = document.getElementById('categoria').value
+
         let salvarCategoria = {
-            categoria: categoria.value
+            categoria: categoria
         }
     
-        let validarDados = await validar(salvarCategoria)
+        let validarDados = await validar(id, salvarCategoria)
         
         if(validarDados){
-            await putCategoria(salvarCategoria)
+            await putCategoria(id, salvarCategoria)
             alert('Categoria salva com sucesso!!')
         }else{
             alert('Erro ao salvar a categoria. Verifique os dados e tente novamente.')

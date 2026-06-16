@@ -17,7 +17,7 @@ export function atualizarSabor(sabor) {
 
     let inputNome = document.createElement('input')
     inputNome.className = 'nome-produto'
-    inputNome.id = 'nome-produto'
+    inputNome.id = 'sabor'
     inputNome.type = 'text'
     inputNome.placeholder = 'Escreva o nome do sabor'
     inputNome.value = sabor.nome
@@ -26,7 +26,7 @@ export function atualizarSabor(sabor) {
     botao_adicionar.textContent = 'CADASTRAR'
     botao_adicionar.id = 'salvar-categoria'
     botao_adicionar.className = 'padronizar-btn'
-    botao_adicionar.onclick = () => salvarAtualizacaoSabor()
+    botao_adicionar.onclick = () => salvarAtualizacaoSabor(sabor.id)
 
     let botao_voltar = document.createElement('button')
     botao_voltar.textContent = 'CANCELAR'
@@ -47,19 +47,20 @@ export function atualizarSabor(sabor) {
 }
 
 
-const salvarAtualizacaoSabor = async function () {
+const salvarAtualizacaoSabor = async function (id) {
 
     try {
-        let sabores = document.getElementById('nome-produto')
+
+        let sabores = document.getElementById('sabor').value
 
         let salvarSabor = {
-            sabor: sabores.value
+            sabor: sabores
         }
 
         let validarDados = validar(salvarSabor)
 
         if (validarDados) {
-            await putSabor(salvarSabor)
+            await putSabor(id, salvarSabor)
             alert('sabor salvo com sucesso!')
         } else {
             alert('Erro ao salvar o sabor. Verifique os dados e tente novamente.')
