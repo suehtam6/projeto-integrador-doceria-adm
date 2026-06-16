@@ -16,8 +16,8 @@ function preview(input) {
 //  doces para utilizar no projeto e criar os checkbox
 // const carregarItens = async function () {
 //     try {
-//         let listaSabor = await getSabores()
-//         let listaCategoria = await getCategorias()
+//         const listaSabor = await getSabores()
+//         const listaCategoria = await getCategorias()
 
 //         if (Array.isArray(listaCategoria) && Array.isArray(listaSabor)) {
 
@@ -33,39 +33,39 @@ function preview(input) {
 
 // Aqui eu vou cadastrar os doces
 export async function cadastrarDoce() {
-    let main = document.getElementById('main')
+    const main = document.getElementById('main')
     main.replaceChildren()
 
-    let tituloPagina = document.createElement('h1')
+    const tituloPagina = document.createElement('h1')
     tituloPagina.textContent = 'Cadastro de produto'
     tituloPagina.className = 'tituloPagina'
 
-    let container_cadastro = document.createElement('div')
+    const container_cadastro = document.createElement('div')
     container_cadastro.className = 'container-cadastro'
 
-    let inputNome = document.createElement('input')
+    const inputNome = document.createElement('input')
     inputNome.className = 'nome-produto'
     inputNome.id = 'nome-produto'
     inputNome.type = 'text'
     inputNome.placeholder = 'Escreva o nome do produto'
 
 
-    let containerCategoria = document.createElement('div')
+    const containerCategoria = document.createElement('div')
     containerCategoria.className = 'container-categoria'
 
-    let tituloCategoria = document.createElement('h2')
+    const tituloCategoria = document.createElement('h2')
     tituloCategoria.textContent = 'Categorias'
     containerCategoria.append(tituloCategoria)
 
-    let divCategoriasLista = document.createElement('div')
+    const divCategoriasLista = document.createElement('div')
     divCategoriasLista.className = 'caixaCategoria'
 
     // Aqui eu vou estar varrendo a lista das categorias
     categorias.forEach(categoria => {
-        let caixaItem = document.createElement('div')
+        const caixaItem = document.createElement('div')
         caixaItem.className = 'item-radio'
 
-        let radio = document.createElement('input')
+        const radio = document.createElement('input')
         radio.className = 'radio-categoria'
         radio.type = 'radio'
         radio.name = 'categoria-produto'
@@ -74,7 +74,7 @@ export async function cadastrarDoce() {
         //  id, pois teria o id 1 da categoria e o id 1 do sabor, e poderia acabar dando erro
         // Fora que fica mais facil para juntar com a label, quando eu estiver utilizando o htmlFor
 
-        let label = document.createElement('label')
+        const label = document.createElement('label')
         label.htmlFor = `cat-${categoria.id}`
         label.textContent = categoria.nome
 
@@ -85,29 +85,29 @@ export async function cadastrarDoce() {
 
 
 
-    let containerSabor = document.createElement('div')
+    const containerSabor = document.createElement('div')
     containerSabor.className = 'container-sabor'
 
-    let tituloSabor = document.createElement('h2')
+    const tituloSabor = document.createElement('h2')
     tituloSabor.textContent = 'Sabores'
 
-    let divSaboresLista = document.createElement('div')
+    const divSaboresLista = document.createElement('div')
     divSaboresLista.className = 'caixaSabor'
 
     // Varrendo a lista de sabores para criar os checkbox e uma coisa que eu não acabei falando etapa acima, mas caso você não saiba,
-    //  Eu posso criar ambas as funções escrevendo checkbox sem mais nenhuma palavra para diferenciar, pois elas estão sendo criadas como let e
+    //  Eu posso criar ambas as funções escrevendo checkbox sem mais nenhuma palavra para diferenciar, pois elas estão sendo criadas como const e
     //   elas se iniciam e finalizam neste bloco
     sabores.forEach(sabor => {
-        let caixaItem = document.createElement('div')
+        const caixaItem = document.createElement('div')
         caixaItem.className = 'item-checkbox'
 
-        let checkbox = document.createElement('input')
+        const checkbox = document.createElement('input')
         checkbox.className = 'checkbox-sabor'
         checkbox.type = 'checkbox'
         checkbox.value = sabor.id
         checkbox.id = `sab-${sabor.id}` // Mesmo motivo da categoria, a diferença que nesta etapa eu utilizei o 'sab'
 
-        let label = document.createElement('label')
+        const label = document.createElement('label')
         label.htmlFor = `sab-${sabor.id}`
         label.textContent = sabor.nome
 
@@ -118,7 +118,7 @@ export async function cadastrarDoce() {
 
 
 
-    let inputPreco = document.createElement('input')
+    const inputPreco = document.createElement('input')
     inputPreco.className = 'preco-produto'
     inputPreco.type = 'number'
     inputPreco.id = 'preco'
@@ -161,19 +161,19 @@ export async function cadastrarDoce() {
     div_btn_estoque.append(button_com_estoque, button_sem_estoque)
 
 
-    let botao_adicionar = document.createElement('button')
+    const botao_adicionar = document.createElement('button')
     botao_adicionar.textContent = 'CADASTRAR'
     botao_adicionar.id = 'salvar-categoria'
     botao_adicionar.className = 'padronizar-btn'
     botao_adicionar.onclick = () => cadastroDoce()
 
-    let botao_voltar = document.createElement('button')
+    const botao_voltar = document.createElement('button')
     botao_voltar.textContent = 'CANCELAR'
     botao_voltar.id = 'cancelar-categoria'
     botao_voltar.className = 'padronizar-btn'
     botao_voltar.onclick = () => renderizarPagina('preview')
 
-    let caixaBTN = document.createElement('div')
+    const caixaBTN = document.createElement('div')
     caixaBTN.className = 'caixa-btn'
     caixaBTN.append(botao_adicionar, botao_voltar)
 
@@ -186,28 +186,30 @@ export async function cadastrarDoce() {
 
 const cadastroDoce = async function () {
     try {
-        let inputNome = document.getElementById('nome-produto')
-        let inputPreco = document.getElementById('preco')
-        let inputImagem = document.getElementById('preview-input')
+        const inputNome = document.getElementById('nome-produto')
+        const inputPreco = document.getElementById('preco')
+        const inputImagem = document.getElementById('preview-input')
 
 
         // Captura todos os checkboxes de categoria marcados (:checked) e extrai os valores
         // Captura apenas o único botão radio que estiver marcado (:checked)
         // Assim sempre será enviado uma unica categoria
-        let categoriaMarcada = document.querySelector('.radio-categoria:checked')
+        const categoriaMarcada = document.querySelector('.radio-categoria:checked')
 
         // Aqui eu verifico se o usuario clicou em alguma categoria, caso ele não tenha clicado em nenhuma
         // o codigo irá salvar como null e a validação vai pegar e barrar e vai mostrar o alert de que o doce não foi possivel cadastrar por causa da categoria
-        let categoriaSelecionada = categoriaMarcada ? categoriaMarcada.value : null
+        const categoriaSelecionada = categoriaMarcada ? categoriaMarcada.value : null
 
 
         // Captura todos os checkboxes de sabor marcados (:checked) e extrai os valores
         // Para funcionar os checkbox de multiplas escolhas, pois cada doce pode ter mais do que um sabor, e sem isto não ira
         // Pois ele captura todos os campos que o usuario apertou
-        let saboresMarcados = document.querySelectorAll('.checkbox-sabor:checked')
-        let listaSaboresSelecionados = Array.from(saboresMarcados).map(cb => cb.value)
+        const saboresMarcados = document.querySelectorAll('.checkbox-sabor:checked')
+        const listaSaboresSelecionados = Array.from(saboresMarcados).map(cb => cb.value)
 
-        let novoDoce = {
+        
+
+        const novoDoce = {
             nome: inputNome.value,
             categoria: categoriaSelecionada,
             sabores: listaSaboresSelecionados,
@@ -215,7 +217,7 @@ const cadastroDoce = async function () {
             imagem: inputImagem.files[0]
         }
 
-        let dadosValidos = validar(novoDoce)
+        const dadosValidos = validar(novoDoce)
 
         if (dadosValidos) {
             await postDoce(novoDoce)

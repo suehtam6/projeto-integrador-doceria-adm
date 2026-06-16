@@ -8,10 +8,13 @@ const URLSABOR = 'http://localhost:3000/sabores'
 
 const URLCATEGORIA = 'http://localhost:3000/categorias'
 
+const URLESTOQUE = 'http://localhost:3000/estoque'
+
 
 // Exportando as funções da categoria para serem utilizadas em outros arquivos,
 //  como por exemplo na tela de cadastro de doces, onde preciso pegar as categorias para mostrar para o usuário.    
 
+//Metodos para utilizar na categorias
 export async function getCategorias() {
     const response = await fetch(`${URLCATEGORIA}`)
     return response.json()
@@ -68,6 +71,7 @@ export async function putCategoria(id, categoria) {
 // Exportando as funções do sabor para serem utilizadas em outros arquivos,
 //  como por exemplo na tela de cadastro de doces, onde preciso pegar os sabores para mostrar para o usuário.
 
+//Metodos para utilizar no sabor
 export async function getSabores() {
     const response = await fetch(`${URLSABOR}`)
     return response.json()
@@ -123,6 +127,7 @@ export async function putSabor(id, sabor) {
 // Exportando as funções do doce para serem utilizadas em outros arquivos,
 //  como por exemplo na tela de cadastro de doces, onde preciso pegar os doces para mostrar para o usuário.
 
+// Metodos para usar no doce
 export async function getDoces() {
     const response = await fetch(`${URLDOCE}`)
     return response.json()
@@ -175,5 +180,56 @@ export async function putDoce(id, doce) {
     return response.json()  
 }
 
+// Metodos para usar no estoque
 
+export async function getEstoques() {
+    const response = await fetch(`${URLESTOQUE}`)
+    return response.json()
+}   
 
+export async function getEstoque(id) {
+
+    const response = await fetch(`${URLESTOQUE}/${id}`)
+    return response.json()
+}
+
+export async function postEstoque(estoque) {
+
+    //Configurações para utilizar no fetch junto com a URL
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(estoque)
+    }
+
+    const response = await fetch(`${URLESTOQUE}`, options)
+    return response.json()
+}
+
+export async function deleteEstoque(id) {
+
+    const options = {
+        method: "DELETE"
+    }
+
+    const response = await fetch(`${URLESTOQUE}/${id}`, options)
+    return response.json()
+}
+
+export async function putDoce(id, estoque) {
+
+    //Configurações para utilizar o PUT
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(estoque) // Aqui estou convertendo o meu objeto em uma string para enviar para a API
+
+    }
+
+    const response = await fetch(`${URLESTOQUE}/${id}`, options)
+    return response.json()  
+}
