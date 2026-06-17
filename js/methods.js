@@ -2,13 +2,15 @@
 
 
 
-const URLDOCE = 'http://localhost:3000/doces'
+const URLDOCE       = 'http://localhost:3000/doces'
 
-const URLSABOR = 'http://localhost:3000/sabores'
+const URLSABOR      = 'http://localhost:3000/sabores'
 
-const URLCATEGORIA = 'http://localhost:3000/categorias'
+const URLCATEGORIA  = 'http://localhost:3000/categorias'
 
-const URLESTOQUE = 'http://localhost:3000/estoque'
+const URLESTOQUE    = 'http://localhost:3000/estoque'
+
+const URLADM        = 'http://localhost:3000/adm'
 
 
 // Exportando as funções da categoria para serem utilizadas em outros arquivos,
@@ -233,3 +235,58 @@ export async function putEstoque(id, estoque) {
     const response = await fetch(`${URLESTOQUE}/${id}`, options)
     return response.json()  
 }
+
+// Metodos para usar no ADM
+
+export async function getADMs() {
+    const response = await fetch(`${URLADM}`)
+    return response.json()
+}   
+
+export async function getADM(id) {
+
+    const response = await fetch(`${URLADM}/${id}`)
+    return response.json()
+}
+
+export async function postADM(adm) {
+
+    //Configurações para utilizar no fetch junto com a URL
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(adm)
+    }
+
+    const response = await fetch(`${URLADM}`, options)
+    return response.json()
+}
+
+export async function deleteADM(id) {
+
+    const options = {
+        method: "DELETE"
+    }
+
+    const response = await fetch(`${URLADM}/${id}`, options)
+    return response.json()
+}
+
+export async function putADM(id, adm) {
+
+    //Configurações para utilizar o PUT
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(adm) // Aqui estou convertendo o meu objeto em uma string para enviar para a API
+
+    }
+
+    const response = await fetch(`${URLADM}/${id}`, options)
+    return response.json()  
+}
+

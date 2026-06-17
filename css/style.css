@@ -1,5 +1,5 @@
 body {
-    /* padding: 40px;       utilizar somente quando for fazer as outras telas sem ser a de login */
+    overflow-x: hidden ;   
     background-color: #F2D6D3;
     font-family: sans-serif; 
     color: #4A1521; 
@@ -433,3 +433,70 @@ body {
     background-color: #8A2535;
 }
 
+.container-logar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 800px;
+    gap: 50px;
+}
+
+.container-logar h2{
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.rosquinha{
+    position: relative;
+    left: 82%;
+    bottom: 376px;
+}
+
+.guardar-input{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 400px;
+ 
+    gap: 20px;
+}
+
+.guardar-input input{
+    font-size: 15px;
+    font-weight: bold;
+    color: #C78E89;
+    padding: 12px 20px;
+    width: 500px;
+    height: 48px;
+    border: none;
+    border-radius: 8px;
+    background-color: #FFF6F5;
+
+}
+
+.container-logar button{
+        width: 120px;
+        height: 50px;
+        color: #FFF6F5;
+        border-radius: 10px;
+        font-weight: bold;
+        background-color: #8A2535;
+}
+
+.guardar-btn{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.guardar-btn h2{
+    font-size: 20px;
+}
+
+.guardar-btn button{
+    font-size: 20px;
+    color: #BA737C;
+    background-color: transparent;
+    border: none;
+}
