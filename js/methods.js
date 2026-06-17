@@ -2,15 +2,15 @@
 
 
 
-const URLDOCE       = 'http://localhost:3000/doces'
+const URLDOCE       = 'https://backend-honeyducks-1.onrender.com/v1/honeyducks/doceria/doce'
 
-const URLSABOR      = 'http://localhost:3000/sabores'
+const URLSABOR      = 'https://backend-honeyducks-1.onrender.com/v1/honeyducks/doceria/sabor'
 
-const URLCATEGORIA  = 'http://localhost:3000/categorias'
+const URLCATEGORIA  = 'https://backend-honeyducks-1.onrender.com/v1/honeyducks/doceria/categoria'
 
-const URLESTOQUE    = 'http://localhost:3000/estoque'
+const URLESTOQUE    = 'https://backend-honeyducks-1.onrender.com/v1/honeyducks/doceria/status'
 
-const URLADM        = 'http://localhost:3000/adm'
+const URLADM        = 'https://backend-honeyducks-1.onrender.com/v1/honeyducks/doceria/usuario'
 
 
 // Exportando as funções da categoria para serem utilizadas em outros arquivos,

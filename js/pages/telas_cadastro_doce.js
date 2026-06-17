@@ -15,26 +15,26 @@ function preview(input) {
 
 // Caso alguém for utilizar ou ler esté codígo, aqui é aonde eu vou pegar as listar de categorias e
 //  doces para utilizar no projeto e criar os checkbox
-// const carregarItens = async function () {
-//     try {
-//         const listaSabor = await getSabores()
-//         const listaCategoria = await getCategorias()
-//         const listaEstoque = await getEstoques()
+const carregarItens = async function () {
+    try {
+        const listaSabor = await getSabores()
+        const listaCategoria = await getCategorias()
+        const listaEstoque = await getEstoques()
 
-//         if (Array.isArray(listaCategoria) && Array.isArray(listaSabor) && Array.isArray(listaEstoque)) {
+        if (Array.isArray(listaCategoria) && Array.isArray(listaSabor) && Array.isArray(listaEstoque)) {
 
-//             cadastrarDoce(listaCategoria, listaSabor, listaEstoque)
-//         } else {
-//             alert("ERRO: Não foram encontrados dados para retornar!!")
-//         }
-//     } catch (error) {
-//         alert("ERRO: AO CARREGAR AS CATEGORIAS E SABORES!!")
-//     }
-// }
+            cadastrarDoce(listaCategoria, listaSabor, listaEstoque)
+        } else {
+            alert("ERRO: Não foram encontrados dados para retornar!!")
+        }
+    } catch (error) {
+        alert("ERRO: AO CARREGAR AS CATEGORIAS E SABORES!!")
+    }
+}
 
 
 // Aqui eu vou cadastrar os doces
-export async function cadastrarDoce() {
+export async function cadastrarDoce(listaSabor, listaCategoria, listaEstoque) {
     const main = document.getElementById('main')
     main.replaceChildren()
 
@@ -63,7 +63,7 @@ export async function cadastrarDoce() {
     divCategoriasLista.className = 'caixaCategoria'
 
     // Aqui eu vou estar varrendo a lista das categorias
-    categorias.forEach(categoria => {
+    listaCategoria.forEach(categoria => {
         const caixaItem = document.createElement('div')
 
         const radio = document.createElement('input')
@@ -98,7 +98,7 @@ export async function cadastrarDoce() {
     // Varrendo a lista de sabores para criar os checkbox e uma coisa que eu não acabei falando etapa acima, mas caso você não saiba,
     //  Eu posso criar ambas as funções escrevendo checkbox sem mais nenhuma palavra para diferenciar, pois elas estão sendo criadas como const e
     //   elas se iniciam e finalizam neste bloco
-    sabores.forEach(sabor => {
+    listaSabor.forEach(sabor => {
         const caixaItem = document.createElement('div')
 
         const checkbox = document.createElement('input')
@@ -145,6 +145,18 @@ export async function cadastrarDoce() {
 
     divContainer.append(inputImage, labelImage, img)
 
+    const div_descricao = document.createElement('div')
+    div_descricao.className = 'div-descricao'
+
+    const inputDescricao = document.createElement('input')
+    inputDescricao.type = 'text'
+    inputDescricao.placeholder = 'Descreva o Produto'
+    inputDescricao.id = 'descricao-produto'
+    inputDescricao.className = 'descricao'
+
+    const div_qtde = document.createElement('div')
+    div_qtde.className = 'div-qtde'
+
 
     const divEstoqueLista = document.createElement('div')
     divEstoqueLista.className = 'estoque'
@@ -152,7 +164,7 @@ export async function cadastrarDoce() {
     const caixaEstoque = document.createElement('div')
     caixaEstoque.className = 'estoque-radio'
 
-    estoques.forEach(function (estoque) {
+    listaEstoque.forEach(function (estoque) {
 
         const linhaRadio = document.createElement('div')
 
@@ -232,11 +244,13 @@ const cadastroDoce = async function () {
 
         const novoDoce = {
             nome: inputNome.value,
+            descricao: inputDescricao.value,
             categoria: categoriaSelecionada,
             sabores: listaSaboresSelecionados,
             preco: inputPreco.value,
             imagem: urlFoto,
-            estoque: estoqueSelecionado
+            estoque: estoqueSelecionado,
+            qtde: inputQtde.value
         }
 
         const dadosValidos = validar(novoDoce)
@@ -268,12 +282,14 @@ const validar = function (novoDoce) {
         alert('Selecione pelo menos um sabor!')
         return false
     }
-    else (novoDoce.preco == undefined || !novoDoce.preco || isNaN(novoDoce.preco) || Number(novoDoce.preco) <= 0); {
+    else if (novoDoce.preco == undefined || !novoDoce.preco || isNaN(novoDoce.preco) || Number(novoDoce.preco) <= 0){
         alert('Insira um preço válido e maior que zero!')
         return false
+    }else{
+        return true
     }
 
-    return true
+    
 }
 
-// carregarItens()
+carregarItens()

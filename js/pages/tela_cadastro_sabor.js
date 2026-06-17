@@ -25,7 +25,7 @@ export function cadastrarSabor() {
     botao_adicionar.textContent = 'CADASTRAR'
     botao_adicionar.id = 'salvar-categoria'
     botao_adicionar.className = 'padronizar-btn'
-    botao_adicionar.onclick = () => cadastrarSabor()
+    botao_adicionar.onclick = () => cadastroSabor()
 
     let botao_voltar = document.createElement('button')
     botao_voltar.textContent = 'CANCELAR'
@@ -49,10 +49,10 @@ export function cadastrarSabor() {
 const cadastroSabor = async function () {
 
     try {
-        let sabores = document.getElementById('nome-produto')
+        let sabores = document.getElementById('nome-produto').value
 
         let salvarSabor = {
-            sabor: sabores.value
+            sabor: sabores
         }
 
         let validarDados = validar(salvarSabor)
@@ -66,7 +66,7 @@ const cadastroSabor = async function () {
 
 
     } catch (error) {
-        console.error(error)
+        
         alert('Erro interno ao tentar cadastrar o sabor.')
     }
 

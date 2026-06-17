@@ -2,12 +2,27 @@
 
 import { renderizarPagina } from "../main.js"
 import { deleteDoce, getCategorias, getSabores, getDoces, deleteCategoria, deleteSabor } from "../methods.js"
-import { doces, categorias, sabores } from '../doce_teste.js';
+// import { doces, categorias, sabores } from '../doce_teste.js';
 import { atualizarDoce} from './tela_atualizar_doce.js'
 import { atualizarCategoria } from "./tela_atualizar_categoria.js";
 import { atualizarSabor } from "./tela_atualizar_sabor.js";
 
+const carregarItens = async function () {
+    try {
+        const listaDoce = await getDoces()
+        const listaSabor = await getSabores()
+        const listaCategoria = await getCategorias()
 
+        if (Array.isArray(listaCategoria) && Array.isArray(listaSabor) && Array.isArray(listaDoce)) {
+
+            criarPreview(listaCategoria, listaSabor, listaDoce)
+        } else {
+            alert("ERRO: Não foram encontrados dados para retornar!!")
+        }
+    } catch (error) {
+        alert("ERRO: AO CARREGAR AS CATEGORIAS E SABORES!!")
+    }
+}
 
 
 const renderizarLinhasTabela = function(listaDeDoces, tbody) {
@@ -82,7 +97,7 @@ const renderizarLinhasTabela = function(listaDeDoces, tbody) {
 }
 
 // Função aonde vou mostrar a tela principal
-export function criarPreview() {
+export function criarPreview(listaCategoria, listaSabor, listaDoce) {
 
 
     const header = document.getElementById('header')
@@ -107,7 +122,7 @@ export function criarPreview() {
     const span_doce_cadastrado = document.createElement('span')
     span_doce_cadastrado.className = 'qtde-cadastrada'
     span_doce_cadastrado.id = 'qtde-cadastrada'
-    span_doce_cadastrado.textContent = `🍭${doces.length}` // Vou mudar este espaço quando a API ficar pronta
+    span_doce_cadastrado.textContent = `🍭${listaDoce.length}` // Vou mudar este espaço quando a API ficar pronta
     card_informacao_doce.append(h3_doce_cadastrado, span_doce_cadastrado)
 
     // Aqui vou deixar armazenado a quantidade de categorias cadastradas
@@ -118,7 +133,7 @@ export function criarPreview() {
     const span_categoria_cadastrado = document.createElement('span')
     span_categoria_cadastrado.className = 'qtde-categoria'
     span_categoria_cadastrado.id = 'qtde-categoria'
-    span_categoria_cadastrado.textContent = `🧁${categorias.length}` // Vou mudar este espaço quando a API ficar pronta
+    span_categoria_cadastrado.textContent = `🧁${listaCategoria.length}` // Vou mudar este espaço quando a API ficar pronta
     card_informacao_categoria.append(h3_categoria_cadastrado, span_categoria_cadastrado)
 
 
@@ -130,7 +145,7 @@ export function criarPreview() {
     const span_sabor_cadastrado = document.createElement('span')
     span_sabor_cadastrado.className = 'qtde-sabor'
     span_sabor_cadastrado.id = 'qtde-sabor'
-    span_sabor_cadastrado.textContent = `🍫${sabores.length}` // Vou mudar este espaço quando a API ficar pronta
+    span_sabor_cadastrado.textContent = `🍫${listaSabor.length}` // Vou mudar este espaço quando a API ficar pronta
     card_informacao_sabor.append(h3_sabor_cadastrado, span_sabor_cadastrado)
 
     container_cards.append(card_informacao_doce, card_informacao_categoria, card_informacao_sabor)
@@ -153,8 +168,8 @@ export function criarPreview() {
 
         // Se o adm limpou o input, 'valorPesquisa' será "" (string vazia)
         // No JavaScript, .includes("") sempre vai acabar retornando true.
-        const docesFiltrados = doces.filter(doce => // aqui eu estou filtrando pelo doce e deixando em letra minuscula
-            doce.nome.toLowerCase().includes(valorPesquisa)
+        const docesFiltrados = doces.filter(listaDoce => // aqui eu estou filtrando pelo doce e deixando em letra minuscula
+            listaDoce.nome.toLowerCase().includes(valorPesquisa)
         );
 
         // Atualiza a tabela: mostra só o pesquisado ou TODOS se estiver vazio
@@ -224,7 +239,7 @@ export function criarPreview() {
     // Aqui é aonde vai estar os itens das tabelas
     const tbody = document.createElement('tbody')
 
-    doces.forEach(function (itemDoce) {
+    listaDoce.forEach(function (itemDoce) {
         const trItens = document.createElement('tr')
         trItens.className = 'itens'
 
@@ -333,7 +348,7 @@ export function criarPreview() {
     ul_gerenciar_categoria.className = 'lista-gerenciar'
 
 
-    categorias.forEach(function (itemCategoria) {
+    listaCategoria.forEach(function (itemCategoria) {
 
         const li_gerenciar_categoria = document.createElement('li')
         li_gerenciar_categoria.className = 'item-lista'
@@ -391,7 +406,7 @@ export function criarPreview() {
     const ul_gerenciar_sabor = document.createElement('ul')
     ul_gerenciar_sabor.className = 'lista-gerenciar'
 
-    sabores.forEach(function(itemSabor){
+    listaSabor.map(function(itemSabor){
         const li_gerenciar_sabor = document.createElement('li')
         li_gerenciar_sabor.className = 'item-lista'
 
@@ -440,3 +455,6 @@ export function criarPreview() {
 
     return main
 }
+
+
+carregarItens
