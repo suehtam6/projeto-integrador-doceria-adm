@@ -3,13 +3,11 @@
 import { renderizarPagina } from "../main.js"
 import { postSabor } from "../methods.js"
 
-
-
 export function cadastrarSabor() {
     let main = document.getElementById('main')
 
     let tituloPagina = document.createElement('h1')
-    tituloPagina.textContent = 'Cadastro do sabor'
+    tituloPagina.textContent = 'Cadastro do Sabor'
     tituloPagina.className = 'tituloPagina'
 
     let container_cadastro = document.createElement('div')
@@ -23,60 +21,50 @@ export function cadastrarSabor() {
 
     let botao_adicionar = document.createElement('button')
     botao_adicionar.textContent = 'CADASTRAR'
-    botao_adicionar.id = 'salvar-categoria'
+    botao_adicionar.id = 'salvar-sabor'
     botao_adicionar.className = 'padronizar-btn'
     botao_adicionar.onclick = () => cadastroSabor()
 
     let botao_voltar = document.createElement('button')
     botao_voltar.textContent = 'CANCELAR'
-    botao_voltar.id = 'cancelar-categoria'
+    botao_voltar.id = 'cancelar-sabor'
     botao_voltar.className = 'padronizar-btn'
     botao_voltar.onclick = () => renderizarPagina('preview')
 
     let caixaBTN = document.createElement('div')
     caixaBTN.className = 'caixa-btn'
-
     caixaBTN.append(botao_adicionar, botao_voltar)
-
 
     container_cadastro.append(tituloPagina, inputNome, caixaBTN)
     main.replaceChildren(container_cadastro)
-
     return main
 }
 
-
 const cadastroSabor = async function () {
-
     try {
-        let sabores = document.getElementById('nome-produto').value
+        let sabor = document.getElementById('nome-produto')
 
         let salvarSabor = {
-            sabor: sabores
+            sabor: sabor.value
         }
 
         let validarDados = validar(salvarSabor)
 
         if (validarDados) {
             await postSabor(salvarSabor)
-            alert('sabor salvo com sucesso!')
-        } else {
-            alert('Erro ao salvar o sabor. Verifique os dados e tente novamente.')
+            alert('Sabor salvo com sucesso!!')
+            renderizarPagina('preview') // ✅ volta para preview após cadastrar
         }
 
-
     } catch (error) {
-        
-        alert('Erro interno ao tentar cadastrar o sabor.')
+        console.log(error)
+        alert('Erro: não foi possível cadastrar o sabor!!')
     }
-
-
-
 }
 
-const validar = async function (sabor) {
-    if (sabor.sabor == undefined || sabor.sabor == null || !isNaN(sabor)) {
-        alert('Erro ao validar o sabor')
+const validar = function (sabor) {
+    if (!sabor.sabor || sabor.sabor.trim() === '') {
+        alert('O nome do sabor é obrigatório!')
         return false
     }
     return true

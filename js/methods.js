@@ -2,24 +2,32 @@
 
 
 
-const URLDOCE       = 'https://backend-honeyducks-1.onrender.com/v1/honeyducks/doceria/doce'
+const URLDOCE       = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyducks/doceria/doce'
 
-const URLSABOR      = 'https://backend-honeyducks-1.onrender.com/v1/honeyducks/doceria/sabor'
+const URLSABOR      = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyducks/doceria/sabor'
 
-const URLCATEGORIA  = 'https://backend-honeyducks-1.onrender.com/v1/honeyducks/doceria/categoria'
+const URLCATEGORIA  = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyducks/doceria/categoria'
 
-const URLESTOQUE    = 'https://backend-honeyducks-1.onrender.com/v1/honeyducks/doceria/status'
+const URLESTOQUE    = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyducks/doceria/status'
 
-const URLADM        = 'https://backend-honeyducks-1.onrender.com/v1/honeyducks/doceria/usuario'
+const URLADM        = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyducks/doceria/usuario'
+
+
+
+
+
+
+
+
 
 
 // Exportando as funções da categoria para serem utilizadas em outros arquivos,
 //  como por exemplo na tela de cadastro de doces, onde preciso pegar as categorias para mostrar para o usuário.    
-
 //Metodos para utilizar na categorias
 export async function getCategorias() {
     const response = await fetch(`${URLCATEGORIA}`)
-    return response.json()
+    const data = await response.json()
+    return data.response.status
 }
 
 export async function getCategoria(id) {
@@ -76,7 +84,8 @@ export async function putCategoria(id, categoria) {
 //Metodos para utilizar no sabor
 export async function getSabores() {
     const response = await fetch(`${URLSABOR}`)
-    return response.json()
+    const data = await response.json()
+    return data.response.status // ✅ campo correto
 }
 
 export async function getSabor(id) {
@@ -132,8 +141,9 @@ export async function putSabor(id, sabor) {
 // Metodos para usar no doce
 export async function getDoces() {
     const response = await fetch(`${URLDOCE}`)
-    return response.json()
-}   
+    const data = await response.json()
+    return data.response.doce
+}
 
 export async function getDoce(id) {
 
@@ -184,10 +194,12 @@ export async function putDoce(id, doce) {
 
 // Metodos para usar no estoque
 
+
 export async function getEstoques() {
     const response = await fetch(`${URLESTOQUE}`)
-    return response.json()
-}   
+    const data = await response.json()
+    return data.response.status 
+}
 
 export async function getEstoque(id) {
 

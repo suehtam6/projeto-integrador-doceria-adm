@@ -1,11 +1,8 @@
 'use strict'
 
 import { renderizarPagina } from "../main.js"
-// import { uploadParaCloudinary } from "../preview_img.js"
-import { getCategorias, getSabores, getDoces, postDoce, getEstoques } from "../methods.js"
-import { categorias, estoques, sabores } from "../doce_teste.js"
+import { getCategorias, getSabores, postDoce, getEstoques } from "../methods.js"
 import { uploadParaCloudinary } from "../cloudinay.js"
-
 
 function preview(input) {
     if (input.files && input.files[0]) {
@@ -13,16 +10,13 @@ function preview(input) {
     }
 }
 
-// Caso alguém for utilizar ou ler esté codígo, aqui é aonde eu vou pegar as listar de categorias e
-//  doces para utilizar no projeto e criar os checkbox
 const carregarItens = async function () {
     try {
-        const listaSabor = await getSabores()
         const listaCategoria = await getCategorias()
+        const listaSabor = await getSabores()
         const listaEstoque = await getEstoques()
 
         if (Array.isArray(listaCategoria) && Array.isArray(listaSabor) && Array.isArray(listaEstoque)) {
-
             cadastrarDoce(listaCategoria, listaSabor, listaEstoque)
         } else {
             alert("ERRO: Não foram encontrados dados para retornar!!")
@@ -32,9 +26,11 @@ const carregarItens = async function () {
     }
 }
 
+export function iniciarCadastroDoce() {
+    carregarItens()
+}
 
-// Aqui eu vou cadastrar os doces
-export async function cadastrarDoce(listaSabor, listaCategoria, listaEstoque) {
+function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
     const main = document.getElementById('main')
     main.replaceChildren()
 
@@ -51,7 +47,13 @@ export async function cadastrarDoce(listaSabor, listaCategoria, listaEstoque) {
     inputNome.type = 'text'
     inputNome.placeholder = 'Escreva o nome do produto'
 
+    const inputDescricao = document.createElement('input')
+    inputDescricao.type = 'text'
+    inputDescricao.placeholder = 'Descreva o produto'
+    inputDescricao.id = 'descricao-produto'
+    inputDescricao.className = 'descricao'
 
+    // Categorias
     const containerCategoria = document.createElement('div')
     containerCategoria.className = 'container-categoria'
 
@@ -62,7 +64,6 @@ export async function cadastrarDoce(listaSabor, listaCategoria, listaEstoque) {
     const divCategoriasLista = document.createElement('div')
     divCategoriasLista.className = 'caixaCategoria'
 
-    // Aqui eu vou estar varrendo a lista das categorias
     listaCategoria.forEach(categoria => {
         const caixaItem = document.createElement('div')
 
@@ -71,33 +72,27 @@ export async function cadastrarDoce(listaSabor, listaCategoria, listaEstoque) {
         radio.type = 'radio'
         radio.name = 'categoria-produto'
         radio.value = categoria.id
-        radio.id = `categoria-${categoria.id}`    // motivo de eu utilizar o `cat` aqui é por que o html daria erro se recebesse apenas o
-        //  id, pois teria o id 1 da categoria e o id 1 do sabor, e poderia acabar dando erro
-        // Fora que fica mais facil para juntar com a label, quando eu estiver utilizando o htmlFor
+        radio.id = `categoria-${categoria.id}`
 
         const label = document.createElement('label')
         label.htmlFor = `categoria-${categoria.id}`
-        label.textContent = categoria.nome
+        label.textContent = categoria.categoria
 
         caixaItem.append(radio, label)
         divCategoriasLista.append(caixaItem)
     })
     containerCategoria.append(divCategoriasLista)
 
-
-
+    // Sabores
     const containerSabor = document.createElement('div')
-
+    containerSabor.className = 'container-sabor'
 
     const tituloSabor = document.createElement('h2')
     tituloSabor.textContent = 'Sabores'
 
     const divSaboresLista = document.createElement('div')
+    divSaboresLista.className = 'caixaSabor'
 
-
-    // Varrendo a lista de sabores para criar os checkbox e uma coisa que eu não acabei falando etapa acima, mas caso você não saiba,
-    //  Eu posso criar ambas as funções escrevendo checkbox sem mais nenhuma palavra para diferenciar, pois elas estão sendo criadas como const e
-    //   elas se iniciam e finalizam neste bloco
     listaSabor.forEach(sabor => {
         const caixaItem = document.createElement('div')
 
@@ -105,25 +100,50 @@ export async function cadastrarDoce(listaSabor, listaCategoria, listaEstoque) {
         checkbox.className = 'checkbox-sabor'
         checkbox.type = 'checkbox'
         checkbox.value = sabor.id
-        checkbox.id = `sabor-${sabor.id}` // Mesmo motivo da categoria, a diferença que nesta etapa eu utilizei o 'sab'
+        checkbox.id = `sabor-${sabor.id}`
 
         const label = document.createElement('label')
         label.htmlFor = `sabor-${sabor.id}`
-        label.textContent = sabor.nome
+        label.textContent = sabor.sabor
 
         caixaItem.append(checkbox, label)
         divSaboresLista.append(caixaItem)
     })
     containerSabor.append(tituloSabor, divSaboresLista)
 
-
-
+    // Preço
     const inputPreco = document.createElement('input')
     inputPreco.className = 'preco-produto'
     inputPreco.type = 'number'
     inputPreco.id = 'preco'
     inputPreco.placeholder = 'Escreva o preço do produto'
 
+   
+    const inputQuantidade = document.createElement('input')
+    inputQuantidade.className = 'quantidade-produto'
+    inputQuantidade.type = 'number'
+    inputQuantidade.id = 'quantidade'
+    inputQuantidade.placeholder = 'Quantidade em estoque'
+    inputQuantidade.min = '0'
+
+    const containerAvaliacao = document.createElement('div')
+    containerAvaliacao.className = 'container-avaliacao'
+
+    const labelAvaliacao = document.createElement('label')
+    labelAvaliacao.textContent = 'Avaliação (0.0 a 5.0): '
+    labelAvaliacao.htmlFor = 'avaliacao'
+
+    const inputAvaliacao = document.createElement('input')
+    inputAvaliacao.id = 'avaliacao'
+    inputAvaliacao.type = 'number'
+    inputAvaliacao.className = 'input-avaliacao'
+    inputAvaliacao.placeholder = 'Ex: 4.5'
+    inputAvaliacao.min = '0'
+    inputAvaliacao.max = '5'
+
+    containerAvaliacao.append(labelAvaliacao, inputAvaliacao)
+
+  
     const divContainer = document.createElement('div')
     divContainer.classList.add('preview-container')
 
@@ -145,27 +165,17 @@ export async function cadastrarDoce(listaSabor, listaCategoria, listaEstoque) {
 
     divContainer.append(inputImage, labelImage, img)
 
-    const div_descricao = document.createElement('div')
-    div_descricao.className = 'div-descricao'
-
-    const inputDescricao = document.createElement('input')
-    inputDescricao.type = 'text'
-    inputDescricao.placeholder = 'Descreva o Produto'
-    inputDescricao.id = 'descricao-produto'
-    inputDescricao.className = 'descricao'
-
-    const div_qtde = document.createElement('div')
-    div_qtde.className = 'div-qtde'
-
-
+    // Estoque
     const divEstoqueLista = document.createElement('div')
     divEstoqueLista.className = 'estoque'
+
+    const tituloEstoque = document.createElement('h2')
+    tituloEstoque.textContent = 'Estoque'
 
     const caixaEstoque = document.createElement('div')
     caixaEstoque.className = 'estoque-radio'
 
     listaEstoque.forEach(function (estoque) {
-
         const linhaRadio = document.createElement('div')
 
         const radio_estoque = document.createElement('input')
@@ -177,18 +187,15 @@ export async function cadastrarDoce(listaSabor, listaCategoria, listaEstoque) {
 
         const labelEstoque = document.createElement('label')
         labelEstoque.htmlFor = `estoque-${estoque.id}`
-        labelEstoque.textContent = estoque.nome
-
+        labelEstoque.textContent = estoque.status
 
         linhaRadio.append(radio_estoque, labelEstoque)
-
-
         caixaEstoque.append(linhaRadio)
     })
 
-    divEstoqueLista.append(caixaEstoque)
+    divEstoqueLista.append(tituloEstoque, caixaEstoque)
 
-
+  
     const botao_adicionar = document.createElement('button')
     botao_adicionar.textContent = 'CADASTRAR'
     botao_adicionar.id = 'salvar-categoria'
@@ -205,61 +212,62 @@ export async function cadastrarDoce(listaSabor, listaCategoria, listaEstoque) {
     caixaBTN.className = 'caixa-btn'
     caixaBTN.append(botao_adicionar, botao_voltar)
 
-    container_cadastro.append(tituloPagina, inputNome, containerCategoria, containerSabor, inputPreco, divContainer, divEstoqueLista, caixaBTN)
-    main.replaceChildren(container_cadastro)
 
+    container_cadastro.append(
+        tituloPagina,
+        inputNome,
+        inputDescricao,
+        containerCategoria,
+        containerSabor,
+        inputPreco,
+        inputQuantidade,     
+        containerAvaliacao,  
+        divContainer,
+        divEstoqueLista,
+        caixaBTN
+    )
+    main.replaceChildren(container_cadastro)
     return main
 }
-
 
 const cadastroDoce = async function () {
     try {
         const inputNome = document.getElementById('nome-produto')
         const inputPreco = document.getElementById('preco')
+        const inputQuantidade = document.getElementById('quantidade') 
+        const inputAvaliacao = document.getElementById('avaliacao')
         const inputImagem = document.getElementById('preview-input')
+        const inputDescricao = document.getElementById('descricao-produto')
 
         const urlFoto = await uploadParaCloudinary(inputImagem.files[0])
 
-        // Captura todos os checkboxes de categoria marcados (:checked) e extrai os valores
-        // Captura apenas o único botão radio que estiver marcado (:checked)
-        // Assim sempre será enviado uma unica categoria
         const categoriaMarcada = document.querySelector('.radio-categoria:checked')
-
-        // Aqui eu verifico se o usuario clicou em alguma categoria, caso ele não tenha clicado em nenhuma
-        // o codigo irá salvar como null e a validação vai pegar e barrar e vai mostrar o alert de que o doce não foi possivel cadastrar por causa da categoria
         const categoriaSelecionada = categoriaMarcada ? categoriaMarcada.value : null
 
-
-        // Aqui será o mesmo caso da categoria
         const estoqueMarcado = document.querySelector('.radio-estoque:checked')
         const estoqueSelecionado = estoqueMarcado ? estoqueMarcado.value : null
 
-        // Captura todos os checkboxes de sabor marcados (:checked) e extrai os valores
-        // Para funcionar os checkbox de multiplas escolhas, pois cada doce pode ter mais do que um sabor, e sem isto não ira
-        // Pois ele captura todos os campos que o usuario apertou
         const saboresMarcados = document.querySelectorAll('.checkbox-sabor:checked')
         const listaSaboresSelecionados = Array.from(saboresMarcados).map(cb => cb.value)
 
-
-
         const novoDoce = {
             nome: inputNome.value,
-            descricao: inputDescricao.value,
-            categoria: categoriaSelecionada,
-            sabores: listaSaboresSelecionados,
-            preco: inputPreco.value,
+            valor: Number(inputPreco.value), 
             imagem: urlFoto,
-            estoque: estoqueSelecionado,
-            qtde: inputQtde.value
+            qtde: Number(inputQuantidade.value),         
+            descricao: inputDescricao.value,
+            avaliacao: inputAvaliacao.value,
+            id_categoria: categoriaSelecionada,
+            id_status: estoqueSelecionado,
+            sabor: listaSaboresSelecionados.map(Number)
         }
 
         const dadosValidos = validar(novoDoce)
 
         if (dadosValidos) {
             await postDoce(novoDoce)
-            alert('Doce salvo com sucesso!')
-        } else {
-            alert('Erro ao salvar o doce. Verifique os dados e tente novamente.')
+            alert('Doce saved com sucesso!')
+            renderizarPagina('preview')
         }
 
     } catch (error) {
@@ -268,28 +276,27 @@ const cadastroDoce = async function () {
     }
 }
 
-
 const validar = function (novoDoce) {
-    if (novoDoce.nome == undefined || !novoDoce.nome || novoDoce.nome.trim() === '' || novoDoce.nome == null) {
+    if (!novoDoce.nome || novoDoce.nome.trim() === '') {
         alert('O nome do produto é obrigatório')
         return false
     }
-    else if (novoDoce.categoria == undefined || !novoDoce.categoria) {
+    if (!novoDoce.id_categoria) {
         alert('Selecione pelo menos uma categoria!')
         return false
     }
-    else if (novoDoce.sabor == undefined || !novoDoce.sabores || novoDoce.sabores.length === 0) {
+    if (!novoDoce.sabor || novoDoce.sabor.length === 0) {
         alert('Selecione pelo menos um sabor!')
         return false
     }
-    else if (novoDoce.preco == undefined || !novoDoce.preco || isNaN(novoDoce.preco) || Number(novoDoce.preco) <= 0){
+    if (!novoDoce.valor || isNaN(novoDoce.valor) || Number(novoDoce.valor) <= 0) {
         alert('Insira um preço válido e maior que zero!')
         return false
-    }else{
-        return true
     }
-
-    
+    // ✨ NOVO: Validação de quantidade (não pode ser vazia ou menor que zero)
+    if (novoDoce.qtde === undefined || isNaN(novoDoce.qtde) || novoDoce.qtde < 0) {
+        alert('Insira uma quantidade válida (maior ou igual a zero)!')
+        return false
+    }
+    return true
 }
-
-carregarItens()

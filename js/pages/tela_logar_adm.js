@@ -1,7 +1,7 @@
 'use strict'
 
 import { renderizarPagina } from "../main.js"
-import { criarPreview } from "./preview.js"
+import { iniciarPreview } from "./preview.js"
     import { cadastroADM } from "./tela_cadastro_adm.js"
 
 
@@ -53,7 +53,7 @@ export function criarLogin(){
     
 
     const button_cadastrar_adm = document.createElement('button')
-    button_cadastrar_adm.onclick = () => renderizarPagina('cadastroADM')
+    button_cadastrar_adm.onclick = () => renderizarPagina('iniciarPreview')
     button_cadastrar_adm.textContent = 'cadastre-se'
 
     div_cadastrar_adm.append(h2_cadastro_adm, button_cadastrar_adm)
@@ -78,7 +78,4 @@ export function criarLogin(){
 
 }
 
-
-const validarCadastro = function(){
-    
-}
+ 

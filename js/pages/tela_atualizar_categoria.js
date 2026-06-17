@@ -19,7 +19,7 @@ export function atualizarCategoria (categoria){
     inputNome.id = 'categoria'
     inputNome.type = 'text'
     inputNome.placeholder = 'Escreva o nome da categoria'
-    inputNome.value = categoria.nome
+    inputNome.value = categoria.categoria
 
     let botao_adicionar = document.createElement('button')
     botao_adicionar.textContent = 'CADASTRAR'
@@ -46,17 +46,18 @@ export function atualizarCategoria (categoria){
 
 const salvarAtualizacaoCategoria = async function(id) {
     try {
-        let categoria = document.getElementById('categoria').value
+        let categoria = document.getElementById('categoria')
 
         let salvarCategoria = {
-            categoria: categoria
+            categoria: categoria.value
         }
     
-        let validarDados = await validar(id, salvarCategoria)
+        let validarDados = await validar(salvarCategoria)
         
         if(validarDados){
             await putCategoria(id, salvarCategoria)
             alert('Categoria salva com sucesso!!')
+            renderizarPagina('preview')
         }else{
             alert('Erro ao salvar a categoria. Verifique os dados e tente novamente.')
         }
@@ -69,7 +70,7 @@ const salvarAtualizacaoCategoria = async function(id) {
 
 const validar = async function (categoria) {
     if(categoria.categoria == undefined || categoria.categoria == null || !isNaN(categoria)){
-        alert('ERRO AO VALIAR A CATEGORIA')
+        alert('ERRO AO VALIDAR A CATEGORIA')
         return false
     }
     return true

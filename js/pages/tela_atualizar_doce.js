@@ -1,9 +1,8 @@
 'use strict'
 
-
 import { renderizarPagina } from "../main.js"
-import { getCategorias, getSabores, putDoce } from "../methods.js" // Supondo que você tenha o putDoce no seu methods
-import { categorias, sabores } from "../doce_teste.js"
+import { getCategorias, getSabores, getEstoques, putDoce } from "../methods.js"
+import { uploadParaCloudinary } from "../cloudinay.js"
 
 function preview(input) {
     if (input.files && input.files[0]) {
@@ -11,95 +10,131 @@ function preview(input) {
     }
 }
 
-// Nova função para renderizar a tela de edição preenchida
 export async function atualizarDoce(doce) {
-    let main = document.getElementById('main')
+    try {
+        const listaCategoria = await getCategorias()
+        const listaSabor = await getSabores()
+        const listaEstoque = await getEstoques()
+
+        if (!Array.isArray(listaCategoria) || !Array.isArray(listaSabor) || !Array.isArray(listaEstoque)) {
+            alert("ERRO: Não foram encontrados dados para retornar!!")
+            return
+        }
+
+        renderizarTelaAtualizar(doce, listaCategoria, listaSabor, listaEstoque)
+
+    } catch (error) {
+        alert("ERRO: AO CARREGAR AS CATEGORIAS E SABORES!!")
+    }
+}
+
+function renderizarTelaAtualizar(doce, listaCategoria, listaSabor, listaEstoque) {
+    const main = document.getElementById('main')
     main.replaceChildren()
 
-    let tituloPagina = document.createElement('h1')
-    tituloPagina.textContent = 'Atualizar produto' // Título alterado
+    const tituloPagina = document.createElement('h1')
+    tituloPagina.textContent = 'Atualizar produto'
     tituloPagina.className = 'tituloPagina'
 
-    let container_cadastro = document.createElement('div')
+    const container_cadastro = document.createElement('div')
     container_cadastro.className = 'container-cadastro'
 
-    let inputNome = document.createElement('input')
+    // Nome
+    const inputNome = document.createElement('input')
     inputNome.className = 'nome-produto'
     inputNome.id = 'nome-produto'
     inputNome.type = 'text'
     inputNome.placeholder = 'Escreva o nome do produto'
-    inputNome.value = doce.nome // Preenche o nome antigo
+    inputNome.value = doce.nome // ✅ preenche com valor atual
 
-    let containerCategoria = document.createElement('div')
+    // Descrição
+    const inputDescricao = document.createElement('input')
+    inputDescricao.type = 'text'
+    inputDescricao.placeholder = 'Descreva o produto'
+    inputDescricao.id = 'descricao-produto'
+    inputDescricao.className = 'descricao'
+    inputDescricao.value = doce.descricao || '' // ✅ preenche com valor atual
+
+    // Categorias
+    const containerCategoria = document.createElement('div')
     containerCategoria.className = 'container-categoria'
 
-    let tituloCategoria = document.createElement('h2')
+    const tituloCategoria = document.createElement('h2')
     tituloCategoria.textContent = 'Categorias'
     containerCategoria.append(tituloCategoria)
 
-    let divCategoriasLista = document.createElement('div')
+    const divCategoriasLista = document.createElement('div')
     divCategoriasLista.className = 'caixaCategoria'
 
-    categorias.forEach(categoria => {
-        let caixaItem = document.createElement('div')
-        caixaItem.className = 'item-radio'
+    listaCategoria.forEach(categoria => {
+        const caixaItem = document.createElement('div')
 
-        let radio = document.createElement('input')
+        const radio = document.createElement('input')
         radio.className = 'radio-categoria'
         radio.type = 'radio'
         radio.name = 'categoria-produto'
         radio.value = categoria.id
-        radio.id = `cat-${categoria.id}`
-        
-        // Verifica se é a categoria atual do doce e marca o radio
-        if (doce.categoria == categoria.id) {
+        radio.id = `categoria-${categoria.id}`
+
+        // ✅ marca a categoria atual do doce
+        if (doce.categoria?.[0]?.id == categoria.id) {
             radio.checked = true
         }
 
-        let label = document.createElement('label')
-        label.htmlFor = `cat-${categoria.id}`
-        label.textContent = categoria.nome
+        const label = document.createElement('label')
+        label.htmlFor = `categoria-${categoria.id}`
+        label.textContent = categoria.categoria
 
         caixaItem.append(radio, label)
         divCategoriasLista.append(caixaItem)
     })
     containerCategoria.append(divCategoriasLista)
 
-    let containerSabor = document.createElement('div')
+    // Sabores
+    const containerSabor = document.createElement('div')
     containerSabor.className = 'container-sabor'
 
-    let tituloSabor = document.createElement('h2')
+    const tituloSabor = document.createElement('h2')
     tituloSabor.textContent = 'Sabores'
 
-    let divSaboresLista = document.createElement('div')
+    const divSaboresLista = document.createElement('div')
     divSaboresLista.className = 'caixaSabor'
 
-    sabores.forEach(sabor => {
-        let caixaItem = document.createElement('div')
-        caixaItem.className = 'item-checkbox'
+    // ✅ pega os ids dos sabores atuais do doce para marcar os checkboxes
+    const saboresAtuais = (doce.sabores || []).map(s => s.id)
 
-        let checkbox = document.createElement('input')
+    listaSabor.forEach(sabor => {
+        const caixaItem = document.createElement('div')
+
+        const checkbox = document.createElement('input')
         checkbox.className = 'checkbox-sabor'
         checkbox.type = 'checkbox'
         checkbox.value = sabor.id
-        checkbox.id = `sab-${sabor.id}`
+        checkbox.id = `sabor-${sabor.id}`
 
-        let label = document.createElement('label')
-        label.htmlFor = `sab-${sabor.id}`
-        label.textContent = sabor.nome
+        // ✅ marca os sabores atuais do doce
+        if (saboresAtuais.includes(sabor.id)) {
+            checkbox.checked = true
+        }
+
+        const label = document.createElement('label')
+        label.htmlFor = `sabor-${sabor.id}`
+        label.textContent = sabor.sabor
 
         caixaItem.append(checkbox, label)
         divSaboresLista.append(caixaItem)
     })
     containerSabor.append(tituloSabor, divSaboresLista)
 
-    let inputPreco = document.createElement('input')
+    // Preço
+    const inputPreco = document.createElement('input')
     inputPreco.className = 'preco-produto'
     inputPreco.type = 'number'
     inputPreco.id = 'preco'
     inputPreco.placeholder = 'Escreva o preço do produto'
-    inputPreco.value = doce.preco // Preenche o preço antigo
+    inputPreco.value = doce.valor || '' // ✅ preenche com valor atual
 
+    // Upload de imagem
     const divContainer = document.createElement('div')
     divContainer.classList.add('preview-container')
 
@@ -117,85 +152,114 @@ export async function atualizarDoce(doce) {
     const img = document.createElement('img')
     img.id = 'preview-image'
     img.className = 'preview-image'
-    // Se o doce já tiver uma imagem salva, mostra ela. Senão, mostra a logo padrão.
-    img.src = doce.imagem || './img/upload.png' 
+    img.src = doce.imagem || './img/upload.png' // ✅ mostra imagem atual
 
     divContainer.append(inputImage, labelImage, img)
 
-    const div_btn_estoque = document.createElement('div')
-    div_btn_estoque.className = 'div-estoque'
-    
+    // Estoque
+    const divEstoqueLista = document.createElement('div')
+    divEstoqueLista.className = 'estoque'
 
-    const button_com_estoque = document.createElement('button')
-    button_com_estoque.className = 'btn-com-estoque'
-    button_com_estoque.textContent = 'Com Estoque'
+    const tituloEstoque = document.createElement('h2')
+    tituloEstoque.textContent = 'Estoque'
 
+    const caixaEstoque = document.createElement('div')
+    caixaEstoque.className = 'estoque-radio'
 
-    const button_sem_estoque = document.createElement('button')
-    button_sem_estoque.className = 'btn-sem-estoque'
-    button_sem_estoque.textContent = 'Sem Estoque'
+    listaEstoque.forEach(function (estoque) {
+        const linhaRadio = document.createElement('div')
 
-    div_btn_estoque.append(button_com_estoque, button_sem_estoque)
+        const radio_estoque = document.createElement('input')
+        radio_estoque.className = 'radio-estoque'
+        radio_estoque.type = 'radio'
+        radio_estoque.name = 'estoque'
+        radio_estoque.value = estoque.id
+        radio_estoque.id = `estoque-${estoque.id}`
 
+        // ✅ marca o estoque atual do doce
+        if (doce.estoque?.[0]?.id == estoque.id) {
+            radio_estoque.checked = true
+        }
 
-    let botao_atualizar = document.createElement('button')
-    botao_atualizar.textContent = 'ATUALIZAR' // Texto alterado
+        const labelEstoque = document.createElement('label')
+        labelEstoque.htmlFor = `estoque-${estoque.id}`
+        labelEstoque.textContent = estoque.status
+
+        linhaRadio.append(radio_estoque, labelEstoque)
+        caixaEstoque.append(linhaRadio)
+    })
+
+    divEstoqueLista.append(tituloEstoque, caixaEstoque)
+
+    // Botões
+    const botao_atualizar = document.createElement('button')
+    botao_atualizar.textContent = 'ATUALIZAR'
     botao_atualizar.id = 'salvar-categoria'
     botao_atualizar.className = 'padronizar-btn'
-    // Passa o ID do doce atual para a função que vai salvar
-    botao_atualizar.onclick = () => salvarAtualizacaoDoce(doce.id) 
+    botao_atualizar.onclick = () => salvarAtualizacaoDoce(doce.id)
 
-    let botao_voltar = document.createElement('button')
+    const botao_voltar = document.createElement('button')
     botao_voltar.textContent = 'CANCELAR'
     botao_voltar.id = 'cancelar-categoria'
     botao_voltar.className = 'padronizar-btn'
     botao_voltar.onclick = () => renderizarPagina('preview')
 
-    let caixaBTN = document.createElement('div')
+    const caixaBTN = document.createElement('div')
     caixaBTN.className = 'caixa-btn'
     caixaBTN.append(botao_atualizar, botao_voltar)
 
-    container_cadastro.append(tituloPagina, inputNome, containerCategoria, containerSabor, inputPreco, divContainer, div_btn_estoque, caixaBTN)
+    container_cadastro.append(
+        tituloPagina,
+        inputNome,
+        inputDescricao,
+        containerCategoria,
+        containerSabor,
+        inputPreco,
+        divContainer,
+        divEstoqueLista,
+        caixaBTN
+    )
     main.replaceChildren(container_cadastro)
-
-    return main
 }
 
-// Função responsável por coletar os novos dados e disparar o PUT para a API
 const salvarAtualizacaoDoce = async function (id) {
     try {
-        let inputNome = document.getElementById('nome-produto')
-        let inputPreco = document.getElementById('preco')
-        let inputImagem = document.getElementById('preview-input')
+        const inputNome = document.getElementById('nome-produto')
+        const inputPreco = document.getElementById('preco')
+        const inputImagem = document.getElementById('preview-input')
+        const inputDescricao = document.getElementById('descricao-produto')
 
-        let categoriaMarcada = document.querySelector('.radio-categoria:checked')
-        let categoriaSelecionada = categoriaMarcada ? categoriaMarcada.value : null
+        // ✅ só faz upload se trocou a imagem, senão mantém a atual
+        let urlFoto = null
+        if (inputImagem.files[0]) {
+            urlFoto = await uploadParaCloudinary(inputImagem.files[0])
+        }
 
-        let saboresMarcados = document.querySelectorAll('.checkbox-sabor:checked')
-        let listaSaboresSelecionados = Array.from(saboresMarcados).map(cb => cb.value)
+        const categoriaMarcada = document.querySelector('.radio-categoria:checked')
+        const categoriaSelecionada = categoriaMarcada ? categoriaMarcada.value : null
 
-                // Aqui será o mesmo caso da categoria
         const estoqueMarcado = document.querySelector('.radio-estoque:checked')
         const estoqueSelecionado = estoqueMarcado ? estoqueMarcado.value : null
 
-        let doceAtualizado = {
+        const saboresMarcados = document.querySelectorAll('.checkbox-sabor:checked')
+        const listaSaboresSelecionados = Array.from(saboresMarcados).map(cb => cb.value)
+
+        const doceAtualizado = {
             nome: inputNome.value,
+            descricao: inputDescricao.value,
             categoria: categoriaSelecionada,
             sabores: listaSaboresSelecionados,
-            preco: inputPreco.value,
-            imagem: inputImagem.files[0] || null, // Caso ele não troque de imagem, mantém vazio ou trata no backend
+            valor: inputPreco.value, // ✅ era preco, campo correto é valor
+            imagem: urlFoto,
             estoque: estoqueSelecionado
-        }   
+        }
 
-        let dadosValidos = validar(doceAtualizado)
+        const dadosValidos = validar(doceAtualizado)
 
         if (dadosValidos) {
-            // Aqui chama a função PUT passando o ID e o objeto atualizado
             await putDoce(id, doceAtualizado)
             alert('Doce atualizado com sucesso!')
-            renderizarPagina('preview') // Redireciona após o sucesso
-        } else {
-            alert('Erro ao atualizar o doce. Verifique os dados e tente novamente.')
+            renderizarPagina('preview')
         }
 
     } catch (error) {
@@ -204,24 +268,22 @@ const salvarAtualizacaoDoce = async function (id) {
     }
 }
 
-// Função de validação corrigida (sem o bug do ponto e vírgula no final)
-const validar = function (novoDoce) {
-    if (novoDoce.nome == undefined || !novoDoce.nome || novoDoce.nome.trim() === '' || novoDoce.nome == null) {
+const validar = function (doce) {
+    if (!doce.nome || doce.nome.trim() === '') {
         alert('O nome do produto é obrigatório')
         return false
     }
-    else if (novoDoce.categoria == undefined || !novoDoce.categoria) {
+    if (!doce.categoria) {
         alert('Selecione pelo menos uma categoria!')
         return false
     }
-    else if (novoDoce.sabor == undefined || !novoDoce.sabores || novoDoce.sabores.length === 0) {
+    if (!doce.sabores || doce.sabores.length === 0) {
         alert('Selecione pelo menos um sabor!')
         return false
     }
-    else (novoDoce.preco == undefined || !novoDoce.preco || isNaN(novoDoce.preco) || Number(novoDoce.preco) <= 0); {
+    if (!doce.valor || isNaN(doce.valor) || Number(doce.valor) <= 0) {
         alert('Insira um preço válido e maior que zero!')
         return false
     }
-
     return true
 }

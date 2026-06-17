@@ -2,43 +2,40 @@
 
 import { cadastrarCategoria } from "./pages/tela_cadastro_categoria.js"
 import { cadastrarSabor } from "./pages/tela_cadastro_sabor.js"
-import { cadastrarDoce } from "./pages/telas_cadastro_doce.js"
-import { criarPreview } from "./pages/preview.js"
+import { iniciarCadastroDoce } from "./pages/telas_cadastro_doce.js"
+import { iniciarPreview } from "./pages/preview.js"
 import { cadastroADM } from "./pages/tela_cadastro_adm.js"
 import { criarLogin } from "./pages/tela_logar_adm.js"
 
 const paginas = {
-    preview:{
+    preview: {
         titulo: 'TELA PRINCIPAL',
-        renderizar: criarPreview
+        renderizar: iniciarPreview
     },
-    categoria:{
+    categoria: {
         titulo: 'CRIAR CATEGORIAS',
         renderizar: cadastrarCategoria
     },
-    sabor:{
+    sabor: {
         titulo: 'CRIAR SABOR',
         renderizar: cadastrarSabor
     },
-    doce:{
+    doce: {
         titulo: 'CRIAR DOCE',
-        renderizar: cadastrarDoce
+        renderizar: iniciarCadastroDoce
     },
-    cadastroADM:{
+    cadastroADM: {
         titulo: 'CADASTRAR ADM',
         renderizar: cadastroADM
     },
-    criarLogin:{
+    criarLogin: {
         titulo: 'LOGAR',
         renderizar: criarLogin
     }
 }
 
-export function renderizarPagina(cadastro){
-    const pagina = paginas[cadastro].renderizar()
-    document.getElementById('main').replaceChild(pagina)
-}   
-
+export function renderizarPagina(cadastro) {
+    paginas[cadastro].renderizar()
+}
 
 renderizarPagina('criarLogin')
-
