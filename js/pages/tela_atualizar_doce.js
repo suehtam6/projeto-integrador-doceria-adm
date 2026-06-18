@@ -28,7 +28,8 @@ export async function atualizarDoce(doce) {
     }
 }
 
-function renderizarTelaAtualizar(doce, listaCategoria, listaSabor, listaEstoque) {
+const renderizarTelaAtualizar = async function(doce, listaCategoria, listaSabor, listaEstoque) {
+    
     const main = document.getElementById('main')
     main.replaceChildren()
 
@@ -39,23 +40,23 @@ function renderizarTelaAtualizar(doce, listaCategoria, listaSabor, listaEstoque)
     const container_cadastro = document.createElement('div')
     container_cadastro.className = 'container-cadastro'
 
-    // Nome
+
     const inputNome = document.createElement('input')
     inputNome.className = 'nome-produto'
     inputNome.id = 'nome-produto'
     inputNome.type = 'text'
     inputNome.placeholder = 'Escreva o nome do produto'
-    inputNome.value = doce.nome // ✅ preenche com valor atual
+    inputNome.value = doce.nome 
 
-    // Descrição
+
     const inputDescricao = document.createElement('input')
     inputDescricao.type = 'text'
     inputDescricao.placeholder = 'Descreva o produto'
     inputDescricao.id = 'descricao-produto'
     inputDescricao.className = 'descricao'
-    inputDescricao.value = doce.descricao || '' // ✅ preenche com valor atual
+    inputDescricao.value = doce.descricao || '' 
 
-    // Categorias
+    
     const containerCategoria = document.createElement('div')
     containerCategoria.className = 'container-categoria'
 
@@ -66,6 +67,7 @@ function renderizarTelaAtualizar(doce, listaCategoria, listaSabor, listaEstoque)
     const divCategoriasLista = document.createElement('div')
     divCategoriasLista.className = 'caixaCategoria'
 
+    
     listaCategoria.forEach(categoria => {
         const caixaItem = document.createElement('div')
 
@@ -76,8 +78,7 @@ function renderizarTelaAtualizar(doce, listaCategoria, listaSabor, listaEstoque)
         radio.value = categoria.id
         radio.id = `categoria-${categoria.id}`
 
-        // ✅ marca a categoria atual do doce
-        if (doce.categoria?.[0]?.id == categoria.id) {
+        if (doce.categoria[0].id == categoria.id) {
             radio.checked = true
         }
 
@@ -90,7 +91,7 @@ function renderizarTelaAtualizar(doce, listaCategoria, listaSabor, listaEstoque)
     })
     containerCategoria.append(divCategoriasLista)
 
-    // Sabores
+    
     const containerSabor = document.createElement('div')
     containerSabor.className = 'container-sabor'
 
@@ -100,7 +101,6 @@ function renderizarTelaAtualizar(doce, listaCategoria, listaSabor, listaEstoque)
     const divSaboresLista = document.createElement('div')
     divSaboresLista.className = 'caixaSabor'
 
-    // ✅ pega os ids dos sabores atuais do doce para marcar os checkboxes
     const saboresAtuais = (doce.sabores || []).map(s => s.id)
 
     listaSabor.forEach(sabor => {
@@ -111,8 +111,8 @@ function renderizarTelaAtualizar(doce, listaCategoria, listaSabor, listaEstoque)
         checkbox.type = 'checkbox'
         checkbox.value = sabor.id
         checkbox.id = `sabor-${sabor.id}`
+        checkbox.querySelectorAll('.checkbox-sabor:checked')
 
-        // ✅ marca os sabores atuais do doce
         if (saboresAtuais.includes(sabor.id)) {
             checkbox.checked = true
         }
@@ -126,15 +126,36 @@ function renderizarTelaAtualizar(doce, listaCategoria, listaSabor, listaEstoque)
     })
     containerSabor.append(tituloSabor, divSaboresLista)
 
-    // Preço
     const inputPreco = document.createElement('input')
     inputPreco.className = 'preco-produto'
     inputPreco.type = 'number'
     inputPreco.id = 'preco'
     inputPreco.placeholder = 'Escreva o preço do produto'
-    inputPreco.value = doce.valor || '' // ✅ preenche com valor atual
+    inputPreco.value = doce.valor
 
-    // Upload de imagem
+
+    const inputQuantidade = document.createElement('input')
+    inputQuantidade.className = 'quantidade-produto'
+    inputQuantidade.type = 'number'
+    inputQuantidade.id = 'quantidade'
+    inputQuantidade.placeholder = 'Quantidade em estoque'
+
+    const containerAvaliacao = document.createElement('div')
+    containerAvaliacao.className = 'container-avaliacao'
+
+    const labelAvaliacao = document.createElement('label')
+    labelAvaliacao.textContent = 'Avaliação: '
+    labelAvaliacao.htmlFor = 'avaliacao'
+
+    const inputAvaliacao = document.createElement('input')
+    inputAvaliacao.id = 'avaliacao'
+    inputAvaliacao.type = 'number'
+    inputAvaliacao.className = 'input-avaliacao'
+    inputAvaliacao.placeholder = 'Ex: 4.5'
+
+    containerAvaliacao.append(labelAvaliacao, inputAvaliacao)
+
+
     const divContainer = document.createElement('div')
     divContainer.classList.add('preview-container')
 
@@ -152,11 +173,11 @@ function renderizarTelaAtualizar(doce, listaCategoria, listaSabor, listaEstoque)
     const img = document.createElement('img')
     img.id = 'preview-image'
     img.className = 'preview-image'
-    img.src = doce.imagem || './img/upload.png' // ✅ mostra imagem atual
+    img.src = doce.imagem || './img/upload.png'
 
     divContainer.append(inputImage, labelImage, img)
 
-    // Estoque
+ 
     const divEstoqueLista = document.createElement('div')
     divEstoqueLista.className = 'estoque'
 
@@ -176,7 +197,7 @@ function renderizarTelaAtualizar(doce, listaCategoria, listaSabor, listaEstoque)
         radio_estoque.value = estoque.id
         radio_estoque.id = `estoque-${estoque.id}`
 
-        // ✅ marca o estoque atual do doce
+  
         if (doce.estoque?.[0]?.id == estoque.id) {
             radio_estoque.checked = true
         }
@@ -191,7 +212,7 @@ function renderizarTelaAtualizar(doce, listaCategoria, listaSabor, listaEstoque)
 
     divEstoqueLista.append(tituloEstoque, caixaEstoque)
 
-    // Botões
+
     const botao_atualizar = document.createElement('button')
     botao_atualizar.textContent = 'ATUALIZAR'
     botao_atualizar.id = 'salvar-categoria'
@@ -215,6 +236,8 @@ function renderizarTelaAtualizar(doce, listaCategoria, listaSabor, listaEstoque)
         containerCategoria,
         containerSabor,
         inputPreco,
+        inputQuantidade,     
+        containerAvaliacao,  
         divContainer,
         divEstoqueLista,
         caixaBTN
@@ -226,14 +249,12 @@ const salvarAtualizacaoDoce = async function (id) {
     try {
         const inputNome = document.getElementById('nome-produto')
         const inputPreco = document.getElementById('preco')
+        const inputQuantidade = document.getElementById('quantidade') 
+        const inputAvaliacao = document.getElementById('avaliacao')
         const inputImagem = document.getElementById('preview-input')
         const inputDescricao = document.getElementById('descricao-produto')
 
-        // ✅ só faz upload se trocou a imagem, senão mantém a atual
-        let urlFoto = null
-        if (inputImagem.files[0]) {
-            urlFoto = await uploadParaCloudinary(inputImagem.files[0])
-        }
+        const urlFoto = await uploadParaCloudinary(inputImagem.files[0])
 
         const categoriaMarcada = document.querySelector('.radio-categoria:checked')
         const categoriaSelecionada = categoriaMarcada ? categoriaMarcada.value : null
@@ -244,20 +265,23 @@ const salvarAtualizacaoDoce = async function (id) {
         const saboresMarcados = document.querySelectorAll('.checkbox-sabor:checked')
         const listaSaboresSelecionados = Array.from(saboresMarcados).map(cb => cb.value)
 
-        const doceAtualizado = {
+        const novoDoce = {
             nome: inputNome.value,
-            descricao: inputDescricao.value,
-            categoria: categoriaSelecionada,
-            sabores: listaSaboresSelecionados,
-            valor: inputPreco.value, // ✅ era preco, campo correto é valor
+            valor: Number(inputPreco.value), 
             imagem: urlFoto,
-            estoque: estoqueSelecionado
+            qtde: Number(inputQuantidade.value),         
+            descricao: inputDescricao.value,
+            avaliacao: Number(inputAvaliacao.value),
+            id_categoria: Number(categoriaSelecionada),
+            id_status: Number(estoqueSelecionado),
+            sabor: listaSaboresSelecionados.map(id => ({ id: Number(id) })) 
+
         }
 
-        const dadosValidos = validar(doceAtualizado)
+        const dadosValidos = await validar(novoDoce)
 
         if (dadosValidos) {
-            await putDoce(id, doceAtualizado)
+            await putDoce(id, novoDoce)
             alert('Doce atualizado com sucesso!')
             renderizarPagina('preview')
         }
@@ -268,7 +292,7 @@ const salvarAtualizacaoDoce = async function (id) {
     }
 }
 
-const validar = function (doce) {
+const validar = async function (doce) {
     if (!doce.nome || doce.nome.trim() === '') {
         alert('O nome do produto é obrigatório')
         return false
@@ -277,7 +301,7 @@ const validar = function (doce) {
         alert('Selecione pelo menos uma categoria!')
         return false
     }
-    if (!doce.sabores || doce.sabores.length === 0) {
+    if (!doce.sabor || doce.sabor.length === 0) {
         alert('Selecione pelo menos um sabor!')
         return false
     }

@@ -22,7 +22,6 @@ const carregarItens = async function () {
     }
 }
 
-// ✅ Função exportada sem parâmetros para o main.js chamar
 export function iniciarPreview() {
     carregarItens()
 }

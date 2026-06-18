@@ -53,7 +53,7 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
     inputDescricao.id = 'descricao-produto'
     inputDescricao.className = 'descricao'
 
-    // Categorias
+ 
     const containerCategoria = document.createElement('div')
     containerCategoria.className = 'container-categoria'
 
@@ -83,7 +83,7 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
     })
     containerCategoria.append(divCategoriasLista)
 
-    // Sabores
+
     const containerSabor = document.createElement('div')
     containerSabor.className = 'container-sabor'
 
@@ -111,7 +111,6 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
     })
     containerSabor.append(tituloSabor, divSaboresLista)
 
-    // Preço
     const inputPreco = document.createElement('input')
     inputPreco.className = 'preco-produto'
     inputPreco.type = 'number'
@@ -124,7 +123,6 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
     inputQuantidade.type = 'number'
     inputQuantidade.id = 'quantidade'
     inputQuantidade.placeholder = 'Quantidade em estoque'
-    inputQuantidade.min = '0'
 
     const containerAvaliacao = document.createElement('div')
     containerAvaliacao.className = 'container-avaliacao'
@@ -138,8 +136,6 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
     inputAvaliacao.type = 'number'
     inputAvaliacao.className = 'input-avaliacao'
     inputAvaliacao.placeholder = 'Ex: 4.5'
-    inputAvaliacao.min = '0'
-    inputAvaliacao.max = '5'
 
     containerAvaliacao.append(labelAvaliacao, inputAvaliacao)
 
@@ -165,7 +161,7 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
 
     divContainer.append(inputImage, labelImage, img)
 
-    // Estoque
+
     const divEstoqueLista = document.createElement('div')
     divEstoqueLista.className = 'estoque'
 
