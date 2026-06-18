@@ -49,6 +49,7 @@ const renderizarLinhasTabela = function (listaDoces, tbody) {
         tdCategoria.className = 'categoria-td'
         tdCategoria.textContent = itemDoce.categoria?.[0]?.categoria ?? 'Sem categoria'
 
+
         const tdPreco = document.createElement('td')
         tdPreco.className = 'preco'
         tdPreco.textContent = `R$ ${itemDoce.valor}`
@@ -184,6 +185,7 @@ function criarPreview(listaCategoria, listaSabor, listaDoce) {
     const thCategoria = document.createElement('th')
     thCategoria.scope = 'col'
     thCategoria.textContent = 'Categoria'
+
 
     const thPreco = document.createElement('th')
     thPreco.scope = 'col'

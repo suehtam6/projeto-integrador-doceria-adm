@@ -2,15 +2,15 @@
 
 
 
-const URLDOCE       = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyducks/doceria/doce'
+const URLDOCE       = 'http://localhost:7070/v1/honeyducks/doceria/doce'
 
-const URLSABOR      = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyducks/doceria/sabor'
+const URLSABOR      = 'http://localhost:7070/v1/honeyducks/doceria/sabor'
 
-const URLCATEGORIA  = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyducks/doceria/categoria'
+const URLCATEGORIA  = 'http://localhost:7070/v1/honeyducks/doceria/categoria'
 
-const URLESTOQUE    = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyducks/doceria/status'
+const URLESTOQUE    = 'http://localhost:7070/v1/honeyducks/doceria/status'
 
-const URLADM        = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyducks/doceria/usuario'
+const URLADM        = 'http://localhost:7070/v1/honeyducks/doceria/usuario'
 
 
 
