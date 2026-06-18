@@ -256,10 +256,10 @@ const cadastroDoce = async function () {
             imagem: urlFoto,
             qtde: Number(inputQuantidade.value),         
             descricao: inputDescricao.value,
-            avaliacao: inputAvaliacao.value,
-            id_categoria: categoriaSelecionada,
-            id_status: estoqueSelecionado,
-            sabor: listaSaboresSelecionados.map(Number)
+            avaliacao: Number(inputAvaliacao.value),
+            id_categoria: Number(categoriaSelecionada),
+            id_status: Number(estoqueSelecionado),
+            sabor: listaSaboresSelecionados.map(id => ({ id: Number(id) }))
         }
 
         const dadosValidos = validar(novoDoce)
