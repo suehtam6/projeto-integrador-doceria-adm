@@ -14,7 +14,6 @@ export function cadastroADM(){
     header.replaceChildren()
     main.replaceChildren()
 
-    body.classList.remove = 'padding'
     
 
 

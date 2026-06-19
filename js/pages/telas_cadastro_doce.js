@@ -53,7 +53,6 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
     inputDescricao.id = 'descricao-produto'
     inputDescricao.className = 'descricao'
 
- 
     const containerCategoria = document.createElement('div')
     containerCategoria.className = 'container-categoria'
 
@@ -82,6 +81,8 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
         divCategoriasLista.append(caixaItem)
     })
     containerCategoria.append(divCategoriasLista)
+
+
 
 
     const containerSabor = document.createElement('div')
@@ -262,7 +263,7 @@ const cadastroDoce = async function () {
 
         if (dadosValidos) {
             await postDoce(novoDoce)
-            alert('Doce saved com sucesso!')
+            alert('Doce salvo com sucesso!')
             renderizarPagina('preview')
         }
 
@@ -273,23 +274,22 @@ const cadastroDoce = async function () {
 }
 
 const validar = function (novoDoce) {
-    if (!novoDoce.nome || novoDoce.nome.trim() === '') {
+    if (novoDoce.nome === undefined || novoDoce.nome.trim() === '') {
         alert('O nome do produto é obrigatório')
         return false
     }
-    if (!novoDoce.id_categoria) {
+    if (novoDoce.id_categoria === undefined) {
         alert('Selecione pelo menos uma categoria!')
         return false
     }
-    if (!novoDoce.sabor || novoDoce.sabor.length === 0) {
+    if (novoDoce.sabor === undefined || novoDoce.sabor.length === 0) {
         alert('Selecione pelo menos um sabor!')
         return false
     }
-    if (!novoDoce.valor || isNaN(novoDoce.valor) || Number(novoDoce.valor) <= 0) {
+    if (novoDoce.valor === undefined || isNaN(novoDoce.valor) || Number(novoDoce.valor) <= 0) {
         alert('Insira um preço válido e maior que zero!')
         return false
     }
-    // ✨ NOVO: Validação de quantidade (não pode ser vazia ou menor que zero)
     if (novoDoce.qtde === undefined || isNaN(novoDoce.qtde) || novoDoce.qtde < 0) {
         alert('Insira uma quantidade válida (maior ou igual a zero)!')
         return false
