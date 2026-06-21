@@ -63,8 +63,9 @@ function atualizarEstrelas(inputAvaliacao, spanEstrelas) {
 
 const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, listaEstoque) {
 
-        const style = document.getElementById('style')
-        style.href = './css/doce.css'
+    const style = document.getElementById('style')
+    style.href = './css/doce.css'
+
 
     const main = document.getElementById('main')
     main.replaceChildren()
@@ -79,7 +80,6 @@ const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, list
 
     const colunaForm = document.createElement('div')
     colunaForm.className = 'cadastro-grid'
-
 
     const cardInfo = document.createElement('div')
     cardInfo.className = 'cadastro-card'
@@ -106,7 +106,6 @@ const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, list
         criarGrupoInput('Nome do produto', inputNome),
         criarGrupoInput('Descrição', inputDescricao)
     )
-
 
     const cardClassificacao = document.createElement('div')
     cardClassificacao.className = 'cadastro-card'
@@ -147,7 +146,7 @@ const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, list
     const chipsSabor = document.createElement('div')
     chipsSabor.className = 'chip-group'
 
-    const saboresAtuais = (doce.sabores || []).map(s => s.id)
+    const saboresAtuais = (doce.sabor?.doce_sabor || []).map(s => s.sabor)
 
     listaSabor.forEach(sabor => {
         const checkbox = document.createElement('input')
@@ -156,7 +155,7 @@ const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, list
         checkbox.value = sabor.id
         checkbox.id = `sabor-${sabor.id}`
 
-        if (saboresAtuais.includes(sabor.id)) {
+        if (saboresAtuais.includes(sabor.sabor)) {
             checkbox.checked = true
         }
 
@@ -183,14 +182,14 @@ const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, list
     inputPreco.id = 'preco'
     inputPreco.placeholder = '0,00'
     inputPreco.step = '0.01'
-    inputPreco.value = doce.valor ?? ''
+    inputPreco.value = doce.valor 
 
     const inputQuantidade = document.createElement('input')
     inputQuantidade.className = 'quantidade-produto'
     inputQuantidade.type = 'number'
     inputQuantidade.id = 'quantidade'
     inputQuantidade.placeholder = 'Ex: 20'
-    inputQuantidade.value = doce.qtde ?? ''
+    inputQuantidade.value = doce.qtde 
 
     linhaPreco.append(
         criarGrupoInput('Preço (R$)', inputPreco),
@@ -212,7 +211,7 @@ const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, list
         radio_estoque.value = estoque.id
         radio_estoque.id = `estoque-${estoque.id}`
 
-        if (doce.estoque?.[0]?.id == estoque.id) {
+        if (doce.status?.[0]?.id == estoque.id) {
             radio_estoque.checked = true
         }
 
@@ -235,10 +234,7 @@ const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, list
     inputAvaliacao.type = 'number'
     inputAvaliacao.className = 'input-avaliacao'
     inputAvaliacao.placeholder = 'Ex: 4.5'
-    inputAvaliacao.min = '0'
-    inputAvaliacao.max = '5'
-    inputAvaliacao.step = '0.1'
-    inputAvaliacao.value = doce.avaliacao ?? ''
+    inputAvaliacao.value = doce.avaliacao
 
     const estrelasAvaliacao = document.createElement('span')
     estrelasAvaliacao.id = 'estrelas-avaliacao'
@@ -251,6 +247,7 @@ const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, list
     atualizarEstrelas(inputAvaliacao, estrelasAvaliacao)
 
     cardPreco.append(tituloPreco, linhaPreco, grupoEstoque, containerAvaliacao)
+
 
     const cardImagem = document.createElement('div')
     cardImagem.className = 'cadastro-card'
@@ -320,7 +317,6 @@ const salvarAtualizacaoDoce = async function (doce) {
         const inputAvaliacao = document.getElementById('avaliacao')
         const inputImagem = document.getElementById('preview-input')
         const inputDescricao = document.getElementById('descricao-produto')
-
 
         let urlFoto = doce.imagem
         if (inputImagem.files && inputImagem.files[0]) {
