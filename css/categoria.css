@@ -1,0 +1,94 @@
+body {
+    padding: 40px;
+    overflow-x: hidden;
+    background-color: #F2D6D3;
+    font-family: sans-serif;
+    color: #4A1521;
+}
+
+.padding-body {
+    padding: 40px;
+}
+
+
+
+.tituloPagina {
+    font-size: 30px;
+    font-weight: 700;
+    color: #8A2535;
+    margin-bottom: 24px;
+}
+
+.container-cadastro {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.nome-produto {
+    color: #4A1521;
+    font-size: 15px;
+    font-family: inherit;
+    border: 1px solid #F0D9D8;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    width: 100%;
+    max-width: 500px;
+    height: 46px;
+    padding: 0 14px;
+}
+
+.nome-produto::placeholder {
+    color: #C78E89;
+}
+
+.nome-produto:focus {
+    outline: none;
+    border-color: #A64452;
+    box-shadow: 0 0 0 3px rgba(166, 68, 82, 0.12);
+}
+
+.caixa-btn {
+    display: flex;
+    justify-content: flex-start;
+    gap: 14px;
+    width: 100%;
+}
+
+.padronizar-btn {
+    width: 200px;
+    height: 48px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: transform 0.1s ease, opacity 0.15s ease;
+    color: #FFF6F5;
+    background-color: #A64452;
+}
+
+.padronizar-btn:hover {
+    opacity: 0.92;
+}
+
+.padronizar-btn:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 900px) {
+    .caixa-btn {
+        flex-direction: column-reverse;
+    }
+    .padronizar-btn {
+        width: 100%;
+    }
+    .nome-produto {
+        max-width: 100%;
+    }
+}

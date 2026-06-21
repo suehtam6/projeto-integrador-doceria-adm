@@ -5,6 +5,9 @@ import { postCategoria, putCategoria } from "../methods.js"
 
 
 export function atualizarCategoria (categoria){
+    const style = document.getElementById('style')
+    style.href = './css/categoria.css'
+
     let main = document.getElementById('main')
 
     let tituloPagina = document.createElement('h1')

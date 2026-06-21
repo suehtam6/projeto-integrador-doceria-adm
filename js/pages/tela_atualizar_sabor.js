@@ -6,6 +6,9 @@ import { postSabor, putSabor } from "../methods.js"
 
 
 export function atualizarSabor(sabor) {
+    const style = document.getElementById('style')
+    style.href = './css/sabor.css'
+
     let main = document.getElementById('main')
 
     let tituloPagina = document.createElement('h1')

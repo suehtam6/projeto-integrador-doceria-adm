@@ -28,8 +28,44 @@ export async function atualizarDoce(doce) {
     }
 }
 
-const renderizarTelaAtualizar = async function(doce, listaCategoria, listaSabor, listaEstoque) {
-    
+
+
+function criarGrupoInput(rotulo, inputEl) {
+    const grupo = document.createElement('div')
+    grupo.className = 'input-group'
+
+    const label = document.createElement('label')
+    label.textContent = rotulo
+    if (inputEl.id) label.htmlFor = inputEl.id
+
+    grupo.append(label, inputEl)
+    return grupo
+}
+
+function criarChip(inputEl, textoLabel) {
+    const chip = document.createElement('div')
+    chip.className = 'chip-item'
+
+    const label = document.createElement('label')
+    label.htmlFor = inputEl.id
+    label.className = 'chip-label'
+    label.textContent = textoLabel
+
+    chip.append(inputEl, label)
+    return chip
+}
+
+function atualizarEstrelas(inputAvaliacao, spanEstrelas) {
+    const nota = Number(inputAvaliacao.value) || 0
+    const notaArredondada = Math.max(0, Math.min(5, Math.round(nota)))
+    spanEstrelas.textContent = '★'.repeat(notaArredondada) + '☆'.repeat(5 - notaArredondada)
+}
+
+const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, listaEstoque) {
+
+        const style = document.getElementById('style')
+        style.href = './css/doce.css'
+
     const main = document.getElementById('main')
     main.replaceChildren()
 
@@ -41,36 +77,54 @@ const renderizarTelaAtualizar = async function(doce, listaCategoria, listaSabor,
     container_cadastro.className = 'container-cadastro'
 
 
+    const colunaForm = document.createElement('div')
+    colunaForm.className = 'cadastro-grid'
+
+
+    const cardInfo = document.createElement('div')
+    cardInfo.className = 'cadastro-card'
+
+    const tituloInfo = document.createElement('h2')
+    tituloInfo.textContent = 'Informações básicas'
+    tituloInfo.className = 'cadastro-card-titulo'
+
     const inputNome = document.createElement('input')
     inputNome.className = 'nome-produto'
     inputNome.id = 'nome-produto'
     inputNome.type = 'text'
-    inputNome.placeholder = 'Escreva o nome do produto'
-    inputNome.value = doce.nome 
+    inputNome.placeholder = 'Ex: Sortido de Brigadeiro'
+    inputNome.value = doce.nome || ''
 
-
-    const inputDescricao = document.createElement('input')
-    inputDescricao.type = 'text'
-    inputDescricao.placeholder = 'Descreva o produto'
+    const inputDescricao = document.createElement('textarea')
     inputDescricao.id = 'descricao-produto'
     inputDescricao.className = 'descricao'
-    inputDescricao.value = doce.descricao || '' 
+    inputDescricao.placeholder = 'Conte o que torna esse doce especial...'
+    inputDescricao.value = doce.descricao || ''
 
-    
-    const containerCategoria = document.createElement('div')
-    containerCategoria.className = 'container-categoria'
+    cardInfo.append(
+        tituloInfo,
+        criarGrupoInput('Nome do produto', inputNome),
+        criarGrupoInput('Descrição', inputDescricao)
+    )
 
-    const tituloCategoria = document.createElement('h2')
-    tituloCategoria.textContent = 'Categorias'
-    containerCategoria.append(tituloCategoria)
 
-    const divCategoriasLista = document.createElement('div')
-    divCategoriasLista.className = 'caixaCategoria'
+    const cardClassificacao = document.createElement('div')
+    cardClassificacao.className = 'cadastro-card'
 
-    
+    const tituloClassificacao = document.createElement('h2')
+    tituloClassificacao.textContent = 'Categoria e sabores'
+    tituloClassificacao.className = 'cadastro-card-titulo'
+
+    const grupoCategoria = document.createElement('div')
+    grupoCategoria.className = 'input-group'
+    const labelCategoria = document.createElement('label')
+    labelCategoria.textContent = 'Categoria'
+    const chipsCategoria = document.createElement('div')
+    chipsCategoria.className = 'chip-group'
+
+    const categoriaAtualId = doce.categoria?.[0]?.id
+
     listaCategoria.forEach(categoria => {
-        const caixaItem = document.createElement('div')
-
         const radio = document.createElement('input')
         radio.className = 'radio-categoria'
         radio.type = 'radio'
@@ -78,83 +132,132 @@ const renderizarTelaAtualizar = async function(doce, listaCategoria, listaSabor,
         radio.value = categoria.id
         radio.id = `categoria-${categoria.id}`
 
-        if (doce.categoria[0].id == categoria.id) {
+        if (categoriaAtualId == categoria.id) {
             radio.checked = true
         }
 
-        const label = document.createElement('label')
-        label.htmlFor = `categoria-${categoria.id}`
-        label.textContent = categoria.categoria
-
-        caixaItem.append(radio, label)
-        divCategoriasLista.append(caixaItem)
+        chipsCategoria.append(criarChip(radio, categoria.categoria))
     })
-    containerCategoria.append(divCategoriasLista)
+    grupoCategoria.append(labelCategoria, chipsCategoria)
 
-    
-    const containerSabor = document.createElement('div')
-    containerSabor.className = 'container-sabor'
-
-    const tituloSabor = document.createElement('h2')
-    tituloSabor.textContent = 'Sabores'
-
-    const divSaboresLista = document.createElement('div')
-    divSaboresLista.className = 'caixaSabor'
+    const grupoSabor = document.createElement('div')
+    grupoSabor.className = 'input-group'
+    const labelSabor = document.createElement('label')
+    labelSabor.textContent = 'Sabores'
+    const chipsSabor = document.createElement('div')
+    chipsSabor.className = 'chip-group'
 
     const saboresAtuais = (doce.sabores || []).map(s => s.id)
 
     listaSabor.forEach(sabor => {
-        const caixaItem = document.createElement('div')
-
         const checkbox = document.createElement('input')
         checkbox.className = 'checkbox-sabor'
         checkbox.type = 'checkbox'
         checkbox.value = sabor.id
         checkbox.id = `sabor-${sabor.id}`
-        checkbox.querySelectorAll('.checkbox-sabor:checked')
 
         if (saboresAtuais.includes(sabor.id)) {
             checkbox.checked = true
         }
 
-        const label = document.createElement('label')
-        label.htmlFor = `sabor-${sabor.id}`
-        label.textContent = sabor.sabor
-
-        caixaItem.append(checkbox, label)
-        divSaboresLista.append(caixaItem)
+        chipsSabor.append(criarChip(checkbox, sabor.sabor))
     })
-    containerSabor.append(tituloSabor, divSaboresLista)
+    grupoSabor.append(labelSabor, chipsSabor)
+
+    cardClassificacao.append(tituloClassificacao, grupoCategoria, grupoSabor)
+
+
+    const cardPreco = document.createElement('div')
+    cardPreco.className = 'cadastro-card'
+
+    const tituloPreco = document.createElement('h2')
+    tituloPreco.textContent = 'Preço e estoque'
+    tituloPreco.className = 'cadastro-card-titulo'
+
+    const linhaPreco = document.createElement('div')
+    linhaPreco.className = 'linha-dupla'
 
     const inputPreco = document.createElement('input')
     inputPreco.className = 'preco-produto'
     inputPreco.type = 'number'
     inputPreco.id = 'preco'
-    inputPreco.placeholder = 'Escreva o preço do produto'
-    inputPreco.value = doce.valor
-
+    inputPreco.placeholder = '0,00'
+    inputPreco.step = '0.01'
+    inputPreco.value = doce.valor ?? ''
 
     const inputQuantidade = document.createElement('input')
     inputQuantidade.className = 'quantidade-produto'
     inputQuantidade.type = 'number'
     inputQuantidade.id = 'quantidade'
-    inputQuantidade.placeholder = 'Quantidade em estoque'
+    inputQuantidade.placeholder = 'Ex: 20'
+    inputQuantidade.value = doce.qtde ?? ''
+
+    linhaPreco.append(
+        criarGrupoInput('Preço (R$)', inputPreco),
+        criarGrupoInput('Quantidade em estoque', inputQuantidade)
+    )
+
+    const grupoEstoque = document.createElement('div')
+    grupoEstoque.className = 'input-group'
+    const labelEstoqueGrupo = document.createElement('label')
+    labelEstoqueGrupo.textContent = 'Status do estoque'
+    const chipsEstoque = document.createElement('div')
+    chipsEstoque.className = 'chip-group'
+
+    listaEstoque.forEach(function (estoque) {
+        const radio_estoque = document.createElement('input')
+        radio_estoque.className = 'radio-estoque'
+        radio_estoque.type = 'radio'
+        radio_estoque.name = 'estoque'
+        radio_estoque.value = estoque.id
+        radio_estoque.id = `estoque-${estoque.id}`
+
+        if (doce.estoque?.[0]?.id == estoque.id) {
+            radio_estoque.checked = true
+        }
+
+        chipsEstoque.append(criarChip(radio_estoque, estoque.status))
+    })
+    grupoEstoque.append(labelEstoqueGrupo, chipsEstoque)
 
     const containerAvaliacao = document.createElement('div')
-    containerAvaliacao.className = 'container-avaliacao'
+    containerAvaliacao.className = 'input-group input-group-avaliacao'
 
     const labelAvaliacao = document.createElement('label')
-    labelAvaliacao.textContent = 'Avaliação: '
+    labelAvaliacao.textContent = 'Avaliação (0.0 a 5.0)'
     labelAvaliacao.htmlFor = 'avaliacao'
+
+    const linhaAvaliacao = document.createElement('div')
+    linhaAvaliacao.className = 'linha-avaliacao'
 
     const inputAvaliacao = document.createElement('input')
     inputAvaliacao.id = 'avaliacao'
     inputAvaliacao.type = 'number'
     inputAvaliacao.className = 'input-avaliacao'
     inputAvaliacao.placeholder = 'Ex: 4.5'
+    inputAvaliacao.min = '0'
+    inputAvaliacao.max = '5'
+    inputAvaliacao.step = '0.1'
+    inputAvaliacao.value = doce.avaliacao ?? ''
 
-    containerAvaliacao.append(labelAvaliacao, inputAvaliacao)
+    const estrelasAvaliacao = document.createElement('span')
+    estrelasAvaliacao.id = 'estrelas-avaliacao'
+    estrelasAvaliacao.className = 'estrelas-avaliacao'
 
+    linhaAvaliacao.append(inputAvaliacao, estrelasAvaliacao)
+    containerAvaliacao.append(labelAvaliacao, linhaAvaliacao)
+
+    inputAvaliacao.addEventListener('input', () => atualizarEstrelas(inputAvaliacao, estrelasAvaliacao))
+    atualizarEstrelas(inputAvaliacao, estrelasAvaliacao)
+
+    cardPreco.append(tituloPreco, linhaPreco, grupoEstoque, containerAvaliacao)
+
+    const cardImagem = document.createElement('div')
+    cardImagem.className = 'cadastro-card'
+
+    const tituloImagem = document.createElement('h2')
+    tituloImagem.textContent = 'Imagem do produto'
+    tituloImagem.className = 'cadastro-card-titulo'
 
     const divContainer = document.createElement('div')
     divContainer.classList.add('preview-container')
@@ -170,91 +273,59 @@ const renderizarTelaAtualizar = async function(doce, listaCategoria, listaSabor,
     labelImage.className = 'preview-label'
     labelImage.htmlFor = 'preview-input'
 
+    const dicaUpload = document.createElement('div')
+    dicaUpload.className = 'dica-upload'
+    dicaUpload.innerHTML = '<span class="dica-upload-icone">⬆</span><span>Clique para trocar a foto</span>'
+
     const img = document.createElement('img')
     img.id = 'preview-image'
     img.className = 'preview-image'
     img.src = doce.imagem || './img/upload.png'
 
-    divContainer.append(inputImage, labelImage, img)
+    labelImage.append(dicaUpload)
+    divContainer.append(img, labelImage, inputImage)
 
- 
-    const divEstoqueLista = document.createElement('div')
-    divEstoqueLista.className = 'estoque'
+    cardImagem.append(tituloImagem, divContainer)
 
-    const tituloEstoque = document.createElement('h2')
-    tituloEstoque.textContent = 'Estoque'
+    colunaForm.append(cardInfo, cardClassificacao, cardPreco, cardImagem)
 
-    const caixaEstoque = document.createElement('div')
-    caixaEstoque.className = 'estoque-radio'
-
-    listaEstoque.forEach(function (estoque) {
-        const linhaRadio = document.createElement('div')
-
-        const radio_estoque = document.createElement('input')
-        radio_estoque.className = 'radio-estoque'
-        radio_estoque.type = 'radio'
-        radio_estoque.name = 'estoque'
-        radio_estoque.value = estoque.id
-        radio_estoque.id = `estoque-${estoque.id}`
-
-  
-        if (doce.estoque?.[0]?.id == estoque.id) {
-            radio_estoque.checked = true
-        }
-
-        const labelEstoque = document.createElement('label')
-        labelEstoque.htmlFor = `estoque-${estoque.id}`
-        labelEstoque.textContent = estoque.status
-
-        linhaRadio.append(radio_estoque, labelEstoque)
-        caixaEstoque.append(linhaRadio)
-    })
-
-    divEstoqueLista.append(tituloEstoque, caixaEstoque)
-
+    const caixaBTN = document.createElement('div')
+    caixaBTN.className = 'caixa-btn'
 
     const botao_atualizar = document.createElement('button')
     botao_atualizar.textContent = 'ATUALIZAR'
     botao_atualizar.id = 'salvar-categoria'
-    botao_atualizar.className = 'padronizar-btn'
-    botao_atualizar.onclick = () => salvarAtualizacaoDoce(doce.id)
+    botao_atualizar.className = 'padronizar-btn btn-primario'
+    botao_atualizar.onclick = () => salvarAtualizacaoDoce(doce)
 
     const botao_voltar = document.createElement('button')
     botao_voltar.textContent = 'CANCELAR'
     botao_voltar.id = 'cancelar-categoria'
-    botao_voltar.className = 'padronizar-btn'
+    botao_voltar.className = 'padronizar-btn btn-secundario'
     botao_voltar.onclick = () => renderizarPagina('preview')
 
-    const caixaBTN = document.createElement('div')
-    caixaBTN.className = 'caixa-btn'
-    caixaBTN.append(botao_atualizar, botao_voltar)
+    caixaBTN.append(botao_voltar, botao_atualizar)
 
-    container_cadastro.append(
-        tituloPagina,
-        inputNome,
-        inputDescricao,
-        containerCategoria,
-        containerSabor,
-        inputPreco,
-        inputQuantidade,     
-        containerAvaliacao,  
-        divContainer,
-        divEstoqueLista,
-        caixaBTN
-    )
-    main.replaceChildren(container_cadastro)
+    container_cadastro.append(colunaForm, caixaBTN)
+    main.replaceChildren(tituloPagina, container_cadastro)
+
+    return main
 }
 
-const salvarAtualizacaoDoce = async function (id) {
+const salvarAtualizacaoDoce = async function (doce) {
     try {
         const inputNome = document.getElementById('nome-produto')
         const inputPreco = document.getElementById('preco')
-        const inputQuantidade = document.getElementById('quantidade') 
+        const inputQuantidade = document.getElementById('quantidade')
         const inputAvaliacao = document.getElementById('avaliacao')
         const inputImagem = document.getElementById('preview-input')
         const inputDescricao = document.getElementById('descricao-produto')
 
-        const urlFoto = await uploadParaCloudinary(inputImagem.files[0])
+
+        let urlFoto = doce.imagem
+        if (inputImagem.files && inputImagem.files[0]) {
+            urlFoto = await uploadParaCloudinary(inputImagem.files[0])
+        }
 
         const categoriaMarcada = document.querySelector('.radio-categoria:checked')
         const categoriaSelecionada = categoriaMarcada ? categoriaMarcada.value : null
@@ -267,21 +338,20 @@ const salvarAtualizacaoDoce = async function (id) {
 
         const novoDoce = {
             nome: inputNome.value,
-            valor: Number(inputPreco.value), 
+            valor: Number(inputPreco.value),
             imagem: urlFoto,
-            qtde: Number(inputQuantidade.value),         
+            qtde: Number(inputQuantidade.value),
             descricao: inputDescricao.value,
             avaliacao: Number(inputAvaliacao.value),
             id_categoria: Number(categoriaSelecionada),
             id_status: Number(estoqueSelecionado),
-            sabor: listaSaboresSelecionados.map(id => ({ id: Number(id) })) 
-
+            sabor: listaSaboresSelecionados.map(id => ({ id: Number(id) }))
         }
 
         const dadosValidos = await validar(novoDoce)
 
         if (dadosValidos) {
-            await putDoce(id, novoDoce)
+            await putDoce(doce.id, novoDoce)
             alert('Doce atualizado com sucesso!')
             renderizarPagina('preview')
         }
@@ -297,7 +367,7 @@ const validar = async function (doce) {
         alert('O nome do produto é obrigatório')
         return false
     }
-    if (!doce.categoria) {
+    if (!doce.id_categoria) {
         alert('Selecione pelo menos uma categoria!')
         return false
     }

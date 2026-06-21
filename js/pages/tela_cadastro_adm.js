@@ -7,6 +7,9 @@ import { criarLogin } from './tela_logar_adm.js'
 
 export function cadastroADM(){
 
+    const style = document.getElementById('style')
+    style.href = './css/login.css'
+
 
     const main = document.getElementById('main')
     const header = document.getElementById('header')

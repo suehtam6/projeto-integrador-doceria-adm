@@ -1,0 +1,264 @@
+body {
+    padding: 40px;
+    overflow-x: hidden;
+    background-color: #F2D6D3;
+    font-family: sans-serif;
+    color: #4A1521;
+}
+
+.padding-body {
+    padding: 40px;
+}
+
+.logo {
+    margin-bottom: 30px;
+    height: 45px;
+    z-index: 1;
+}
+
+.container-principal {
+    display: flex;
+    gap: 24px;
+    width: 1500px;
+    margin-bottom: 24px;
+    justify-content: space-around;
+}
+
+.card-informacao-doce,
+.card-informacao-categoria,
+.card-informacao-sabor {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFF6F5;
+    border-radius: 16px;
+    width: 220px;
+    padding: 20px;
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.02);
+}
+
+.card-informacao-doce h3,
+.card-informacao-categoria h3,
+.card-informacao-sabor h3 {
+    font-size: 14px;
+    color: #4A1521;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.qtde-cadastrada,
+.qtde-categoria,
+.qtde-sabor {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1A1A1A;
+}
+
+.pesquisa {
+    margin-bottom: 24px;
+}
+
+.doce-pesquisado {
+    font-size: 15px;
+    color: #C78E89;
+    padding: 12px 20px;
+    width: 1520px;
+    height: 48px;
+    border: none;
+    border-radius: 8px;
+    background-color: #FFF6F5;
+    box-sizing: border-box;
+}
+
+.conteudo-layout {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.tabela-produtos {
+    flex: 1;
+    background-color: #FFF6F5;
+    border-radius: 16px;
+    padding: 24px;
+    box-sizing: border-box;
+}
+
+.topo-tabela {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.topo-tabela h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #4A1521;
+}
+
+.adicionar-produto {
+    padding: 8px 16px;
+    color: #FFFFFF;
+    background-color: #A64452;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.descricao-tabela {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.descricao-tabela thead th {
+    background-color: #E5D1D1;
+    color: #4A1521;
+    text-align: left;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.descricao-tabela thead th:first-child {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.descricao-tabela thead th:last-child {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.itens td {
+    padding: 16px 12px;
+    border-bottom: 1px solid #F5E6E6;
+    color: #4A1521;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.acoes-tabela {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-acao {
+    position: relative;
+    top: -20px;
+    flex-direction: column-reverse;
+    padding: 4px;
+}
+
+.imagem-doce {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width: 100px;
+}
+
+.nome-doce,
+.categoria-td,
+.preco {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.imagem-tabela {
+    width: 80%;
+    height: 80%;
+    background-color: #BC7A83;
+    border-radius: 4px;
+}
+
+.btn-acao img,
+.acoes-mini img {
+    width: 18px;
+    height: 18px;
+}
+
+/* ---- nova coluna: Sabores ---- */
+
+.sabores-td {
+    max-width: 220px;
+}
+
+.tag-sabor {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #8A2535;
+    background-color: #F5E6E6;
+    border-radius: 999px;
+    padding: 4px 10px;
+    margin: 2px 4px 2px 0;
+}
+
+.sem-sabor {
+    font-size: 13px;
+    color: #C78E89;
+    font-style: italic;
+}
+
+.barra-lateral {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 280px;
+}
+
+.card-gerenciar-categoria,
+.card-gerenciar-sabor {
+    background-color: #FFF6F5;
+    border-radius: 16px;
+    padding: 24px;
+    box-sizing: border-box;
+}
+
+.card-gerenciar-categoria h3,
+.card-gerenciar-sabor h3 {
+    font-size: 18px;
+    color: #8A2535;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.btn-adicionar-mini {
+    background-color: #A64452;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 16px;
+}
+
+.lista-gerenciar {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.item-lista {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.acoes-mini {
+    display: flex;
+    gap: 8px;
+}
+
+.acoes-mini button img {
+    width: 18px;
+    height: 18px;
+}

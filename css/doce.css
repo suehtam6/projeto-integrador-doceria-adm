@@ -1,0 +1,431 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700&display=swap');
+
+
+body {
+    padding: 40px;
+    overflow-x: hidden;
+    background-color: #F2D6D3;
+    font-family: 'Nunito Sans', sans-serif;
+    color: #4A1521;
+}
+
+.padding-body {
+    padding: 40px;
+}
+
+
+.tituloPagina {
+    font-family: 'Baloo 2', 'Nunito Sans', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: #8A2535;
+    margin-bottom: 24px;
+}
+
+.container-cadastro {
+    width: 100%;
+    max-width: 1100px;
+}
+
+.nome-produto,
+.preco-produto,
+.quantidade-produto,
+.descricao {
+    color: #4A1521;
+    font-size: 15px;
+    font-family: inherit;
+    border: 1px solid #F0D9D8;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    width: 100%;
+}
+
+.nome-produto,
+.preco-produto,
+.quantidade-produto {
+    height: 46px;
+    padding: 0 14px;
+}
+
+.descricao {
+    height: 110px;
+    padding: 12px 14px;
+    resize: vertical;
+}
+
+.nome-produto::placeholder,
+.preco-produto::placeholder,
+.quantidade-produto::placeholder,
+.descricao::placeholder {
+    color: #C78E89;
+}
+
+.nome-produto:focus,
+.preco-produto:focus,
+.quantidade-produto:focus,
+.descricao:focus {
+    outline: none;
+    border-color: #A64452;
+    box-shadow: 0 0 0 3px rgba(166, 68, 82, 0.12);
+}
+
+.caixa-btn {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    width: 100%;
+}
+
+.padronizar-btn {
+    width: 200px;
+    height: 48px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: transform 0.1s ease, opacity 0.15s ease;
+    color: #FFF6F5;
+    background-color: #A64452;
+}
+
+.padronizar-btn:hover {
+    opacity: 0.92;
+}
+
+.padronizar-btn:active {
+    transform: scale(0.98);
+}
+
+
+.btn-primario {
+    color: #FFF6F5;
+    background-color: #A64452;
+}
+
+.btn-secundario {
+    color: #A64452;
+    background-color: transparent;
+    border: 1.5px solid #E9C9C8;
+}
+
+@media (max-width: 900px) {
+    .caixa-btn {
+        flex-direction: column-reverse;
+    }
+    .padronizar-btn {
+        width: 100%;
+    }
+}
+
+
+
+.cadastro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.cadastro-card {
+    background-color: #FFF6F5;
+    border-radius: 16px;
+    padding: 28px;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 8px rgba(138, 37, 53, 0.06);
+    border: 1px solid #F5E6E6;
+}
+
+.cadastro-card-titulo {
+    font-family: 'Baloo 2', 'Nunito Sans', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: #8A2535;
+    margin: 0 0 18px 0;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #F5E6E6;
+}
+
+.cadastro-card .input-group:not(:last-child) {
+    margin-bottom: 18px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group > label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: #BC7A83;
+    margin-bottom: 8px;
+}
+
+.linha-dupla {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+
+.chip-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.chip-item {
+    display: inline-flex;
+}
+
+.chip-item input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.chip-label {
+    display: inline-flex;
+    align-items: center;
+    padding: 9px 18px;
+    border-radius: 999px;
+    border: 1.5px solid #E9C9C8;
+    background-color: #FFFFFF;
+    color: #8A2535;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+}
+
+.chip-label:hover {
+    border-color: #A64452;
+    background-color: #FDEDEC;
+}
+
+.chip-item input:checked + .chip-label {
+    background-color: #A64452;
+    border-color: #A64452;
+    color: #FFF6F5;
+    box-shadow: 0 2px 6px rgba(166, 68, 82, 0.3);
+}
+
+.chip-item input:focus-visible + .chip-label {
+    outline: 2px solid #8A2535;
+    outline-offset: 2px;
+}
+
+
+
+.input-group-avaliacao {
+    margin-top: 18px;
+}
+
+.linha-avaliacao {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.input-avaliacao {
+    width: 100px;
+    height: 46px;
+    padding: 0 14px;
+    border: 1px solid #F0D9D8;
+    border-radius: 10px;
+    font-size: 15px;
+    background-color: #FFFFFF;
+    color: #4A1521;
+    box-sizing: border-box;
+}
+
+.input-avaliacao:focus {
+    outline: none;
+    border-color: #A64452;
+    box-shadow: 0 0 0 3px rgba(166, 68, 82, 0.12);
+}
+
+.estrelas-avaliacao {
+    font-size: 20px;
+    color: #D9A441;
+    letter-spacing: 2px;
+}
+
+
+
+.preview-container {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    border-radius: 14px;
+    overflow: hidden;
+    background-color: #FBEFEE;
+    border: 2px dashed #E9C9C8;
+}
+
+.preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.preview-label {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-end;
+}
+
+.preview-input {
+    display: none;
+}
+
+.dica-upload {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    background: linear-gradient(to top, rgba(74, 21, 33, 0.55), rgba(74, 21, 33, 0));
+    color: #FFFFFF;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.dica-upload-icone {
+    font-size: 14px;
+}
+
+
+
+.preview-card {
+    padding: 24px;
+}
+
+.preview-subtitulo {
+    font-size: 13px;
+    color: #BC7A83;
+    margin: -8px 0 16px 0;
+}
+
+.preview-card-imagem {
+    width: 100%;
+    height: 160px;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #FBEFEE;
+    margin-bottom: 14px;
+}
+
+.preview-card-imagem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.preview-card-categoria {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: #A64452;
+    background-color: #FBEFEE;
+    border-radius: 999px;
+    padding: 4px 10px;
+    margin-bottom: 8px;
+}
+
+.preview-card-nome {
+    font-family: 'Baloo 2', 'Nunito Sans', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    color: #4A1521;
+    margin: 0 0 6px 0;
+    word-break: break-word;
+}
+
+.preview-card-preco {
+    display: block;
+    font-size: 17px;
+    font-weight: 700;
+    color: #8A2535;
+    margin-bottom: 12px;
+}
+
+.preview-card-sabores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.preview-card-sabor-tag {
+    font-size: 11px;
+    font-weight: 600;
+    color: #8A2535;
+    background-color: #F5E6E6;
+    border-radius: 999px;
+    padding: 4px 10px;
+}
+
+.preview-card-sabor-vazio {
+    font-size: 12px;
+    color: #C78E89;
+    font-style: italic;
+}
+
+.preview-card-estoque {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background-color: #F0F0F0;
+    color: #777;
+}
+
+.preview-card-estoque::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: currentColor;
+}
+
+.preview-card-estoque--ok {
+    background-color: #E4F2E5;
+    color: #3B8A4E;
+}
+
+.preview-card-estoque--vazio {
+    background-color: #F7E1E1;
+    color: #B0454A;
+}
+
+@media (max-width: 900px) {
+    .cadastro-grid {
+        grid-template-columns: 1fr;
+    }
+    .linha-dupla {
+        grid-template-columns: 1fr;
+    }
+}

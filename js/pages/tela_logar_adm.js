@@ -6,6 +6,10 @@ import { cadastroADM } from "./tela_cadastro_adm.js"
 
 
 export function criarLogin(){
+
+    const style = document.getElementById('style')
+    style.href = './css/logar.css'
+
     const main = document.getElementById('main')
     const header = document.getElementById('header')
     header.replaceChildren()

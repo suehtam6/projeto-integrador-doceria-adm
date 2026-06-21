@@ -4,6 +4,8 @@ import { renderizarPagina } from "../main.js"
 import { postCategoria } from "../methods.js"
 
 export function cadastrarCategoria() {
+    const style = document.getElementById('style')
+    style.href = './css/categoria.css'
     let main = document.getElementById('main')
 
     let tituloPagina = document.createElement('h1')

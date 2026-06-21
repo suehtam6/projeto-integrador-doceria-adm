@@ -49,6 +49,24 @@ const renderizarLinhasTabela = function (listaDoces, tbody) {
         tdCategoria.className = 'categoria-td'
         tdCategoria.textContent = itemDoce.categoria?.[0]?.categoria ?? 'Sem categoria'
 
+        const tdSabores = document.createElement('td')
+        tdSabores.className = 'sabores-td'
+
+        const listaSaboresDoce = itemDoce.sabor?.doce_sabor ?? []
+
+        if (listaSaboresDoce.length === 0) {
+            const semSabor = document.createElement('span')
+            semSabor.className = 'sem-sabor'
+            semSabor.textContent = 'Sem sabor'
+            tdSabores.append(semSabor)
+        } else {
+            listaSaboresDoce.forEach(itemSabor => {
+                const tagSabor = document.createElement('span')
+                tagSabor.className = 'tag-sabor'
+                tagSabor.textContent = itemSabor.sabor
+                tdSabores.append(tagSabor)
+            })
+        }
 
         const tdPreco = document.createElement('td')
         tdPreco.className = 'preco'
@@ -85,12 +103,15 @@ const renderizarLinhasTabela = function (listaDoces, tbody) {
         div_acao_tabela_deletar.append(button_deletar)
 
         tdBTN.append(div_acao_tabela_atualizar, div_acao_tabela_deletar)
-        trItens.append(tdImagem, tdProduto, tdCategoria, tdPreco, tdBTN)
+        trItens.append(tdImagem, tdProduto, tdCategoria, tdSabores, tdPreco, tdBTN)
         tbody.append(trItens)
     })
 }
 
 function criarPreview(listaCategoria, listaSabor, listaDoce) {
+
+    const style = document.getElementById('style')
+    style.href = './css/preview.css'
 
     const header = document.getElementById('header')
     const main = document.getElementById('main')
@@ -186,6 +207,9 @@ function criarPreview(listaCategoria, listaSabor, listaDoce) {
     thCategoria.scope = 'col'
     thCategoria.textContent = 'Categoria'
 
+    const thSabores = document.createElement('th')
+    thSabores.scope = 'col'
+    thSabores.textContent = 'Sabores'
 
     const thPreco = document.createElement('th')
     thPreco.scope = 'col'
@@ -195,7 +219,7 @@ function criarPreview(listaCategoria, listaSabor, listaDoce) {
     thAcoes.scope = 'col'
     thAcoes.textContent = 'Ações'
 
-    tr.append(thImagem, thProduto, thCategoria, thPreco, thAcoes)
+    tr.append(thImagem, thProduto, thCategoria, thSabores, thPreco, thAcoes)
     thead.append(tr)
 
     const tbody = document.createElement('tbody')
