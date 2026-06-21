@@ -11,7 +11,7 @@ export function atualizarCategoria (categoria){
     let main = document.getElementById('main')
 
     let tituloPagina = document.createElement('h1')
-    tituloPagina.textContent = 'Cadastro da categoria'
+    tituloPagina.textContent = 'Atualizar categoria'
     tituloPagina.className = 'tituloPagina'
 
     let container_cadastro = document.createElement('div')
@@ -25,7 +25,7 @@ export function atualizarCategoria (categoria){
     inputNome.value = categoria.categoria
 
     let botao_adicionar = document.createElement('button')
-    botao_adicionar.textContent = 'CADASTRAR'
+    botao_adicionar.textContent = 'ATUALIZAR'
     botao_adicionar.id = 'salvar-categoria'
     botao_adicionar.className = 'padronizar-btn'
     botao_adicionar.onclick = () => salvarAtualizacaoCategoria(categoria.id)

@@ -210,9 +210,7 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
     inputAvaliacao.type = 'number'
     inputAvaliacao.className = 'input-avaliacao'
     inputAvaliacao.placeholder = 'Ex: 4.5'
-    inputAvaliacao.min = '0'
-    inputAvaliacao.max = '5'
-    inputAvaliacao.step = '0.1'
+
 
     const estrelasAvaliacao = document.createElement('span')
     estrelasAvaliacao.id = 'estrelas-avaliacao'
@@ -270,7 +268,7 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
     caixaBTN.className = 'caixa-btn'
 
     const botao_adicionar = document.createElement('button')
-    botao_adicionar.textContent = 'CADASTRAR'
+    botao_adicionar.textContent = 'ATUALIZAR'
     botao_adicionar.id = 'salvar-categoria'
     botao_adicionar.className = 'padronizar-btn btn-primario'
     botao_adicionar.onclick = () => cadastroDoce()

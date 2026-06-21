@@ -12,7 +12,7 @@ export function atualizarSabor(sabor) {
     let main = document.getElementById('main')
 
     let tituloPagina = document.createElement('h1')
-    tituloPagina.textContent = 'Cadastro do sabor'
+    tituloPagina.textContent = 'Atualizar sabor'
     tituloPagina.className = 'tituloPagina'
 
     let container_cadastro = document.createElement('div')
@@ -26,7 +26,7 @@ export function atualizarSabor(sabor) {
     inputNome.value = sabor.sabor
 
     let botao_adicionar = document.createElement('button')
-    botao_adicionar.textContent = 'CADASTRAR'
+    botao_adicionar.textContent = 'ATUALIZAR'
     botao_adicionar.id = 'salvar-categoria'
     botao_adicionar.className = 'padronizar-btn'
     botao_adicionar.onclick = () => salvarAtualizacaoSabor(sabor.id)

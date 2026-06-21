@@ -29,7 +29,6 @@ export async function atualizarDoce(doce) {
 }
 
 
-
 function criarGrupoInput(rotulo, inputEl) {
     const grupo = document.createElement('div')
     grupo.className = 'input-group'
@@ -277,7 +276,7 @@ const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, list
     const img = document.createElement('img')
     img.id = 'preview-image'
     img.className = 'preview-image'
-    img.src = doce.imagem || './img/upload.png'
+    img.src = doce.imagem
 
     labelImage.append(dicaUpload)
     divContainer.append(img, labelImage, inputImage)
@@ -357,6 +356,7 @@ const salvarAtualizacaoDoce = async function (doce) {
         alert('Erro interno ao tentar atualizar o produto.')
     }
 }
+
 
 const validar = async function (doce) {
     if (!doce.nome || doce.nome.trim() === '') {
