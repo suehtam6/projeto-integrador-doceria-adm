@@ -35,7 +35,7 @@ const URLADM        = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyduck
 export async function getCategorias() {
     const response = await fetch(`${URLCATEGORIA}`)
     const data = await response.json()
-    return data.response.status
+    return data.response.categoria
 }
 
 export async function getCategoria(id) {
@@ -93,7 +93,7 @@ export async function putCategoria(id, categoria) {
 export async function getSabores() {
     const response = await fetch(`${URLSABOR}`)
     const data = await response.json()
-    return data.response.status // ✅ campo correto
+    return data.response.sabor
 }
 
 export async function getSabor(id) {
@@ -256,22 +256,36 @@ export async function putEstoque(id, estoque) {
     return response.json()  
 }
 
+
+
 // Metodos para usar no ADM
 
 export async function getADMs() {
-    const response = await fetch(`${URLADM}`)
+
+    const options = {
+        headers: {
+            'x-access-token': localStorage.getItem('token')
+        }
+    }
+
+    const response = await fetch(`${URLADM}`, options)
     return response.json()
-}   
+}
 
 export async function getADM(id) {
 
-    const response = await fetch(`${URLADM}/${id}`)
+    const options = {
+        headers: {
+            'x-access-token': localStorage.getItem('token')
+        }
+    }
+
+    const response = await fetch(`${URLADM}/${id}`, options)
     return response.json()
 }
 
 export async function postADM(adm) {
 
-    //Configurações para utilizar no fetch junto com a URL
     let options = {
         method: 'POST',
         headers: {
@@ -284,10 +298,27 @@ export async function postADM(adm) {
     return response.json()
 }
 
+export async function postLoginADM(credenciais) {
+
+    let options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(credenciais)
+    }
+
+    const response = await fetch(`${URLADM}/login`, options)
+    return response.json()
+}
+
 export async function deleteADM(id) {
 
     const options = {
-        method: "DELETE"
+        method: 'DELETE',
+        headers: {
+            'x-access-token': localStorage.getItem('token')
+        }
     }
 
     const response = await fetch(`${URLADM}/${id}`, options)
@@ -296,17 +327,15 @@ export async function deleteADM(id) {
 
 export async function putADM(id, adm) {
 
-    //Configurações para utilizar o PUT
     const options = {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'x-access-token': localStorage.getItem('token')
         },
-        body: JSON.stringify(adm) // Aqui estou convertendo o meu objeto em uma string para enviar para a API
-
+        body: JSON.stringify(adm)
     }
 
     const response = await fetch(`${URLADM}/${id}`, options)
-    return response.json()  
+    return response.json()
 }
-

@@ -103,12 +103,12 @@ const criarCadastro = async function(){
 
         const salvarAdm = {
             "nome" : inputNome,
-            "Email": inputEmail,
+            "email": inputEmail,
             "senha": inputSenha
         }
 
         if(await postADM(salvarAdm)){
-            renderizarPagina(preview)
+            renderizarPagina('preview')
         }
 
     } catch (error) {

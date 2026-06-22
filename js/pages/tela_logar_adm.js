@@ -3,7 +3,7 @@
 import { renderizarPagina } from "../main.js"
 
 import { cadastroADM } from "./tela_cadastro_adm.js"
-
+import { postLoginADM } from "../methods.js"
 
 export function criarLogin(){
 
@@ -46,7 +46,7 @@ export function criarLogin(){
     const button_entrar = document.createElement('button')
     button_entrar.id = 'entrar'
     button_entrar.textContent = 'ENTRAR'
-    button_entrar.onclick = () => renderizarPagina('preview')
+    button_entrar.onclick = () => realizarLogin()
 
     const div_cadastrar_adm = document.createElement('div')
     div_cadastrar_adm.className = 'guardar-btn'
@@ -82,4 +82,35 @@ export function criarLogin(){
 
 }
 
+
+// Aqui eu crio a função para validar se o email e a senha batem com as que estão no banco
+const realizarLogin = async function () {
+    try {
+        const email = document.getElementById('coletar-email').value
+        const senha = document.getElementById('coletar-senha').value
+
+        if (!email || !senha) {
+            alert('Preencha e-mail e senha')
+            return
+        }
+
+        const credenciais = { email, senha }
+
+        const resultado = await postLoginADM(credenciais)
+
+        if (resultado.status) {
+            // Guarda o token pra usar nas próximas requisições autenticadas
+            localStorage.setItem('token', resultado.response.user.token)
+            localStorage.setItem('usuarioId', resultado.response.user.id)
+
+            renderizarPagina('preview')
+        } else {
+            alert(resultado.message || 'E-mail ou senha inválidos')
+        }
+
+    } catch (error) {
+        console.log(error)
+        alert('ERRO AO FAZER LOGIN')
+    }
+}
  
