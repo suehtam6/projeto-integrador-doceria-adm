@@ -35,7 +35,7 @@ const URLADM        = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyduck
 export async function getCategorias() {
     const response = await fetch(`${URLCATEGORIA}`)
     const data = await response.json()
-    return data.response.categoria
+    return Array.isArray(data.response?.categoria) ? data.response.categoria : []
 }
 
 export async function getCategoria(id) {
@@ -93,7 +93,7 @@ export async function putCategoria(id, categoria) {
 export async function getSabores() {
     const response = await fetch(`${URLSABOR}`)
     const data = await response.json()
-    return data.response.sabor
+    return Array.isArray(data.response?.sabor) ? data.response.sabor : []
 }
 
 export async function getSabor(id) {
@@ -150,7 +150,7 @@ export async function putSabor(id, sabor) {
 export async function getDoces() {
     const response = await fetch(`${URLDOCE}`)
     const data = await response.json()
-    return data.response.doce
+    return Array.isArray(data.response?.doce) ? data.response.doce : []
 }
 
 export async function getDoce(id) {

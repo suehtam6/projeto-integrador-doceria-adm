@@ -56,7 +56,7 @@ const cadastroSabor = async function () {
         if (validarDados) {
             await postSabor(salvarSabor)
             alert('Sabor salvo com sucesso!!')
-            renderizarPagina('preview') // ✅ volta para preview após cadastrar
+            renderizarPagina('preview')
         }
 
     } catch (error) {

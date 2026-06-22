@@ -89,6 +89,7 @@ const realizarLogin = async function () {
         const email = document.getElementById('coletar-email').value
         const senha = document.getElementById('coletar-senha').value
 
+        
         if (!email || !senha) {
             alert('Preencha e-mail e senha')
             return

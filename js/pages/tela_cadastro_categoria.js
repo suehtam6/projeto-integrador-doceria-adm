@@ -55,7 +55,7 @@ const cadastroCategoria = async function () {
         if (validarDados) {
             await postCategoria(salvarCategoria)
             alert('Categoria salva com sucesso!!')
-            renderizarPagina('preview') // ✅ volta para preview após cadastrar
+            renderizarPagina('preview')
         }
 
     } catch (error) {

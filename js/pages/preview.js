@@ -12,11 +12,8 @@ const carregarItens = async function () {
         const listaSabor = await getSabores()
         const listaCategoria = await getCategorias()
 
-        if (Array.isArray(listaCategoria) && Array.isArray(listaSabor) && Array.isArray(listaDoce)) {
-            criarPreview(listaCategoria, listaSabor, listaDoce)
-        } else {
-            alert("ERRO: Não foram encontrados dados para retornar!!")
-        }
+        criarPreview(listaCategoria, listaSabor, listaDoce)
+
     } catch (error) {
         alert("ERRO: AO CARREGAR AS CATEGORIAS E SABORES!!")
     }
