@@ -6,7 +6,11 @@ import { uploadParaCloudinary } from "../cloudinay.js"
 
 function preview(input) {
     if (input.files && input.files[0]) {
-        document.getElementById('preview-image').src = URL.createObjectURL(input.files[0])
+        const url = URL.createObjectURL(input.files[0])
+        document.getElementById('preview-image').src = url
+
+        const pvImagem = document.getElementById('pv-imagem')
+        if (pvImagem) pvImagem.src = url
     }
 }
 
@@ -30,18 +34,16 @@ export function iniciarCadastroDoce() {
     carregarItens()
 }
 
-
-
 function criarGrupoInput(rotulo, inputEl) {
-    const grupo = document.createElement('div')
-    grupo.className = 'input-group'
+    const group = document.createElement('div')
+    group.className = 'input-group'
 
     const label = document.createElement('label')
     label.textContent = rotulo
     if (inputEl.id) label.htmlFor = inputEl.id
 
-    grupo.append(label, inputEl)
-    return grupo
+    group.append(label, inputEl)
+    return group
 }
 
 function criarChip(inputEl, textoLabel) {
@@ -72,10 +74,12 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
     const container_cadastro = document.createElement('div')
     container_cadastro.className = 'container-cadastro'
 
-    const colunaForm = document.createElement('div')
-    colunaForm.className = 'cadastro-grid'
+    const layout = document.createElement('div')
+    layout.className = 'cadastro-layout-wrapper'
 
-    // ---- Card: Informações básicas ----
+    const divCadastroDoce = document.createElement('div')
+    divCadastroDoce.className = 'cadastro-grid'
+    
     const cardInfo = document.createElement('div')
     cardInfo.className = 'cadastro-card'
 
@@ -100,7 +104,6 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
         criarGrupoInput('Descrição', inputDescricao)
     )
 
-
     const cardClassificacao = document.createElement('div')
     cardClassificacao.className = 'cadastro-card'
 
@@ -122,6 +125,7 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
         radio.name = 'categoria-produto'
         radio.value = categoria.id
         radio.id = `categoria-${categoria.id}`
+        radio.addEventListener('change', atualizarPreview)
 
         chipsCategoria.append(criarChip(radio, categoria.categoria))
     })
@@ -140,13 +144,13 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
         checkbox.type = 'checkbox'
         checkbox.value = sabor.id
         checkbox.id = `sabor-${sabor.id}`
+        checkbox.addEventListener('change', atualizarPreview)
 
         chipsSabor.append(criarChip(checkbox, sabor.sabor))
     })
     grupoSabor.append(labelSabor, chipsSabor)
 
     cardClassificacao.append(tituloClassificacao, grupoCategoria, grupoSabor)
-
 
     const cardPreco = document.createElement('div')
     cardPreco.className = 'cadastro-card'
@@ -190,6 +194,7 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
         radio_estoque.name = 'estoque'
         radio_estoque.value = estoque.id
         radio_estoque.id = `estoque-${estoque.id}`
+        radio_estoque.addEventListener('change', atualizarPreview)
 
         chipsEstoque.append(criarChip(radio_estoque, estoque.status))
     })
@@ -211,7 +216,6 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
     inputAvaliacao.className = 'input-avaliacao'
     inputAvaliacao.placeholder = 'Ex: 4.5'
 
-
     const estrelasAvaliacao = document.createElement('span')
     estrelasAvaliacao.id = 'estrelas-avaliacao'
     estrelasAvaliacao.className = 'estrelas-avaliacao'
@@ -220,10 +224,12 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
     linhaAvaliacao.append(inputAvaliacao, estrelasAvaliacao)
     containerAvaliacao.append(labelAvaliacao, linhaAvaliacao)
 
-    inputAvaliacao.addEventListener('input', () => atualizarEstrelas(inputAvaliacao, estrelasAvaliacao))
+    inputAvaliacao.addEventListener('input', () => {
+        atualizarEstrelas(inputAvaliacao, estrelasAvaliacao)
+        atualizarPreview()
+    })
 
     cardPreco.append(tituloPreco, linhaPreco, grupoEstoque, containerAvaliacao)
-
 
     const cardImagem = document.createElement('div')
     cardImagem.className = 'cadastro-card'
@@ -260,15 +266,76 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
 
     cardImagem.append(tituloImagem, divContainer)
 
-    colunaForm.append(cardInfo, cardClassificacao, cardPreco, cardImagem)
+    divCadastroDoce.append(cardInfo, cardClassificacao, cardPreco, cardImagem)
 
+    //Aqui vou criar o card aonde vai ficar atualizando de acordo com oque for sendo colocado de informações
+    const colunaLateral = document.createElement('div')
+    colunaLateral.className = 'cadastro-sidebar'
 
+    const cardPreview = document.createElement('div')
+    cardPreview.className = 'cadastro-card preview-card'
+
+    const tituloPreview = document.createElement('h2')
+    tituloPreview.textContent = 'Pré-visualização'
+    tituloPreview.className = 'cadastro-card-titulo'
+
+    const subtituloPreview = document.createElement('p')
+    subtituloPreview.className = 'preview-subtitulo'
+    subtituloPreview.textContent = 'É assim que o produto vai aparecer na lista'
+
+    const previewImagemWrapper = document.createElement('div')
+    previewImagemWrapper.className = 'preview-card-imagem'
+    const pvImagem = document.createElement('img')
+    pvImagem.id = 'pv-imagem'
+    pvImagem.src = './img/upload.png'
+    previewImagemWrapper.append(pvImagem)
+
+    const pvDescricao = document.createElement('h3')
+    pvDescricao.id = 'pv-descricao'
+    pvDescricao.className = 'preview-card-descricao'
+    pvDescricao.textContent = 'Descrição'
+
+    const pvCategoria = document.createElement('span')
+    pvCategoria.id = 'pv-categoria'
+    pvCategoria.className = 'preview-card-categoria'
+    pvCategoria.textContent = 'Categoria'
+
+    const pvNome = document.createElement('h3')
+    pvNome.id = 'pv-nome'
+    pvNome.className = 'preview-card-nome'
+    pvNome.textContent = 'Nome do produto'
+
+    const pvPreco = document.createElement('span')
+    pvPreco.id = 'pv-preco'
+    pvPreco.className = 'preview-card-preco'
+    pvPreco.textContent = 'R$ 0,00'
+
+    const pvSabores = document.createElement('div')
+    pvSabores.id = 'pv-sabores'
+    pvSabores.className = 'preview-card-sabores'
+
+    const pvEstoque = document.createElement('span')
+    pvEstoque.id = 'pv-estoque'
+    pvEstoque.className = 'preview-card-estoque'
+    pvEstoque.textContent = 'Sem status'
+
+    cardPreview.append(
+        tituloPreview,
+        subtituloPreview,
+        previewImagemWrapper,
+        pvCategoria,
+        pvNome,
+        pvDescricao,
+        pvPreco,
+        pvSabores,
+        pvEstoque
+    )
 
     const caixaBTN = document.createElement('div')
     caixaBTN.className = 'caixa-btn'
 
     const botao_adicionar = document.createElement('button')
-    botao_adicionar.textContent = 'ATUALIZAR'
+    botao_adicionar.textContent = 'CADASTRAR'
     botao_adicionar.id = 'salvar-categoria'
     botao_adicionar.className = 'padronizar-btn btn-primario'
     botao_adicionar.onclick = () => cadastroDoce()
@@ -281,16 +348,88 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
 
     caixaBTN.append(botao_voltar, botao_adicionar)
 
-    container_cadastro.append(colunaForm, caixaBTN)
+    colunaLateral.append(cardPreview)
+
+    layout.append(divCadastroDoce, colunaLateral)
+    container_cadastro.append(layout, caixaBTN)
     main.replaceChildren(tituloPagina, container_cadastro)
+
+    // listeners de texto pra manter a pré-visualização atualizada
+    ;[inputNome, inputDescricao, inputPreco].forEach(el => {
+        el.addEventListener('input', atualizarPreview)
+    })
+
+    atualizarPreview()
 
     return main
 }
 
+// Aqui vou mexer nas estrelas de acordo com a quantidade que for selecionada
 function atualizarEstrelas(inputAvaliacao, spanEstrelas) {
     const nota = Number(inputAvaliacao.value) || 0
     const notaArredondada = Math.max(0, Math.min(5, Math.round(nota)))
     spanEstrelas.textContent = '★'.repeat(notaArredondada) + '☆'.repeat(5 - notaArredondada)
+}
+
+// AQUI NESTA PARTE EU VOU FAZER O MEU CARD MOSTRAR TODAS AS INFORMAÇÕES EM TEMPO REAL
+// ASSIM EU POSSO VER COMO ELE VAI FICAR NA TELA DO CLIENTE
+function atualizarPreview() {
+    const pvNome = document.getElementById('pv-nome')
+    const pvPreco = document.getElementById('pv-preco')
+    const pvCategoria = document.getElementById('pv-categoria')
+    const pvSabores = document.getElementById('pv-sabores')
+    const pvEstoque = document.getElementById('pv-estoque')
+    const pvDescricao = document.getElementById('pv-descricao')
+
+    if (!pvNome) return
+
+    const nome = document.getElementById('nome-produto')?.value.trim()
+    pvNome.textContent = nome || 'Nome do produto'
+
+    const descricao = document.getElementById('descricao-produto')?.value.trim()
+    pvDescricao.textContent = descricao|| 'Descrição do produto'
+
+    // Aqui eu vou trocar o ponto por virgula fazendo o preço bonitinho
+    const preco = Number(document.getElementById('preco')?.value)
+    pvPreco.textContent = preco > 0
+        ? `R$ ${preco.toFixed(2).replace('.', ',')}`
+        : 'R$ 0,00'
+
+    // aqui estou verificando a categoria que foi clicada para colocar no card
+    const categoriaMarcada = document.querySelector('.radio-categoria:checked')
+    const labelCategoria = categoriaMarcada ? document.querySelector(`label[for="${categoriaMarcada.id}"]`) : null
+    pvCategoria.textContent = labelCategoria ? labelCategoria.textContent : 'Categoria'
+
+    // aqui estou verificando o sabor ou os sabores que forem clicados para adicionar no card
+    const saboresMarcados = document.querySelectorAll('.checkbox-sabor:checked')
+    pvSabores.replaceChildren()
+    if (saboresMarcados.length === 0) {
+        const vazio = document.createElement('span')
+        vazio.className = 'preview-card-sabor-vazio'
+        vazio.textContent = 'Nenhum sabor selecionado'
+        pvSabores.append(vazio)
+    } else {
+        saboresMarcados.forEach(cb => {
+            const label = document.querySelector(`label[for="${cb.id}"]`)
+            const tag = document.createElement('span')
+            tag.className = 'preview-card-sabor-tag'
+            tag.textContent = label ? label.textContent : ''
+            pvSabores.append(tag)
+        })
+    }
+    
+    // Aqui estou pegando mostrando se estã ou não com estoque
+    const estoqueMarcado = document.querySelector('.radio-estoque:checked')
+    const labelEstoque = estoqueMarcado ? document.querySelector(`label[for="${estoqueMarcado.id}"]`) : null
+    if (labelEstoque) {
+        pvEstoque.textContent = labelEstoque.textContent
+        const semEstoque = labelEstoque.textContent.toLowerCase().includes('sem')
+        pvEstoque.classList.toggle('preview-card-estoque--ok', !semEstoque)
+        pvEstoque.classList.toggle('preview-card-estoque--vazio', semEstoque)
+    } else {
+        pvEstoque.textContent = 'Sem status'
+        pvEstoque.classList.remove('preview-card-estoque--ok', 'preview-card-estoque--vazio')
+    }
 }
 
 const cadastroDoce = async function () {

@@ -2,15 +2,23 @@
 
 
 
+// AQUI VAI  FICAR OS DADOS DA API RODANDO NA NUVEM
 const URLDOCE       = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyducks/doceria/doce'
-
 const URLSABOR      = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyducks/doceria/sabor'
-
 const URLCATEGORIA  = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyducks/doceria/categoria'
-
 const URLESTOQUE    = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyducks/doceria/status'
-
 const URLADM        = 'https://backend-honeyducks-ckbk.onrender.com/v1/honeyducks/doceria/usuario'
+
+
+// AQUI VAI FICAR OS DADOS DA API RODANDO VIA LOCAL
+// const URLDOCE       = 'http://localhost:7070/v1/honeyducks/doceria/doce'
+// const URLSABOR      = 'http://localhost:7070/v1/honeyducks/doceria/sabor'
+// const URLCATEGORIA  = 'http://localhost:7070/v1/honeyducks/doceria/categoria'
+// const URLESTOQUE    = 'http://localhost:7070/v1/honeyducks/doceria/status'
+// const URLADM        = 'http://localhost:7070/v1/honeyducks/doceria/usuario'
+
+
+
 
 
 

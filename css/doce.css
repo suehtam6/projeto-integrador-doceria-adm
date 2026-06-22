@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;600;700&display=swap');
 
-
 body {
     padding: 40px;
     overflow-x: hidden;
@@ -13,7 +12,6 @@ body {
     padding: 40px;
 }
 
-
 .tituloPagina {
     font-family: 'Baloo 2', 'Nunito Sans', sans-serif;
     font-size: 30px;
@@ -22,9 +20,11 @@ body {
     margin-bottom: 24px;
 }
 
+
 .container-cadastro {
     width: 100%;
-    max-width: 1100px;
+    max-width: 1480px; 
+    margin: 0 auto;    
 }
 
 .nome-produto,
@@ -76,6 +76,7 @@ body {
     justify-content: center;
     gap: 14px;
     width: 100%;
+    margin-top: 24px;
 }
 
 .padronizar-btn {
@@ -100,7 +101,6 @@ body {
     transform: scale(0.98);
 }
 
-
 .btn-primario {
     color: #FFF6F5;
     background-color: #A64452;
@@ -112,22 +112,19 @@ body {
     border: 1.5px solid #E9C9C8;
 }
 
-@media (max-width: 900px) {
-    .caixa-btn {
-        flex-direction: column-reverse;
-    }
-    .padronizar-btn {
-        width: 100%;
-    }
+.cadastro-layout-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    width: 100%;
+    margin-bottom: 24px;
 }
-
-
 
 .cadastro-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;
-    margin-bottom: 24px;
+    flex: 1; 
 }
 
 .cadastro-card {
@@ -173,7 +170,6 @@ body {
     gap: 18px;
     margin-bottom: 18px;
 }
-
 
 .chip-group {
     display: flex;
@@ -225,8 +221,6 @@ body {
     outline-offset: 2px;
 }
 
-
-
 .input-group-avaliacao {
     margin-top: 18px;
 }
@@ -260,8 +254,6 @@ body {
     color: #D9A441;
     letter-spacing: 2px;
 }
-
-
 
 .preview-container {
     position: relative;
@@ -311,7 +303,12 @@ body {
     font-size: 14px;
 }
 
-
+.cadastro-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 340px;
+    flex-shrink: 0;
+}
 
 .preview-card {
     padding: 24px;
@@ -421,9 +418,33 @@ body {
     color: #B0454A;
 }
 
-@media (max-width: 900px) {
+.preview-card-descricao {
+    display: block;
+    max-width: 20ch;
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+
+@media (max-width: 1150px) { 
+    .cadastro-layout-wrapper {
+        flex-direction: column; 
+    }
     .cadastro-grid {
         grid-template-columns: 1fr;
+        width: 100%;
+    }
+    .cadastro-sidebar {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    .caixa-btn {
+        flex-direction: column-reverse;
+    }
+    .padronizar-btn {
+        width: 100%;
     }
     .linha-dupla {
         grid-template-columns: 1fr;

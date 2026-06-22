@@ -28,7 +28,6 @@ export async function atualizarDoce(doce) {
     }
 }
 
-
 function criarGrupoInput(rotulo, inputEl) {
     const grupo = document.createElement('div')
     grupo.className = 'input-group'
@@ -65,7 +64,6 @@ const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, list
     const style = document.getElementById('style')
     style.href = './css/doce.css'
 
-
     const main = document.getElementById('main')
     main.replaceChildren()
 
@@ -77,8 +75,13 @@ const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, list
     container_cadastro.className = 'container-cadastro'
 
 
+    const layoutWrapper = document.createElement('div')
+    layoutWrapper.className = 'cadastro-layout-wrapper'
+
+
     const colunaForm = document.createElement('div')
     colunaForm.className = 'cadastro-grid'
+
 
     const cardInfo = document.createElement('div')
     cardInfo.className = 'cadastro-card'
@@ -105,6 +108,7 @@ const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, list
         criarGrupoInput('Nome do produto', inputNome),
         criarGrupoInput('Descrição', inputDescricao)
     )
+
 
     const cardClassificacao = document.createElement('div')
     cardClassificacao.className = 'cadastro-card'
@@ -263,7 +267,6 @@ const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, list
     inputImage.className = 'preview-input'
     inputImage.type = 'file'
     inputImage.accept = 'image/*'
-    inputImage.onchange = () => preview(inputImage)
 
     const labelImage = document.createElement('label')
     labelImage.className = 'preview-label'
@@ -280,10 +283,121 @@ const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, list
 
     labelImage.append(dicaUpload)
     divContainer.append(img, labelImage, inputImage)
-
     cardImagem.append(tituloImagem, divContainer)
 
+
     colunaForm.append(cardInfo, cardClassificacao, cardPreco, cardImagem)
+
+
+
+    const sidebar = document.createElement('div')
+    sidebar.className = 'cadastro-sidebar'
+
+    const tituloPreviewSide = document.createElement('h2')
+    tituloPreviewSide.textContent = 'Pré-visualização'
+    tituloPreviewSide.className = 'tituloPagina'
+
+    const subtituloPreview = document.createElement('p')
+    subtituloPreview.className = 'preview-subtitulo'
+    subtituloPreview.textContent = 'É assim que o produto vai aparecer na lista'
+
+    const cardPreview = document.createElement('div')
+    cardPreview.className = 'cadastro-card preview-card'
+
+    const divImgPreview = document.createElement('div')
+    divImgPreview.className = 'preview-card-imagem'
+    const imgPreview = document.createElement('img')
+    imgPreview.src = doce.imagem || ''
+    divImgPreview.append(imgPreview)
+
+    const catPreview = document.createElement('span')
+    catPreview.className = 'preview-card-categoria'
+
+    const nomePreview = document.createElement('h3')
+    nomePreview.className = 'preview-card-nome'
+    nomePreview.textContent = doce.nome || 'Nome do produto'
+
+    const descPreview = document.createElement('p')
+    descPreview.className = 'preview-card-descricao'
+    descPreview.textContent = doce.descricao || 'Descrição do produto'
+
+    const precoPreview = document.createElement('span')
+    precoPreview.className = 'preview-card-preco'
+    const formatarMoeda = (valor) => `R$ ${Number(valor || 0).toFixed(2).replace('.', ',')}`
+    precoPreview.textContent = formatarMoeda(doce.valor)
+
+    const saboresPreview = document.createElement('div')
+    saboresPreview.className = 'preview-card-sabores'
+
+    const estoquePreview = document.createElement('span')
+
+    cardPreview.append(divImgPreview, catPreview, nomePreview, descPreview, precoPreview, saboresPreview, estoquePreview)
+    sidebar.append(tituloPreviewSide, subtituloPreview, cardPreview)
+
+
+
+    const atualizarCatPreview = () => {
+        const checked = chipsCategoria.querySelector('.radio-categoria:checked')
+        catPreview.textContent = checked ? checked.nextElementSibling.textContent : 'CATEGORIA'
+    }
+    atualizarCatPreview()
+    chipsCategoria.addEventListener('change', atualizarCatPreview)
+
+
+    const atualizarSaboresPreview = () => {
+        saboresPreview.innerHTML = ''
+        const checked = chipsSabor.querySelectorAll('.checkbox-sabor:checked')
+        if (checked.length === 0) {
+            const vazio = document.createElement('span')
+            vazio.className = 'preview-card-sabor-vazio'
+            vazio.textContent = 'Nenhum sabor selecionado'
+            saboresPreview.append(vazio)
+        } else {
+            checked.forEach(cb => {
+                const tag = document.createElement('span')
+                tag.className = 'preview-card-sabor-tag'
+                tag.textContent = cb.nextElementSibling.textContent 
+                saboresPreview.append(tag)
+            })
+        }
+    }
+    atualizarSaboresPreview()
+    chipsSabor.addEventListener('change', atualizarSaboresPreview)
+
+
+    const atualizarEstoquePreview = () => {
+        const checked = chipsEstoque.querySelector('.radio-estoque:checked')
+        if (checked) {
+            const texto = checked.nextElementSibling.textContent
+            estoquePreview.textContent = texto
+            if (texto.toLowerCase().includes('sem')) {
+                estoquePreview.className = 'preview-card-estoque preview-card-estoque--vazio'
+            } else {
+                estoquePreview.className = 'preview-card-estoque preview-card-estoque--ok'
+            }
+        } else {
+            estoquePreview.textContent = 'Sem status'
+            estoquePreview.className = 'preview-card-estoque'
+        }
+    }
+    atualizarEstoquePreview()
+    chipsEstoque.addEventListener('change', atualizarEstoquePreview)
+
+ 
+    inputNome.addEventListener('input', (e) => nomePreview.textContent = e.target.value || 'Nome do produto')
+    inputDescricao.addEventListener('input', (e) => descPreview.textContent = e.target.value || 'Descrição do produto')
+    inputPreco.addEventListener('input', (e) => precoPreview.textContent = formatarMoeda(e.target.value))
+
+
+    inputImage.onchange = () => {
+        preview(inputImage)
+        if (inputImage.files && inputImage.files[0]) {
+            imgPreview.src = URL.createObjectURL(inputImage.files[0]) 
+        }
+    }
+
+
+    layoutWrapper.append(colunaForm, sidebar)
 
     const caixaBTN = document.createElement('div')
     caixaBTN.className = 'caixa-btn'
@@ -302,7 +416,7 @@ const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, list
 
     caixaBTN.append(botao_voltar, botao_atualizar)
 
-    container_cadastro.append(colunaForm, caixaBTN)
+    container_cadastro.append(layoutWrapper, caixaBTN)
     main.replaceChildren(tituloPagina, container_cadastro)
 
     return main
@@ -356,7 +470,6 @@ const salvarAtualizacaoDoce = async function (doce) {
         alert('Erro interno ao tentar atualizar o produto.')
     }
 }
-
 
 const validar = async function (doce) {
     if (!doce.nome || doce.nome.trim() === '') {
