@@ -69,6 +69,13 @@ body {
     justify-content: center;
 }
 
+/* Aqui eu deixo um pouco mais claro os nomes que eu coloquei nos inputs,
+    por exemplo a parte do nome, caso eu tire isto aqui vai ficar escuro
+*/
+.guardarCadastro input::placeholder {
+    color: #FFF6F5;
+}
+
 .guardarCadastro h2 {
     color: #A64452;
 }
