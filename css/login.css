@@ -13,7 +13,7 @@ body {
     display: flex;
     flex-direction: column;
     flex: 1;
-    height: 950px;
+    height: 1100px;
     width: 400px;
     background-color: #F0C5C3;
 }
@@ -55,8 +55,8 @@ body {
 }
 
 .containerCadastrar {
-    width: 1200px;
-    height: 950px;
+    width: 1400px;
+    height: 1100px;
     background-color: #F7E4E3;
 }
 

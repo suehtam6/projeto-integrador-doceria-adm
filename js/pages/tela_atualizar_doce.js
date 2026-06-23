@@ -434,6 +434,7 @@ const salvarAtualizacaoDoce = async function (doce) {
         let urlFoto = doce.imagem
         if (inputImagem.files && inputImagem.files[0]) {
             urlFoto = await uploadParaCloudinary(inputImagem.files[0])
+            urlFoto = `${urlFoto}?v=${Date.now()}`
         }
 
         const categoriaMarcada = document.querySelector('.radio-categoria:checked')
@@ -457,9 +458,12 @@ const salvarAtualizacaoDoce = async function (doce) {
             sabor: listaSaboresSelecionados.map(id => ({ id: Number(id) }))
         }
 
-        const dadosValidos = await validar(novoDoce)
+        console.log('URL que será enviada:', urlFoto)
+        console.log('Payload completo:', novoDoce)
 
-        if (dadosValidos) {
+        const validar = await validarDados(novoDoce)
+
+        if (validar) {
             await putDoce(doce.id, novoDoce)
             alert('Doce atualizado com sucesso!')
             renderizarPagina('preview')
@@ -471,7 +475,7 @@ const salvarAtualizacaoDoce = async function (doce) {
     }
 }
 
-const validar = async function (doce) {
+const validarDados = async function (doce) {
     if (!doce.nome || doce.nome.trim() === '') {
         alert('O nome do produto é obrigatório')
         return false
