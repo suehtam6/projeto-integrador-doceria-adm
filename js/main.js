@@ -38,4 +38,4 @@ export function renderizarPagina(cadastro) {
     paginas[cadastro].renderizar()
 }
 
-renderizarPagina('criarLogin')
+renderizarPagina('cadastroADM')

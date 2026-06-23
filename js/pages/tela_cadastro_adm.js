@@ -108,7 +108,7 @@ const criarCadastro = async function(){
         }
 
         if(await postADM(salvarAdm)){
-            renderizarPagina('preview')
+            criarLogin()
         }
 
     } catch (error) {
