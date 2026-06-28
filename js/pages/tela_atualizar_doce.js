@@ -274,8 +274,15 @@ const renderizarTelaAtualizar = function (doce, listaCategoria, listaSabor, list
 
     const dicaUpload = document.createElement('div')
     dicaUpload.className = 'dica-upload'
-    dicaUpload.innerHTML = '<span class="dica-upload-icone">⬆</span><span>Clique para trocar a foto</span>'
+    const spanDicaSeta = document.createElement('span')
+    spanDicaSeta.className = 'dica-upload-icone'
+    spanDicaSeta.textContent = '⬆'
+    const spanDica = document.createElement('span')
+    spanDica.textContent = 'Clique para enviar uma foto'
+    spanDicaSeta.append(spanDica)
+    dicaUpload.append(spanDicaSeta)
 
+    
     const img = document.createElement('img')
     img.id = 'preview-image'
     img.className = 'preview-image'

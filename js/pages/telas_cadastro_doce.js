@@ -254,7 +254,14 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
 
     const dicaUpload = document.createElement('div')
     dicaUpload.className = 'dica-upload'
-    dicaUpload.innerHTML = '<span class="dica-upload-icone">⬆</span><span>Clique para enviar uma foto</span>'
+    const spanDicaSeta = document.createElement('span')
+    spanDicaSeta.className = 'dica-upload-icone'
+    spanDicaSeta.textContent = '⬆'
+    const spanDica = document.createElement('span')
+    spanDica.textContent = 'Clique para enviar uma foto'
+    spanDicaSeta.append(spanDica)
+    dicaUpload.append(spanDicaSeta)
+    
 
     const img = document.createElement('img')
     img.id = 'preview-image'
@@ -269,6 +276,7 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
     divCadastroDoce.append(cardInfo, cardClassificacao, cardPreco, cardImagem)
 
     //Aqui vou criar o card aonde vai ficar atualizando de acordo com oque for sendo colocado de informações
+    //pv-... eu coloquei para eu saber que estou falando sobre o preview, gostaria de comentar sobre isto caso alguém esteja vendo e fique em duvida
     const colunaLateral = document.createElement('div')
     colunaLateral.className = 'cadastro-sidebar'
 
@@ -354,11 +362,19 @@ function cadastrarDoce(listaCategoria, listaSabor, listaEstoque) {
     container_cadastro.append(layout, caixaBTN)
     main.replaceChildren(tituloPagina, container_cadastro)
 
-    // listeners de texto pra manter a pré-visualização atualizada
-    ;[inputNome, inputDescricao, inputPreco].forEach(el => {
+    // esse trecho é o que liga o formulário à função atualizarPreview
+    // Eu andei dando uma pesquisada para entender como poderia fazer o card
+    // ir atualizando automaticamente e isto foi a melhor maneira que eu encontrei
+    // vou explicar agora o que eu  entendi sobre.
+    // aqui eu crio uma variavel guardando um array com os inputs que vão ficar mudando
+    // a cada vez que eu for digitando e salvando algo, assim o campo vai atualizando a 
+    // cada clique que eu der no teclado
+    const camposTexto = [inputNome, inputDescricao, inputPreco]
+
+    camposTexto.forEach(el => {
         el.addEventListener('input', atualizarPreview)
     })
-
+    
     atualizarPreview()
 
     return main
@@ -374,15 +390,18 @@ function atualizarEstrelas(inputAvaliacao, spanEstrelas) {
 // AQUI NESTA PARTE EU VOU FAZER O MEU CARD MOSTRAR TODAS AS INFORMAÇÕES EM TEMPO REAL
 // ASSIM EU POSSO VER COMO ELE VAI FICAR NA TELA DO CLIENTE
 function atualizarPreview() {
-    const pvNome = document.getElementById('pv-nome')
+    const pvNome = document.getElementById('pv-nome') //pv-... eu coloquei para eu saber que estou falando sobre o preview
     const pvPreco = document.getElementById('pv-preco')
     const pvCategoria = document.getElementById('pv-categoria')
     const pvSabores = document.getElementById('pv-sabores')
     const pvEstoque = document.getElementById('pv-estoque')
     const pvDescricao = document.getElementById('pv-descricao')
 
+    
     if (!pvNome) return
 
+    // Caso o nome ou a descrição estejam vazias, eu irei deixar mostrando apenas o que está
+    // a direita da || como por exemplo o 'Nome do produto'
     const nome = document.getElementById('nome-produto')?.value.trim()
     pvNome.textContent = nome || 'Nome do produto'
 
@@ -390,6 +409,7 @@ function atualizarPreview() {
     pvDescricao.textContent = descricao|| 'Descrição do produto'
 
     // Aqui eu vou trocar o ponto por virgula fazendo o preço bonitinho
+    // Aqui basicamente vai ser a formatação do preço
     const preco = Number(document.getElementById('preco')?.value)
     pvPreco.textContent = preco > 0
         ? `R$ ${preco.toFixed(2).replace('.', ',')}`
